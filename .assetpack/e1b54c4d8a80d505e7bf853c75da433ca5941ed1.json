@@ -1,0 +1,1133 @@
+{
+    "assets": {
+        "E:/PixiJS/PixiTest/raw-assets": {
+            "isFolder": true,
+            "metaData": {},
+            "inheritedMetaData": {},
+            "transformData": {},
+            "stats": {
+                "date": 1764582367709,
+                "duration": 15.72679999936372,
+                "success": true
+            }
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}": {
+            "isFolder": true,
+            "parent": "E:/PixiJS/PixiTest/raw-assets",
+            "metaData": {
+                "m": true
+            },
+            "inheritedMetaData": {},
+            "transformData": {},
+            "stats": {
+                "date": 1764556982676,
+                "duration": 64.6906999999992,
+                "success": true
+            }
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/logo-white.svg": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1764556982676,
+                "duration": 75.31420000000071,
+                "success": true
+            },
+            "hash": "Wq9lMw"
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/logo-white.svg": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/logo-white.svg",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/sounds": {
+            "isFolder": true,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1764556982735,
+                "duration": 5.359299999996438,
+                "success": true
+            }
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/sounds/bgm-main.mp3": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/sounds",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1764556982736,
+                "duration": 2636.7937999999995,
+                "success": true
+            },
+            "hash": "IXGL8w"
+        },
+        ".assetpack/audio/main{m}/sounds/bgm-main.mp3": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/sounds/bgm-main.mp3",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/sounds/bgm-main.mp3": {
+            "isFolder": false,
+            "transformParent": ".assetpack/audio/main{m}/sounds/bgm-main.mp3",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/audio/main{m}/sounds/bgm-main.ogg": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/sounds/bgm-main.mp3",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/sounds/bgm-main.ogg": {
+            "isFolder": false,
+            "transformParent": ".assetpack/audio/main{m}/sounds/bgm-main.ogg",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/sounds/sfx-hover.wav": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/sounds",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1764556982741,
+                "duration": 2119.8306999999986,
+                "success": true
+            },
+            "hash": "P9yd"
+        },
+        ".assetpack/audio/main{m}/sounds/sfx-hover.mp3": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/sounds/sfx-hover.wav",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/sounds/sfx-hover.mp3": {
+            "isFolder": false,
+            "transformParent": ".assetpack/audio/main{m}/sounds/sfx-hover.mp3",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/audio/main{m}/sounds/sfx-hover.ogg": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/sounds/sfx-hover.wav",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/sounds/sfx-hover.ogg": {
+            "isFolder": false,
+            "transformParent": ".assetpack/audio/main{m}/sounds/sfx-hover.ogg",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/sounds/sfx-press.wav": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/sounds",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1764556982741,
+                "duration": 2102.9775999999983,
+                "success": true
+            },
+            "hash": "59LMfg"
+        },
+        ".assetpack/audio/main{m}/sounds/sfx-press.mp3": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/sounds/sfx-press.wav",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/sounds/sfx-press.mp3": {
+            "isFolder": false,
+            "transformParent": ".assetpack/audio/main{m}/sounds/sfx-press.mp3",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/audio/main{m}/sounds/sfx-press.ogg": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/sounds/sfx-press.wav",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/sounds/sfx-press.ogg": {
+            "isFolder": false,
+            "transformParent": ".assetpack/audio/main{m}/sounds/sfx-press.ogg",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}": {
+            "isFolder": true,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}",
+            "metaData": {
+                "tps": true
+            },
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1764556982742,
+                "duration": 1864.4393000000055,
+                "success": true
+            }
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}/button.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true
+            },
+            "transformData": {},
+            "hash": "33gC"
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}/icon-pause.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true
+            },
+            "transformData": {},
+            "hash": "6xk80g"
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}/icon-settings.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true
+            },
+            "transformData": {},
+            "hash": "xq0X7Q"
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}/rounded-rectangle.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true
+            },
+            "transformData": {},
+            "hash": "fUycdg"
+        },
+        ".assetpack/texture-packer/main{m}/ui.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}",
+            "metaData": {
+                "mIgnore": true,
+                "nomip": true
+            },
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/ui.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/texture-packer/main{m}/ui.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true,
+                "mIgnore": true,
+                "nomip": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/ui.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/ui.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true,
+                "mIgnore": true,
+                "nomip": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/ui.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/texture-packer/main{m}/ui.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true,
+                "mIgnore": true,
+                "nomip": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/ui.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/ui.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true,
+                "mIgnore": true,
+                "nomip": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/texture-packer/main{m}/ui.json": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true
+            },
+            "transformData": {
+                "page": 0
+            }
+        },
+        ".assetpack/texture-packer-compress/main{m}/ui.png.json": {
+            "isFolder": false,
+            "transformParent": ".assetpack/texture-packer/main{m}/ui.json",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true
+            },
+            "transformData": {
+                "page": 0
+            }
+        },
+        ".assetpack/json/main{m}/ui.png.json": {
+            "isFolder": false,
+            "transformParent": ".assetpack/texture-packer-compress/main{m}/ui.png.json",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true
+            },
+            "transformData": {
+                "page": 0
+            }
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/ui.png.json": {
+            "isFolder": false,
+            "transformParent": ".assetpack/json/main{m}/ui.png.json",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true
+            },
+            "transformData": {
+                "page": 0
+            }
+        },
+        ".assetpack/texture-packer-compress/main{m}/ui.webp.json": {
+            "isFolder": false,
+            "transformParent": ".assetpack/texture-packer/main{m}/ui.json",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true
+            },
+            "transformData": {
+                "page": 0
+            }
+        },
+        ".assetpack/json/main{m}/ui.webp.json": {
+            "isFolder": false,
+            "transformParent": ".assetpack/texture-packer-compress/main{m}/ui.webp.json",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true
+            },
+            "transformData": {
+                "page": 0
+            }
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/ui.webp.json": {
+            "isFolder": false,
+            "transformParent": ".assetpack/json/main{m}/ui.webp.json",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true
+            },
+            "transformData": {
+                "page": 0
+            }
+        },
+        ".assetpack/texture-packer/main{m}/ui@0.5x.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}",
+            "metaData": {
+                "mIgnore": true,
+                "nomip": true
+            },
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/ui@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/texture-packer/main{m}/ui@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true,
+                "mIgnore": true,
+                "nomip": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/ui@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/ui@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true,
+                "mIgnore": true,
+                "nomip": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/ui@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/texture-packer/main{m}/ui@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true,
+                "mIgnore": true,
+                "nomip": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/ui@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/ui@0.5x.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true,
+                "mIgnore": true,
+                "nomip": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/texture-packer/main{m}/ui@0.5x.json": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true
+            },
+            "transformData": {
+                "page": 0
+            }
+        },
+        ".assetpack/texture-packer-compress/main{m}/ui@0.5x.png.json": {
+            "isFolder": false,
+            "transformParent": ".assetpack/texture-packer/main{m}/ui@0.5x.json",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true
+            },
+            "transformData": {
+                "page": 0
+            }
+        },
+        ".assetpack/json/main{m}/ui@0.5x.png.json": {
+            "isFolder": false,
+            "transformParent": ".assetpack/texture-packer-compress/main{m}/ui@0.5x.png.json",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true
+            },
+            "transformData": {
+                "page": 0
+            }
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/ui@0.5x.png.json": {
+            "isFolder": false,
+            "transformParent": ".assetpack/json/main{m}/ui@0.5x.png.json",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true
+            },
+            "transformData": {
+                "page": 0
+            }
+        },
+        ".assetpack/texture-packer-compress/main{m}/ui@0.5x.webp.json": {
+            "isFolder": false,
+            "transformParent": ".assetpack/texture-packer/main{m}/ui@0.5x.json",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true
+            },
+            "transformData": {
+                "page": 0
+            }
+        },
+        ".assetpack/json/main{m}/ui@0.5x.webp.json": {
+            "isFolder": false,
+            "transformParent": ".assetpack/texture-packer-compress/main{m}/ui@0.5x.webp.json",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true
+            },
+            "transformData": {
+                "page": 0
+            }
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/ui@0.5x.webp.json": {
+            "isFolder": false,
+            "transformParent": ".assetpack/json/main{m}/ui@0.5x.webp.json",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true
+            },
+            "transformData": {
+                "page": 0
+            }
+        },
+        "E:/PixiJS/PixiTest/raw-assets/preload{m}": {
+            "isFolder": true,
+            "parent": "E:/PixiJS/PixiTest/raw-assets",
+            "metaData": {
+                "m": true
+            },
+            "inheritedMetaData": {},
+            "transformData": {},
+            "stats": {
+                "date": 1764582367709,
+                "duration": 15.70589999947697,
+                "success": true
+            }
+        },
+        "E:/PixiJS/PixiTest/raw-assets/preload{m}/input.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/preload{m}",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1764566055373,
+                "duration": 227.58579999953508,
+                "success": true
+            },
+            "hash": "92MiLg"
+        },
+        ".assetpack/mipmap/preload{m}/input.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/preload{m}/input.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/preload{m}/input.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/preload{m}/input.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/preload/input.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/preload{m}/input.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/preload{m}/input.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/preload{m}/input.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/preload/input.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/preload{m}/input.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/mipmap/preload{m}/input@0.5x.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/preload{m}/input.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/preload{m}/input@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/preload{m}/input@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/preload/input@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/preload{m}/input@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/preload{m}/input@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/preload{m}/input@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/preload/input@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/preload{m}/input@0.5x.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/raw-assets/preload{m}/logo-dark.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/preload{m}",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1764558249151,
+                "duration": 1139.2729999999283,
+                "success": true
+            },
+            "hash": "F9soCg"
+        },
+        ".assetpack/mipmap/preload{m}/logo-dark.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/preload{m}/logo-dark.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/preload{m}/logo-dark.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/preload{m}/logo-dark.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/preload/logo-dark.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/preload{m}/logo-dark.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/preload{m}/logo-dark.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/preload{m}/logo-dark.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/preload/logo-dark.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/preload{m}/logo-dark.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/mipmap/preload{m}/logo-dark@0.5x.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/preload{m}/logo-dark.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/preload{m}/logo-dark@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/preload{m}/logo-dark@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/preload/logo-dark@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/preload{m}/logo-dark@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/preload{m}/logo-dark@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/preload{m}/logo-dark@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/preload/logo-dark@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/preload{m}/logo-dark@0.5x.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/raw-assets/preload{m}/logo.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/preload{m}",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1764558210353,
+                "duration": 211.13690000004135,
+                "success": true
+            },
+            "hash": "-8IZmg"
+        },
+        ".assetpack/mipmap/preload{m}/logo.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/preload{m}/logo.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/preload{m}/logo.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/preload{m}/logo.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/preload/logo.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/preload{m}/logo.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/preload{m}/logo.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/preload{m}/logo.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/preload/logo.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/preload{m}/logo.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/mipmap/preload{m}/logo@0.5x.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/preload{m}/logo.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/preload{m}/logo@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/preload{m}/logo@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/preload/logo@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/preload{m}/logo@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/preload{m}/logo@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/preload{m}/logo@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/preload/logo@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/preload{m}/logo@0.5x.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/raw-assets/preload{m}/logo.svg": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/preload{m}",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1764556982752,
+                "duration": 59.82399999999325,
+                "success": true
+            },
+            "hash": "LmftHw"
+        },
+        "E:/PixiJS/PixiTest/public/assets/preload/logo.svg": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/preload{m}/logo.svg",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/raw-assets/preload{m}/high.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/preload{m}",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1764582367709,
+                "duration": 202.3950000004843,
+                "success": true
+            },
+            "hash": "IIwf8g"
+        },
+        ".assetpack/mipmap/preload{m}/high.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/preload{m}/high.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/preload{m}/high.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/preload{m}/high.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/preload/high.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/preload{m}/high.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/preload{m}/high.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/preload{m}/high.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/preload/high.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/preload{m}/high.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/mipmap/preload{m}/high@0.5x.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/preload{m}/high.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/preload{m}/high@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/preload{m}/high@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/preload/high@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/preload{m}/high@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/preload{m}/high@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/preload{m}/high@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/preload/high@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/preload{m}/high@0.5x.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/raw-assets/preload{m}/low.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/preload{m}",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1764582367717,
+                "duration": 184.33899999968708,
+                "success": true
+            },
+            "hash": "KCMBIQ"
+        },
+        ".assetpack/mipmap/preload{m}/low.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/preload{m}/low.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/preload{m}/low.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/preload{m}/low.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/preload/low.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/preload{m}/low.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/preload{m}/low.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/preload{m}/low.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/preload/low.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/preload{m}/low.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/mipmap/preload{m}/low@0.5x.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/preload{m}/low.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/preload{m}/low@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/preload{m}/low@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/preload/low@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/preload{m}/low@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/preload{m}/low@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/preload{m}/low@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/preload/low@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/preload{m}/low@0.5x.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        }
+    }
+}
