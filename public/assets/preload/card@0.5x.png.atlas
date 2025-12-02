@@ -1,0 +1,97 @@
+
+card@0.5x.png
+size: 323,307
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+card-back
+  rotate: false
+  xy: 1, 146
+  size: 106, 160
+  orig: 106, 160
+  offset: 0, 0
+  index: -1
+card-open
+  rotate: false
+  xy: 108, 148
+  size: 106, 158
+  orig: 106, 158
+  offset: 0, 0
+  index: -1
+card-shadow
+  rotate: false
+  xy: 216, 148
+  size: 106, 158
+  orig: 106, 158
+  offset: 0, 0
+  index: -1
+fire/1
+  rotate: false
+  xy: 1, 76
+  size: 62, 69
+  orig: 62, 69
+  offset: 0, 0
+  index: -1
+fire/2
+  rotate: false
+  xy: 1, 6
+  size: 62, 69
+  orig: 62, 69
+  offset: 0, 0
+  index: -1
+fire/3
+  rotate: false
+  xy: 64, 76
+  size: 62, 69
+  orig: 62, 69
+  offset: 0, 0
+  index: -1
+fire/4
+  rotate: false
+  xy: 64, 6
+  size: 62, 69
+  orig: 62, 69
+  offset: 0, 0
+  index: -1
+fire/5
+  rotate: false
+  xy: 127, 78
+  size: 62, 69
+  orig: 62, 69
+  offset: 0, 0
+  index: -1
+fire/6
+  rotate: false
+  xy: 127, 8
+  size: 62, 69
+  orig: 62, 69
+  offset: 0, 0
+  index: -1
+fire/7
+  rotate: false
+  xy: 190, 78
+  size: 62, 69
+  orig: 62, 69
+  offset: 0, 0
+  index: -1
+fire/8
+  rotate: false
+  xy: 190, 8
+  size: 62, 69
+  orig: 62, 69
+  offset: 0, 0
+  index: -1
+fire/9
+  rotate: false
+  xy: 253, 78
+  size: 62, 69
+  orig: 62, 69
+  offset: 0, 0
+  index: -1
+stick
+  rotate: true
+  xy: 1, 1
+  size: 4, 98
+  orig: 4, 98
+  offset: 0, 0
+  index: -1
