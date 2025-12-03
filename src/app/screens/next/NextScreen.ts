@@ -14,6 +14,9 @@ import { input, th } from "motion/react-client";
 import { Label } from "../../ui/Label";
 import { Spine } from "@esotericsoftware/spine-pixi-v8";
 
+import { ProfitItem } from "./ProfitItem";
+import { Card } from "../../ui/Card";
+
 
 export class NextScreen extends Container {
     public static assetBundles = ["main"];
@@ -44,7 +47,7 @@ export class NextScreen extends Container {
 
 
     //the visuals and its elements
-    private card: Sprite
+    private card: Card;
 
     private upButton: FancyButton;
     private downButton: FancyButton;
@@ -57,18 +60,9 @@ export class NextScreen extends Container {
 
     private profitBackground: Graphics;
 
-    private pHigherTitle: Text;
-    private pLowerTitle: Text;
-    private pTotalTitle: Text;
-
-    private pHigherBackground: Graphics;
-    private pLowerBackground: Graphics;
-    private pTotalBackground: Graphics;
-
-    private pHigherText: Text;
-    private pLowerText: Text;
-    private pTotalText: Text;
-
+    private pHigherItem: ProfitItem;
+    private pLowerItem: ProfitItem;
+    private pTotalItem: ProfitItem;
 
     private testCard: Spine;
 
@@ -76,240 +70,11 @@ export class NextScreen extends Container {
         super();
 
         const { width, height } = engine().renderer.screen;
-        const sprite = Sprite.from("input.png");
 
-        //container for inputs and buttons
-        this.boxContainer = new Container();
-        this.addChild(this.boxContainer);
-
-        //the grey box sidebar
-        this.box = new Graphics().rect(0, 0, width / 4, height).fill("#444449");
-        this.boxContainer.addChild(this.box);
-
-        this.amountContainer = new Container();
-        this.boxContainer.addChild(this.amountContainer);
-
-        this.higherLowerContainer = new Container();
-        this.boxContainer.addChild(this.higherLowerContainer);
-
-        this.skipBetContainer = new Container();
-        this.boxContainer.addChild(this.skipBetContainer);
-
-        //title text
-        this.title = new Label({
-            text: "Amount",
-            style: {
-                fill: "#b2b2b2ff",
-                fontSize: 40,
-                fontFamily: "Arial",
-            },
-        });
-        this.amountContainer.addChild(this.title);
-
-        //input box (change the sprite width)
-        sprite.width = this.box.width;
-        this.inputBox = new Input(
-            {
-                bg: sprite,
-                placeholder: "0",
-                padding: 11,
-                textStyle: { fill: 'white' },
-            }
-        );
-        this.amountContainer.addChild(this.inputBox);
-
-        //higher and lower buttons
-        this.higherButton = new Button({
-            text: "Higher or Equal",
-            width: this.box.width / 2,
-            height: 75,
-        });
-        this.higherLowerContainer.addChild(this.higherButton);
-
-        this.lowerButton = new Button({
-            text: "Lower or Equal",
-            width: this.box.width / 2,
-            height: 75,
-        });
-        this.higherLowerContainer.addChild(this.lowerButton);
-
-        // skip and bet buttons
-        this.skipButton = new Button({
-            text: "Skip >>",
-            width: this.box.width,
-            height: 75,
-        });
-        this.skipBetContainer.addChild(this.skipButton);
-
-        this.betButton = new Button({
-            text: "Bet",
-            width: this.box.width,
-            height: 90,
-        });
-        this.skipBetContainer.addChild(this.betButton);
-
-        //this container for the cards and stuff (also have the some buttons with the same function as the container above)
-        this.fancyBoxContainer = new Container();
-        this.addChild(this.fancyBoxContainer)
-
-        //the rest of the background box (fancy box)
-        this.fancyBox = new Graphics().rect(0, 0, width - this.box.width, height).fill("#5252daff");
-        this.fancyBoxContainer.addChild(this.fancyBox);
-
-        this.cardsContainer = new Container();
-        this.fancyBoxContainer.addChild(this.cardsContainer);
-
-        //card sprite
-        this.card = Sprite.from("Card1.png");
-        this.cardsContainer.addChild(this.card);
-
-        //up-down buttons
-        this.upButton = new FancyButton({
-            defaultView: "high.png",
-        });
-        this.upButton.onPress.connect(() => { }//empty for now
-        );
-        this.cardsContainer.addChild(this.upButton);
-
-        this.titleHigh = new Label({
-            text: "Hi",
-            style: {
-                fill: "#b2b2b2ff",
-                fontSize: 40,
-                fontFamily: "Arial",
-            }
-        });
-        this.cardsContainer.addChild(this.titleHigh);
-
-        this.titleLow = new Label({
-            text: "Lo",
-            style: {
-                fill: "#b2b2b2ff",
-                fontSize: 40,
-                fontFamily: "Arial",
-            }
-        });
-        this.cardsContainer.addChild(this.titleLow);
-
-        this.highDes = new Label({
-            text: "Higher or equal",
-            style: {
-                fill: "#b2b2b2ff",
-                fontSize: 30,
-                fontFamily: "Arial",
-            }
-        });
-        this.cardsContainer.addChild(this.highDes);
-
-        this.lowDes = new Label({
-            text: "Lower or equal",
-            style: {
-                fill: "#b2b2b2ff",
-                fontSize: 30,
-                fontFamily: "Arial",
-            }
-        });
-        this.cardsContainer.addChild(this.lowDes);
-
-        this.downButton = new FancyButton({
-            defaultView: "low.png",
-        });
-        this.downButton.onPress.connect(() => { }//empty for now
-        );
-        this.cardsContainer.addChild(this.downButton);
-
-        //"fancy" skip button
-        this.fancySkipButton = new Button({
-            text: "Skip",
-            width: 150,
-            height: 100,
-        });
-        this.fancySkipButton.onPress.connect(async () => {
-            //nothing for now
-        });
-        this.cardsContainer.addChild(this.fancySkipButton);
-
-        this.profitContainer = new Container();
-        this.fancyBoxContainer.addChild(this.profitContainer);
-
-        this.profitBackground = new Graphics().rect(0, 0, 300, 150).fill("#3c3c3cff");
-        this.profitContainer.addChild(this.profitBackground);
-
-        //profit description text
-        this.pHigherTitle = new Label({
-            text: "Profit Higher x",
-            style: {
-                fill: "#a0a0a0ff",
-                fontSize: 25,
-                fontFamily: "Arial",
-                align: "Left",
-            }
-        });
-        this.profitContainer.addChild(this.pHigherTitle);
-
-        this.pLowerTitle = new Label({
-            text: "Profit Lower x",
-            style: {
-                fill: "#a0a0a0ff",
-                fontSize: 25,
-                fontFamily: "Arial",
-                align: "Left",
-            }
-        });
-        this.profitContainer.addChild(this.pLowerTitle);
-
-        this.pTotalTitle = new Label({
-            text: "Total Profit x",
-            style: {
-                fill: "#a0a0a0ff",
-                fontSize: 25,
-                fontFamily: "Arial",
-                align: "Left",
-            }
-        });
-        this.profitContainer.addChild(this.pTotalTitle);
-
-        //profit stuff backgrounds
-        this.pHigherBackground = new Graphics().rect(0, 0, 250, 50).fill("#5c5c5cff");
-        this.profitContainer.addChild(this.pHigherBackground);
-
-        this.pLowerBackground = new Graphics().rect(0, 0, 250, 50).fill("#5c5c5cff");
-        this.profitContainer.addChild(this.pLowerBackground);
-
-        this.pTotalBackground = new Graphics().rect(0, 0, 250, 50).fill("#5c5c5cff");
-        this.profitContainer.addChild(this.pTotalBackground);
-
-        //profit texts
-        this.pHigherText = new Label({
-            text: "0.00",
-            style: {
-                fill: "#a0a0a0ff",
-                fontSize: 25,
-                fontFamily: "Arial",
-            }
-        });
-        this.profitContainer.addChild(this.pHigherText);
-
-        this.pLowerText = new Label({
-            text: "0.00",
-            style: {
-                fill: "#a0a0a0ff",
-                fontSize: 25,
-                fontFamily: "Arial",
-            }
-        });
-        this.profitContainer.addChild(this.pLowerText);
-
-        this.pTotalText = new Label({
-            text: "0.00",
-            style: {
-                fill: "#a0a0a0ff",
-                fontSize: 25,
-                fontFamily: "Arial",
-            }
-        });
-        this.profitContainer.addChild(this.pTotalText);
-
+        // --- create main sections ---
+        this.CreateSidebar(width, height);
+        this.CreateFancyBox(width, height);
+        this.CreateProfitContainer();
 
         this.testCard = Spine.from({ atlas: 'card.atlas', skeleton: 'card.skel' });
         this.fancyBoxContainer.addChild(this.testCard);
@@ -324,6 +89,121 @@ export class NextScreen extends Container {
             await engine().navigation.showScreen(MainScreen);
         });
         this.addChild(this.backButton);
+    }
+
+    private CreateSidebar(width: number, height: number) {
+        this.boxContainer = new Container();
+        this.addChild(this.boxContainer);
+
+        this.box = new Graphics().rect(0, 0, width / 4, height).fill("#444449");
+        this.boxContainer.addChild(this.box);
+
+        // amount section
+        this.amountContainer = new Container();
+        this.boxContainer.addChild(this.amountContainer);
+
+        const sprite = Sprite.from("input.png");
+        sprite.width = this.box.width;
+
+        this.title = new Label({
+            text: "Amount",
+            style: { fill: "#b2b2b2ff", fontSize: 40, fontFamily: "Arial" },
+        });
+        this.amountContainer.addChild(this.title);
+
+        this.inputBox = new Input({
+            bg: sprite,
+            placeholder: "0",
+            padding: 11,
+            textStyle: { fill: 'white' },
+        });
+        this.amountContainer.addChild(this.inputBox);
+
+        // buttons
+        this.higherLowerContainer = new Container();
+        this.boxContainer.addChild(this.higherLowerContainer);
+
+        this.higherButton = new Button({ text: "Higher or Equal", width: this.box.width / 2, height: 75 });
+        this.lowerButton = new Button({ text: "Lower or Equal", width: this.box.width / 2, height: 75 });
+
+        this.higherButton.onPress.connect(() => this.HigherButton());
+        this.lowerButton.onPress.connect(() => this.LowerButton());
+        this.higherLowerContainer.addChild(this.higherButton, this.lowerButton);
+
+        this.skipBetContainer = new Container();
+        this.boxContainer.addChild(this.skipBetContainer);
+
+        this.skipButton = new Button({ text: "Skip >>", width: this.box.width, height: 75 });
+
+        this.skipButton.onPress.connect(() => this.SkipButton());
+
+        this.betButton = new Button({ text: "Bet", width: this.box.width, height: 90 });
+        this.skipBetContainer.addChild(this.skipButton, this.betButton);
+    }
+
+    private CreateFancyBox(width: number, height: number) {
+        this.fancyBoxContainer = new Container();
+        this.addChild(this.fancyBoxContainer);
+
+        this.fancyBox = new Graphics().rect(0, 0, width - width / 4, height).fill("#5252daff");
+        this.fancyBoxContainer.addChild(this.fancyBox);
+
+        this.cardsContainer = new Container();
+        this.fancyBoxContainer.addChild(this.cardsContainer);
+
+        // --- use the new CardView instead of Sprite ---
+        this.card = new Card("Card1.png");
+        this.cardsContainer.addChild(this.card);
+
+        // randomize the card at startup
+        this.card.randomizeValue();
+
+        this.upButton = new FancyButton({ defaultView: "high.png" });
+        this.downButton = new FancyButton({ defaultView: "low.png" });
+
+        this.upButton.onPress.connect(() => this.HigherButton());
+        this.downButton.onPress.connect(() => this.LowerButton());
+
+        this.cardsContainer.addChild(this.upButton, this.downButton);
+
+        this.titleHigh = new Label({ text: "Hi", style: { fill: "#b2b2b2ff", fontSize: 40, fontFamily: "Arial" } });
+        this.titleLow = new Label({ text: "Lo", style: { fill: "#b2b2b2ff", fontSize: 40, fontFamily: "Arial" } });
+        this.cardsContainer.addChild(this.titleHigh, this.titleLow);
+
+        this.highDes = new Label({ text: "Higher or equal", style: { fill: "#b2b2b2ff", fontSize: 30, fontFamily: "Arial" } });
+        this.lowDes = new Label({ text: "Lower or equal", style: { fill: "#b2b2b2ff", fontSize: 30, fontFamily: "Arial" } });
+        this.cardsContainer.addChild(this.highDes, this.lowDes);
+
+        this.fancySkipButton = new Button({ text: "Skip", width: 150, height: 100 });
+        this.fancySkipButton.onPress.connect(() => this.SkipButton());
+        this.cardsContainer.addChild(this.fancySkipButton);
+    }
+
+    private CreateProfitContainer() {
+        this.profitContainer = new Container();
+        this.fancyBoxContainer.addChild(this.profitContainer);
+
+        this.profitBackground = new Graphics().rect(0, 0, 300, 150).fill("#3c3c3cff");
+        this.profitContainer.addChild(this.profitBackground);
+
+        // reusable ProfitItem components
+        this.pHigherItem = new ProfitItem("Profit Higher x");
+        this.pLowerItem = new ProfitItem("Profit Lower x");
+        this.pTotalItem = new ProfitItem("Total Profit x");
+
+        this.profitContainer.addChild(this.pHigherItem, this.pLowerItem, this.pTotalItem);
+    }
+
+    private HigherButton() {
+        this.card.randomizeValue();
+    }
+
+    private LowerButton() {
+        this.card.randomizeValue();
+    }
+
+    private SkipButton() {
+        this.card.randomizeValue();
     }
 
     public prepare() { }
@@ -349,49 +229,14 @@ export class NextScreen extends Container {
         this.fancyBoxContainer.y = 0;
 
         // layout sections
-        this.layoutSidebar(sidebarWidth, sidebarHeight, padding);
-        this.layoutFancyBox(fancyWidth, fancyHeight, padding);
-
-        //profit container
-        this.profitBackground.setSize(this.cardsContainer.width, this.cardsContainer.height / 4);
-
-        this.SetPositionTo(this.profitContainer, this.cardsContainer.x - this.cardsContainer.width / 2);
-        this.placeBelow(this.profitContainer, this.cardsContainer, padding * 4, false);
-
-        //profit stuff
-        this.pHigherBackground.width = this.pLowerBackground.width = this.pTotalBackground.width = this.profitBackground.width / 3 - padding * 1.3;
-
-        this.pHigherBackground.x = padding;
-        this.pLowerBackground.x = this.pHigherBackground.x + this.pHigherBackground.width + padding;
-        this.pTotalBackground.x = this.pLowerBackground.x + this.pLowerBackground.width + padding;
-
-        this.pHigherBackground.y = this.pLowerBackground.y = this.pTotalBackground.y = this.profitBackground.height - this.pTotalBackground.height - padding;
-
-        //profit title
-        this.pHigherTitle.x = this.pHigherBackground.x + this.pHigherTitle.width / 2;
-        this.pHigherTitle.y = this.pHigherBackground.y - this.pHigherTitle.height / 2;
-
-        this.pLowerTitle.x = this.pLowerBackground.x + this.pLowerTitle.width / 2;
-        this.pLowerTitle.y = this.pLowerBackground.y - this.pLowerTitle.height / 2;
-
-        this.pTotalTitle.x = this.pTotalBackground.x + this.pTotalTitle.width / 2;
-        this.pTotalTitle.y = this.pTotalBackground.y - this.pTotalTitle.height / 2;
-
-        //profit texts positioning
-        this.pHigherText.x = this.pHigherBackground.x + this.pHigherText.width / 2 + padding * 0.5;
-        this.pHigherText.y = this.pHigherBackground.y + this.pHigherBackground.height - padding * 1.5;
-
-        this.pLowerText.x = this.pLowerBackground.x + this.pLowerText.width / 2 + padding * 0.5;
-        this.pLowerText.y = this.pLowerBackground.y + this.pLowerBackground.height - padding * 1.5;
-
-        this.pTotalText.x = this.pTotalBackground.x + this.pTotalText.width / 2 + padding * 0.5;
-        this.pTotalText.y = this.pTotalBackground.y + this.pTotalBackground.height - padding * 1.5;
-
+        this.SideBarLayout(sidebarWidth, sidebarHeight, padding);
+        this.FancyBoxLayout(fancyWidth, fancyHeight, padding);
+        this.ProfitItemsLayout(padding);
 
         this.backButton.x = 100; this.backButton.y = height - 50;
     }
 
-    private layoutSidebar(sidebarWidth: number, sidebarHeight: number, padding: number) {
+    private SideBarLayout(sidebarWidth: number, sidebarHeight: number, padding: number) {
         // --- amount container ---
         this.SetPositionTo(this.title, this.title.width / 2 + padding);
         this.title.y = this.title.height / 2 + padding;
@@ -430,43 +275,69 @@ export class NextScreen extends Container {
             this.higherLowerContainer.y + this.higherLowerContainer.height + padding * 2;
     }
 
-    private layoutFancyBox(fancyWidth: number, fancyHeight: number, padding: number) {
+    private FancyBoxLayout(fancyWidth: number, fancyHeight: number, padding: number) {
         // --- main cards container ---
         this.centerX(this.cardsContainer, fancyWidth, 0, false);
         this.centerY(this.cardsContainer, fancyHeight + 150);
-        this.cardsContainer.y -= 150; // intentional visual offset upward
+        this.cardsContainer.y -= 150; // intentional upward offset
 
         // --- main card ---
         this.card.scale.set(5);
-        this.centerX(this.card, 0); // since its parent (cardsContainer) is centered, use 0 as reference
+        this.centerX(this.card, 0); // since parent is centered
         this.centerY(this.card, 0);
 
         // --- fancy skip button ---
-        this.fancySkipButton.width = this.card.width / 1.5 + padding;
-        this.fancySkipButton.x = this.card.x + this.card.width / 2;
-        this.fancySkipButton.y = this.card.y + this.card.height;
+        this.scaleToWidth(this.fancySkipButton, this.card.width / 1.5 + padding, false);
+        this.SetPositionTo(this.fancySkipButton, this.card.x + this.card.width / 2);
+        this.placeBelow(this.fancySkipButton, this.card, 0, true);
 
         // --- up / down buttons ---
         this.upButton.scale.set(0.75);
         this.downButton.scale.set(0.75);
 
         const horizontalOffset = this.card.width / 2 + padding * 4;
-        this.upButton.x = -this.upButton.width - horizontalOffset;
-        this.downButton.x = horizontalOffset;
+        this.SetPositionTo(this.upButton, -this.upButton.width - horizontalOffset);
+        this.SetPositionTo(this.downButton, horizontalOffset);
         this.upButton.y = this.downButton.y = -this.downButton.height / 2;
 
         // --- titles for up / down buttons ---
-        this.titleHigh.x = this.upButton.x + this.upButton.width / 2;
-        this.titleLow.x = this.downButton.x + this.downButton.width / 2;
+        this.SetPositionTo(this.titleHigh, this.upButton.x + this.upButton.width / 2);
+        this.SetPositionTo(this.titleLow, this.downButton.x + this.downButton.width / 2);
+
         this.titleHigh.y = this.upButton.y + this.upButton.height / 2 + padding;
         this.titleLow.y = this.downButton.y + this.downButton.height / 2 - padding;
 
         // --- descriptions ---
-        this.highDes.x = this.upButton.x + this.upButton.width / 2;
-        this.lowDes.x = this.downButton.x + this.downButton.width / 2;
+        this.SetPositionTo(this.highDes, this.upButton.x + this.upButton.width / 2);
+        this.SetPositionTo(this.lowDes, this.downButton.x + this.downButton.width / 2);
 
         this.highDes.y = this.upButton.y + this.upButton.height + padding * 2;
         this.lowDes.y = this.downButton.y - padding * 2;
+    }
+
+    private ProfitItemsLayout(padding: number) {
+        // --- Profit container positioning ---
+        this.profitBackground.setSize(this.cardsContainer.width, this.cardsContainer.height / 4);
+
+        this.SetPositionTo(this.profitContainer, this.cardsContainer.x - this.cardsContainer.width / 2);
+        this.placeBelow(this.profitContainer, this.cardsContainer, padding * 4, false);
+
+        // --- Profit item setup ---
+        const itemWidth = this.profitBackground.width / 3 - padding * 1.3;
+
+        // Resize each internal profit item
+        this.pHigherItem.resize(itemWidth);
+        this.pLowerItem.resize(itemWidth);
+        this.pTotalItem.resize(itemWidth);
+
+        // Position horizontally (anchored left → center → right)
+        this.SetPositionTo(this.pHigherItem, padding);
+        this.SetPositionTo(this.pLowerItem, this.pHigherItem.x + itemWidth + padding);
+        this.SetPositionTo(this.pTotalItem, this.pLowerItem.x + itemWidth + padding);
+
+        // Align vertically inside background
+        const baseY = this.profitBackground.height - this.pHigherItem.getHeight() / 2 - padding * 1.5;
+        this.pHigherItem.y = this.pLowerItem.y = this.pTotalItem.y = baseY;
     }
 
     // --- layout helpers ---
@@ -490,8 +361,17 @@ export class NextScreen extends Container {
             target.y = reference.y + reference.height / 2 + padding;
     }
 
-    private SetPositionTo(element: any, padding: number = 0) {
-        element.x = padding;
+    private SetPositionTo(element: any, x: number) {
+        element.x = x;
+    }
+
+    // Optional aliases — just for readability
+    private anchorLeft(element: any, padding: number = 0) {
+        this.SetPositionTo(element, padding);
+    }
+
+    private anchorRight(element: any, containerWidth: number, padding: number = 0) {
+        this.SetPositionTo(element, containerWidth - element.width - padding);
     }
 
     private scaleToWidth(element: any, width: number, maintainAspect = true) {

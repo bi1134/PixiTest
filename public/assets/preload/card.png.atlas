@@ -1,97 +1,32 @@
-
 card.png
-size: 647,615
-format: RGBA8888
-filter: Linear,Linear
-repeat: none
+size:647,615
+filter:Linear,Linear
+pma:true
+scale:0.75
 card-back
-  rotate: false
-  xy: 2, 293
-  size: 213, 320
-  orig: 213, 320
-  offset: 0, 0
-  index: -1
+bounds:2,293,213,320
 card-open
-  rotate: false
-  xy: 217, 297
-  size: 213, 316
-  orig: 213, 316
-  offset: 0, 0
-  index: -1
+bounds:217,297,213,316
 card-shadow
-  rotate: false
-  xy: 432, 297
-  size: 213, 316
-  orig: 213, 316
-  offset: 0, 0
-  index: -1
+bounds:432,297,213,316
 fire/1
-  rotate: false
-  xy: 2, 153
-  size: 124, 138
-  orig: 124, 138
-  offset: 0, 0
-  index: -1
+bounds:2,153,124,138
 fire/2
-  rotate: false
-  xy: 2, 13
-  size: 124, 138
-  orig: 124, 138
-  offset: 0, 0
-  index: -1
+bounds:2,13,124,138
 fire/3
-  rotate: false
-  xy: 128, 153
-  size: 124, 138
-  orig: 124, 138
-  offset: 0, 0
-  index: -1
+bounds:128,153,124,138
 fire/4
-  rotate: false
-  xy: 128, 13
-  size: 124, 138
-  orig: 124, 138
-  offset: 0, 0
-  index: -1
+bounds:128,13,124,138
 fire/5
-  rotate: false
-  xy: 254, 157
-  size: 124, 138
-  orig: 124, 138
-  offset: 0, 0
-  index: -1
+bounds:254,157,124,138
 fire/6
-  rotate: false
-  xy: 254, 17
-  size: 124, 138
-  orig: 124, 138
-  offset: 0, 0
-  index: -1
+bounds:254,17,124,138
 fire/7
-  rotate: false
-  xy: 380, 157
-  size: 124, 138
-  orig: 124, 138
-  offset: 0, 0
-  index: -1
+bounds:380,157,124,138
 fire/8
-  rotate: false
-  xy: 380, 17
-  size: 124, 138
-  orig: 124, 138
-  offset: 0, 0
-  index: -1
+bounds:380,17,124,138
 fire/9
-  rotate: false
-  xy: 506, 157
-  size: 124, 138
-  orig: 124, 138
-  offset: 0, 0
-  index: -1
+bounds:506,157,124,138
 stick
-  rotate: true
-  xy: 2, 2
-  size: 9, 197
-  orig: 9, 197
-  offset: 0, 0
-  index: -1
+bounds:2,2,9,197
+rotate:90

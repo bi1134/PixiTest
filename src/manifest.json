@@ -91,6 +91,54 @@
       "assets": [
         {
           "alias": [
+            "preload/card.atlas",
+            "card.atlas"
+          ],
+          "src": [
+            "preload/card@0.5x.webp.atlas",
+            "preload/card@0.5x.png.atlas",
+            "preload/card.webp.atlas",
+            "preload/card.png.atlas"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "preload/card.skel",
+            "card.skel"
+          ],
+          "src": [
+            "preload/card.skel"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "preload/Card1.png",
+            "Card1.png"
+          ],
+          "src": [
+            "preload/Card1@0.5x.webp",
+            "preload/Card1@0.5x.png",
+            "preload/Card1.webp",
+            "preload/Card1.png"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
             "preload/high.png",
             "high.png"
           ],
@@ -181,54 +229,6 @@
             "preload/low@0.5x.png",
             "preload/low.webp",
             "preload/low.png"
-          ],
-          "data": {
-            "tags": {
-              "m": true
-            }
-          }
-        },
-        {
-          "alias": [
-            "preload/Card1.png",
-            "Card1.png"
-          ],
-          "src": [
-            "preload/Card1@0.5x.webp",
-            "preload/Card1@0.5x.png",
-            "preload/Card1.webp",
-            "preload/Card1.png"
-          ],
-          "data": {
-            "tags": {
-              "m": true
-            }
-          }
-        },
-        {
-          "alias": [
-            "preload/card.atlas",
-            "card.atlas"
-          ],
-          "src": [
-            "preload/card@0.5x.webp.atlas",
-            "preload/card@0.5x.png.atlas",
-            "preload/card.webp.atlas",
-            "preload/card.png.atlas"
-          ],
-          "data": {
-            "tags": {
-              "m": true
-            }
-          }
-        },
-        {
-          "alias": [
-            "preload/card.skel",
-            "card.skel"
-          ],
-          "src": [
-            "preload/card.skel"
           ],
           "data": {
             "tags": {
