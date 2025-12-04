@@ -9,6 +9,935 @@
       "assets": [
         {
           "alias": [
+            "main/cards/club-card-10.jpg",
+            "club-card-10.jpg"
+          ],
+          "src": [
+            "main/cards/club-card-10@0.5x.webp",
+            "main/cards/club-card-10@0.5x.jpg",
+            "main/cards/club-card-10.webp",
+            "main/cards/club-card-10.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/club-card-2.jpg",
+            "club-card-2.jpg"
+          ],
+          "src": [
+            "main/cards/club-card-2@0.5x.webp",
+            "main/cards/club-card-2@0.5x.jpg",
+            "main/cards/club-card-2.webp",
+            "main/cards/club-card-2.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/club-card-3.jpg",
+            "club-card-3.jpg"
+          ],
+          "src": [
+            "main/cards/club-card-3@0.5x.webp",
+            "main/cards/club-card-3@0.5x.jpg",
+            "main/cards/club-card-3.webp",
+            "main/cards/club-card-3.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/club-card-4.jpg",
+            "club-card-4.jpg"
+          ],
+          "src": [
+            "main/cards/club-card-4@0.5x.webp",
+            "main/cards/club-card-4@0.5x.jpg",
+            "main/cards/club-card-4.webp",
+            "main/cards/club-card-4.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/club-card-5.jpg",
+            "club-card-5.jpg"
+          ],
+          "src": [
+            "main/cards/club-card-5@0.5x.webp",
+            "main/cards/club-card-5@0.5x.jpg",
+            "main/cards/club-card-5.webp",
+            "main/cards/club-card-5.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/club-card-6.jpg",
+            "club-card-6.jpg"
+          ],
+          "src": [
+            "main/cards/club-card-6@0.5x.webp",
+            "main/cards/club-card-6@0.5x.jpg",
+            "main/cards/club-card-6.webp",
+            "main/cards/club-card-6.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/club-card-7.jpg",
+            "club-card-7.jpg"
+          ],
+          "src": [
+            "main/cards/club-card-7@0.5x.webp",
+            "main/cards/club-card-7@0.5x.jpg",
+            "main/cards/club-card-7.webp",
+            "main/cards/club-card-7.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/club-card-8.jpg",
+            "club-card-8.jpg"
+          ],
+          "src": [
+            "main/cards/club-card-8@0.5x.webp",
+            "main/cards/club-card-8@0.5x.jpg",
+            "main/cards/club-card-8.webp",
+            "main/cards/club-card-8.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/club-card-9.jpg",
+            "club-card-9.jpg"
+          ],
+          "src": [
+            "main/cards/club-card-9@0.5x.webp",
+            "main/cards/club-card-9@0.5x.jpg",
+            "main/cards/club-card-9.webp",
+            "main/cards/club-card-9.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/club-card-a.jpg",
+            "club-card-a.jpg"
+          ],
+          "src": [
+            "main/cards/club-card-a@0.5x.webp",
+            "main/cards/club-card-a@0.5x.jpg",
+            "main/cards/club-card-a.webp",
+            "main/cards/club-card-a.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/club-card-j.jpg",
+            "club-card-j.jpg"
+          ],
+          "src": [
+            "main/cards/club-card-j@0.5x.webp",
+            "main/cards/club-card-j@0.5x.jpg",
+            "main/cards/club-card-j.webp",
+            "main/cards/club-card-j.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/club-card-k.jpg",
+            "club-card-k.jpg"
+          ],
+          "src": [
+            "main/cards/club-card-k@0.5x.webp",
+            "main/cards/club-card-k@0.5x.jpg",
+            "main/cards/club-card-k.webp",
+            "main/cards/club-card-k.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/club-card-q.jpg",
+            "club-card-q.jpg"
+          ],
+          "src": [
+            "main/cards/club-card-q@0.5x.webp",
+            "main/cards/club-card-q@0.5x.jpg",
+            "main/cards/club-card-q.webp",
+            "main/cards/club-card-q.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/diamond-card-10.jpg",
+            "diamond-card-10.jpg"
+          ],
+          "src": [
+            "main/cards/diamond-card-10@0.5x.webp",
+            "main/cards/diamond-card-10@0.5x.jpg",
+            "main/cards/diamond-card-10.webp",
+            "main/cards/diamond-card-10.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/diamond-card-2.jpg",
+            "diamond-card-2.jpg"
+          ],
+          "src": [
+            "main/cards/diamond-card-2@0.5x.webp",
+            "main/cards/diamond-card-2@0.5x.jpg",
+            "main/cards/diamond-card-2.webp",
+            "main/cards/diamond-card-2.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/diamond-card-3.jpg",
+            "diamond-card-3.jpg"
+          ],
+          "src": [
+            "main/cards/diamond-card-3@0.5x.webp",
+            "main/cards/diamond-card-3@0.5x.jpg",
+            "main/cards/diamond-card-3.webp",
+            "main/cards/diamond-card-3.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/diamond-card-4.jpg",
+            "diamond-card-4.jpg"
+          ],
+          "src": [
+            "main/cards/diamond-card-4@0.5x.webp",
+            "main/cards/diamond-card-4@0.5x.jpg",
+            "main/cards/diamond-card-4.webp",
+            "main/cards/diamond-card-4.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/diamond-card-5.jpg",
+            "diamond-card-5.jpg"
+          ],
+          "src": [
+            "main/cards/diamond-card-5@0.5x.webp",
+            "main/cards/diamond-card-5@0.5x.jpg",
+            "main/cards/diamond-card-5.webp",
+            "main/cards/diamond-card-5.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/diamond-card-6.jpg",
+            "diamond-card-6.jpg"
+          ],
+          "src": [
+            "main/cards/diamond-card-6@0.5x.webp",
+            "main/cards/diamond-card-6@0.5x.jpg",
+            "main/cards/diamond-card-6.webp",
+            "main/cards/diamond-card-6.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/diamond-card-7.jpg",
+            "diamond-card-7.jpg"
+          ],
+          "src": [
+            "main/cards/diamond-card-7@0.5x.webp",
+            "main/cards/diamond-card-7@0.5x.jpg",
+            "main/cards/diamond-card-7.webp",
+            "main/cards/diamond-card-7.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/diamond-card-8.jpg",
+            "diamond-card-8.jpg"
+          ],
+          "src": [
+            "main/cards/diamond-card-8@0.5x.webp",
+            "main/cards/diamond-card-8@0.5x.jpg",
+            "main/cards/diamond-card-8.webp",
+            "main/cards/diamond-card-8.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/diamond-card-9.jpg",
+            "diamond-card-9.jpg"
+          ],
+          "src": [
+            "main/cards/diamond-card-9@0.5x.webp",
+            "main/cards/diamond-card-9@0.5x.jpg",
+            "main/cards/diamond-card-9.webp",
+            "main/cards/diamond-card-9.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/diamond-card-a.jpg",
+            "diamond-card-a.jpg"
+          ],
+          "src": [
+            "main/cards/diamond-card-a@0.5x.webp",
+            "main/cards/diamond-card-a@0.5x.jpg",
+            "main/cards/diamond-card-a.webp",
+            "main/cards/diamond-card-a.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/diamond-card-j.jpg",
+            "diamond-card-j.jpg"
+          ],
+          "src": [
+            "main/cards/diamond-card-j@0.5x.webp",
+            "main/cards/diamond-card-j@0.5x.jpg",
+            "main/cards/diamond-card-j.webp",
+            "main/cards/diamond-card-j.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/diamond-card-k.jpg",
+            "diamond-card-k.jpg"
+          ],
+          "src": [
+            "main/cards/diamond-card-k@0.5x.webp",
+            "main/cards/diamond-card-k@0.5x.jpg",
+            "main/cards/diamond-card-k.webp",
+            "main/cards/diamond-card-k.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/diamond-card-q.jpg",
+            "diamond-card-q.jpg"
+          ],
+          "src": [
+            "main/cards/diamond-card-q@0.5x.webp",
+            "main/cards/diamond-card-q@0.5x.jpg",
+            "main/cards/diamond-card-q.webp",
+            "main/cards/diamond-card-q.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/heart-card-10.jpg",
+            "heart-card-10.jpg"
+          ],
+          "src": [
+            "main/cards/heart-card-10@0.5x.webp",
+            "main/cards/heart-card-10@0.5x.jpg",
+            "main/cards/heart-card-10.webp",
+            "main/cards/heart-card-10.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/heart-card-2.jpg",
+            "heart-card-2.jpg"
+          ],
+          "src": [
+            "main/cards/heart-card-2@0.5x.webp",
+            "main/cards/heart-card-2@0.5x.jpg",
+            "main/cards/heart-card-2.webp",
+            "main/cards/heart-card-2.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/heart-card-3.jpg",
+            "heart-card-3.jpg"
+          ],
+          "src": [
+            "main/cards/heart-card-3@0.5x.webp",
+            "main/cards/heart-card-3@0.5x.jpg",
+            "main/cards/heart-card-3.webp",
+            "main/cards/heart-card-3.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/heart-card-4.jpg",
+            "heart-card-4.jpg"
+          ],
+          "src": [
+            "main/cards/heart-card-4@0.5x.webp",
+            "main/cards/heart-card-4@0.5x.jpg",
+            "main/cards/heart-card-4.webp",
+            "main/cards/heart-card-4.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/heart-card-5.jpg",
+            "heart-card-5.jpg"
+          ],
+          "src": [
+            "main/cards/heart-card-5@0.5x.webp",
+            "main/cards/heart-card-5@0.5x.jpg",
+            "main/cards/heart-card-5.webp",
+            "main/cards/heart-card-5.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/heart-card-6.jpg",
+            "heart-card-6.jpg"
+          ],
+          "src": [
+            "main/cards/heart-card-6@0.5x.webp",
+            "main/cards/heart-card-6@0.5x.jpg",
+            "main/cards/heart-card-6.webp",
+            "main/cards/heart-card-6.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/heart-card-7.jpg",
+            "heart-card-7.jpg"
+          ],
+          "src": [
+            "main/cards/heart-card-7@0.5x.webp",
+            "main/cards/heart-card-7@0.5x.jpg",
+            "main/cards/heart-card-7.webp",
+            "main/cards/heart-card-7.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/heart-card-8.jpg",
+            "heart-card-8.jpg"
+          ],
+          "src": [
+            "main/cards/heart-card-8@0.5x.webp",
+            "main/cards/heart-card-8@0.5x.jpg",
+            "main/cards/heart-card-8.webp",
+            "main/cards/heart-card-8.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/heart-card-9.jpg",
+            "heart-card-9.jpg"
+          ],
+          "src": [
+            "main/cards/heart-card-9@0.5x.webp",
+            "main/cards/heart-card-9@0.5x.jpg",
+            "main/cards/heart-card-9.webp",
+            "main/cards/heart-card-9.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/heart-card-a.jpg",
+            "heart-card-a.jpg"
+          ],
+          "src": [
+            "main/cards/heart-card-a@0.5x.webp",
+            "main/cards/heart-card-a@0.5x.jpg",
+            "main/cards/heart-card-a.webp",
+            "main/cards/heart-card-a.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/heart-card-j.jpg",
+            "heart-card-j.jpg"
+          ],
+          "src": [
+            "main/cards/heart-card-j@0.5x.webp",
+            "main/cards/heart-card-j@0.5x.jpg",
+            "main/cards/heart-card-j.webp",
+            "main/cards/heart-card-j.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/heart-card-k.jpg",
+            "heart-card-k.jpg"
+          ],
+          "src": [
+            "main/cards/heart-card-k@0.5x.webp",
+            "main/cards/heart-card-k@0.5x.jpg",
+            "main/cards/heart-card-k.webp",
+            "main/cards/heart-card-k.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/heart-card-q.jpg",
+            "heart-card-q.jpg"
+          ],
+          "src": [
+            "main/cards/heart-card-q@0.5x.webp",
+            "main/cards/heart-card-q@0.5x.jpg",
+            "main/cards/heart-card-q.webp",
+            "main/cards/heart-card-q.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/spade-card-10.jpg",
+            "spade-card-10.jpg"
+          ],
+          "src": [
+            "main/cards/spade-card-10@0.5x.webp",
+            "main/cards/spade-card-10@0.5x.jpg",
+            "main/cards/spade-card-10.webp",
+            "main/cards/spade-card-10.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/spade-card-2.jpg",
+            "spade-card-2.jpg"
+          ],
+          "src": [
+            "main/cards/spade-card-2@0.5x.webp",
+            "main/cards/spade-card-2@0.5x.jpg",
+            "main/cards/spade-card-2.webp",
+            "main/cards/spade-card-2.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/spade-card-3.jpg",
+            "spade-card-3.jpg"
+          ],
+          "src": [
+            "main/cards/spade-card-3@0.5x.webp",
+            "main/cards/spade-card-3@0.5x.jpg",
+            "main/cards/spade-card-3.webp",
+            "main/cards/spade-card-3.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/spade-card-4.jpg",
+            "spade-card-4.jpg"
+          ],
+          "src": [
+            "main/cards/spade-card-4@0.5x.webp",
+            "main/cards/spade-card-4@0.5x.jpg",
+            "main/cards/spade-card-4.webp",
+            "main/cards/spade-card-4.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/spade-card-5.jpg",
+            "spade-card-5.jpg"
+          ],
+          "src": [
+            "main/cards/spade-card-5@0.5x.webp",
+            "main/cards/spade-card-5@0.5x.jpg",
+            "main/cards/spade-card-5.webp",
+            "main/cards/spade-card-5.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/spade-card-6.jpg",
+            "spade-card-6.jpg"
+          ],
+          "src": [
+            "main/cards/spade-card-6@0.5x.webp",
+            "main/cards/spade-card-6@0.5x.jpg",
+            "main/cards/spade-card-6.webp",
+            "main/cards/spade-card-6.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/spade-card-7.jpg",
+            "spade-card-7.jpg"
+          ],
+          "src": [
+            "main/cards/spade-card-7@0.5x.webp",
+            "main/cards/spade-card-7@0.5x.jpg",
+            "main/cards/spade-card-7.webp",
+            "main/cards/spade-card-7.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/spade-card-8.jpg",
+            "spade-card-8.jpg"
+          ],
+          "src": [
+            "main/cards/spade-card-8@0.5x.webp",
+            "main/cards/spade-card-8@0.5x.jpg",
+            "main/cards/spade-card-8.webp",
+            "main/cards/spade-card-8.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/spade-card-9.jpg",
+            "spade-card-9.jpg"
+          ],
+          "src": [
+            "main/cards/spade-card-9@0.5x.webp",
+            "main/cards/spade-card-9@0.5x.jpg",
+            "main/cards/spade-card-9.webp",
+            "main/cards/spade-card-9.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/spade-card-a.jpg",
+            "spade-card-a.jpg"
+          ],
+          "src": [
+            "main/cards/spade-card-a@0.5x.webp",
+            "main/cards/spade-card-a@0.5x.jpg",
+            "main/cards/spade-card-a.webp",
+            "main/cards/spade-card-a.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/spade-card-j.jpg",
+            "spade-card-j.jpg"
+          ],
+          "src": [
+            "main/cards/spade-card-j@0.5x.webp",
+            "main/cards/spade-card-j@0.5x.jpg",
+            "main/cards/spade-card-j.webp",
+            "main/cards/spade-card-j.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/spade-card-k.jpg",
+            "spade-card-k.jpg"
+          ],
+          "src": [
+            "main/cards/spade-card-k@0.5x.webp",
+            "main/cards/spade-card-k@0.5x.jpg",
+            "main/cards/spade-card-k.webp",
+            "main/cards/spade-card-k.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/spade-card-q.jpg",
+            "spade-card-q.jpg"
+          ],
+          "src": [
+            "main/cards/spade-card-q@0.5x.webp",
+            "main/cards/spade-card-q@0.5x.jpg",
+            "main/cards/spade-card-q.webp",
+            "main/cards/spade-card-q.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/card.png",
+            "card.png"
+          ],
+          "src": [
+            "main/cards/card@0.5x.webp",
+            "main/cards/card@0.5x.png",
+            "main/cards/card.webp",
+            "main/cards/card.png"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/card.skel",
+            "card.skel"
+          ],
+          "src": [
+            "main/cards/card.skel"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/cards/card.atlas.txt",
+            "card.atlas.txt"
+          ],
+          "src": [
+            "main/cards/card.atlas.txt"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
             "main/logo-white.svg",
             "logo-white.svg"
           ],
@@ -89,37 +1018,6 @@
     {
       "name": "preload",
       "assets": [
-        {
-          "alias": [
-            "preload/card.atlas",
-            "card.atlas"
-          ],
-          "src": [
-            "preload/card@0.5x.webp.atlas",
-            "preload/card@0.5x.png.atlas",
-            "preload/card.webp.atlas",
-            "preload/card.png.atlas"
-          ],
-          "data": {
-            "tags": {
-              "m": true
-            }
-          }
-        },
-        {
-          "alias": [
-            "preload/card.skel",
-            "card.skel"
-          ],
-          "src": [
-            "preload/card.skel"
-          ],
-          "data": {
-            "tags": {
-              "m": true
-            }
-          }
-        },
         {
           "alias": [
             "preload/Card1.png",

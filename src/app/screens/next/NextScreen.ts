@@ -16,6 +16,7 @@ import { Spine } from "@esotericsoftware/spine-pixi-v8";
 
 import { ProfitItem } from "./ProfitItem";
 import { Card } from "../../ui/Card";
+import { CardHistoryItem } from "../../ui/CardHistoryItem";
 
 
 export class NextScreen extends Container {
@@ -44,10 +45,10 @@ export class NextScreen extends Container {
     private fancyBoxContainer: Container;
     private cardsContainer: Container;
     private profitContainer: Container;
-
+    private cardsHistoryContainer: Container;
 
     //the visuals and its elements
-    private card: Card;
+    private currentCard: Card;
 
     private upButton: FancyButton;
     private downButton: FancyButton;
@@ -64,7 +65,15 @@ export class NextScreen extends Container {
     private pLowerItem: ProfitItem;
     private pTotalItem: ProfitItem;
 
+    private cardsHistoryBackground: Graphics;
+
+    private cardHistory: CardHistoryItem[] = [];
+
+    private currentState: GameState.NonBetting;
+
     private testCard: Spine;
+    private testSprite: Sprite;
+
 
     constructor() {
         super();
@@ -75,10 +84,16 @@ export class NextScreen extends Container {
         this.CreateSidebar(width, height);
         this.CreateFancyBox(width, height);
         this.CreateProfitContainer();
+        this.CreateCardsHistoryContainer();
 
+        // finally add it to history once layout sizes are ready
+        this.AddCardToHistory(this.currentCard.rank, this.currentCard.suit, GuessAction.Start);
+
+
+        /*
         this.testCard = Spine.from({ atlas: 'card.atlas', skeleton: 'card.skel' });
         this.fancyBoxContainer.addChild(this.testCard);
-
+*/
         //back button
         this.backButton = new Button({
             text: "Back to Main",
@@ -89,6 +104,9 @@ export class NextScreen extends Container {
             await engine().navigation.showScreen(MainScreen);
         });
         this.addChild(this.backButton);
+
+        this.EnterNonBettingState();
+
     }
 
     private CreateSidebar(width: number, height: number) {
@@ -138,7 +156,13 @@ export class NextScreen extends Container {
         this.skipButton.onPress.connect(() => this.SkipButton());
 
         this.betButton = new Button({ text: "Bet", width: this.box.width, height: 90 });
+
+        this.betButton.onPress.connect(() => {
+            this.EnterBettingState();
+        });
+
         this.skipBetContainer.addChild(this.skipButton, this.betButton);
+
     }
 
     private CreateFancyBox(width: number, height: number) {
@@ -151,13 +175,14 @@ export class NextScreen extends Container {
         this.cardsContainer = new Container();
         this.fancyBoxContainer.addChild(this.cardsContainer);
 
-        // --- use the new CardView instead of Sprite ---
-        this.card = new Card("Card1.png");
-        this.cardsContainer.addChild(this.card);
+        // --- create the card ---
+        this.currentCard = new Card();
+        this.cardsContainer.addChild(this.currentCard);
 
-        // randomize the card at startup
-        this.card.randomizeValue();
+        // --- randomize the starting card (rank + suit) ---
+        this.currentCard.RandomizeValue();
 
+        // --- create the buttons ---
         this.upButton = new FancyButton({ defaultView: "high.png" });
         this.downButton = new FancyButton({ defaultView: "low.png" });
 
@@ -166,6 +191,7 @@ export class NextScreen extends Container {
 
         this.cardsContainer.addChild(this.upButton, this.downButton);
 
+        // --- labels and descriptions ---
         this.titleHigh = new Label({ text: "Hi", style: { fill: "#b2b2b2ff", fontSize: 40, fontFamily: "Arial" } });
         this.titleLow = new Label({ text: "Lo", style: { fill: "#b2b2b2ff", fontSize: 40, fontFamily: "Arial" } });
         this.cardsContainer.addChild(this.titleHigh, this.titleLow);
@@ -194,16 +220,167 @@ export class NextScreen extends Container {
         this.profitContainer.addChild(this.pHigherItem, this.pLowerItem, this.pTotalItem);
     }
 
+    private CreateCardsHistoryContainer() {
+        this.cardsHistoryContainer = new Container();
+        this.fancyBoxContainer.addChild(this.cardsHistoryContainer);
+
+        // --- background box ---
+        this.cardsHistoryBackground = new Graphics()
+            .rect(0, 0, 300, 150)
+            .fill("#3c3c3cff");
+        this.cardsHistoryContainer.addChild(this.cardsHistoryBackground);
+
+        // --- create mask for the visible region ---
+        this.cardsHistoryMask = new Graphics()
+            .rect(
+                this.cardsHistoryBackground.x,
+                this.cardsHistoryBackground.y,
+                this.cardsHistoryBackground.width,
+                this.cardsHistoryBackground.height
+            )
+            .fill(0xffffff); // fill color doesn't matter, mask only uses alpha
+        this.cardsHistoryContainer.addChild(this.cardsHistoryMask);
+
+        this.cardsHistoryContainer.mask = this.cardsHistoryMask;
+    }
+
     private HigherButton() {
-        this.card.randomizeValue();
+        this.EvaluateGuess(GuessAction.Higher);
     }
 
     private LowerButton() {
-        this.card.randomizeValue();
+        this.EvaluateGuess(GuessAction.Lower);
     }
 
     private SkipButton() {
-        this.card.randomizeValue();
+        this.EvaluateGuess(GuessAction.Skip);
+    }
+
+    private EvaluateGuess(action: GuessAction) {
+        const prevRank = this.currentCard.rank;
+        const prevNumeric = this.currentCard.GetNumericValue();
+
+        // --- Generate the next card ---
+        const ranks = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+        const suits: CardSuit[] = ["spade", "heart", "club", "diamond"];
+
+        const nextRank = ranks[Math.floor(Math.random() * ranks.length)];
+        const nextSuit = suits[Math.floor(Math.random() * suits.length)];
+        const nextNumeric = ranks.indexOf(nextRank);
+
+        let result: GuessResult.Win | GuessResult.Lose | GuessResult.Skip;
+
+        // --- Evaluate the guess ---
+        switch (action) {
+            case GuessAction.Skip:
+                result = GuessResult.Skip;
+                this.currentCard.SetValue(nextRank, nextSuit);
+                break;
+
+            case GuessAction.Higher:
+                if (nextNumeric >= prevNumeric) {
+                    result = GuessResult.Win;
+                    this.currentCard.SetValue(nextRank, nextSuit);
+                } else {
+                    result = GuessResult.Lose;
+                    this.EnterNonBettingState();
+                }
+                break;
+
+            case GuessAction.Lower:
+                if (nextNumeric <= prevNumeric) {
+                    result = GuessResult.Win;
+                    this.currentCard.SetValue(nextRank, nextSuit);
+                } else {
+                    result = GuessResult.Lose;
+                    this.EnterNonBettingState();
+                }
+                break;
+        }
+
+        // --- Add the NEW current card (after pressing button) to history ---
+        this.AddCardToHistory(this.currentCard.rank, this.currentCard.suit, action);
+
+        console.log(`Prev: ${prevRank}, Next: ${nextRank}, Guess: ${action}, Result: ${result}`);
+    }
+
+    private AddCardToHistory(value: string, suit: string, action: GuessAction) {
+        const padding = 8; // smaller gap looks cleaner
+        const item = new CardHistoryItem(value, suit, action);
+
+        // resize card to fit history background height
+        item.ResizeToFit(this.cardsHistoryBackground.height, padding);
+
+        // --- Horizontal placement ---
+        const index = this.cardHistory.length;
+
+        // start at left padding + previous cards’ total width
+        const prevItem = this.cardHistory[index - 1];
+        if (prevItem) {
+            item.x = prevItem.x + prevItem.width - padding;
+        } else {
+            item.x = padding; // first card starts a bit from the left
+        }
+
+        // --- Vertical centering ---
+        item.y =
+            this.cardsHistoryBackground.y +
+            this.cardsHistoryBackground.height / 2 - item.height / 2;
+
+        this.cardsHistoryContainer.addChild(item);
+        this.cardHistory.push(item);
+
+        // --- Auto scroll when overflow ---
+        const totalWidth = item.x + item.widthScaled + padding;
+        const maxVisibleWidth = this.cardsHistoryBackground.width - padding * 5;
+
+        if (totalWidth > maxVisibleWidth) {
+            const overflow = totalWidth - maxVisibleWidth;
+            for (const card of this.cardHistory) {
+                card.x -= overflow;
+            }
+        }
+    }
+
+    private UpdateUIState() {
+        const isBetting = this.currentState === GameState.Betting;
+
+        this.inputBox.interactive = !isBetting;
+        this.betButton.disabled = isBetting;
+
+        this.higherButton.disabled = !isBetting;
+        this.lowerButton.disabled = !isBetting;
+        this.skipButton.disabled = !isBetting;
+    }
+
+    private EnterBettingState() {
+        this.currentState = GameState.Betting;
+
+        // Disable the amount input & bet button once betting starts
+        this.inputBox.interactive = false;
+        this.betButton.disabled = true;
+
+        // Enable game action buttons
+        this.higherButton.disabled = false;
+        this.lowerButton.disabled = false;
+        this.skipButton.disabled = false;
+
+        console.log("Entered Betting State");
+    }
+
+    private EnterNonBettingState() {
+        this.currentState = GameState.NonBetting;
+
+        // Enable input again for new round
+        this.inputBox.interactive = true;
+        this.betButton.disabled = false;
+
+        // Disable in-game action buttons
+        this.higherButton.disabled = true;
+        this.lowerButton.disabled = true;
+        this.skipButton.disabled = true;
+
+        console.log("Entered Non-Betting State");
     }
 
     public prepare() { }
@@ -232,6 +409,7 @@ export class NextScreen extends Container {
         this.SideBarLayout(sidebarWidth, sidebarHeight, padding);
         this.FancyBoxLayout(fancyWidth, fancyHeight, padding);
         this.ProfitItemsLayout(padding);
+        this.CardHistoryLayout(padding);
 
         this.backButton.x = 100; this.backButton.y = height - 50;
     }
@@ -282,20 +460,20 @@ export class NextScreen extends Container {
         this.cardsContainer.y -= 150; // intentional upward offset
 
         // --- main card ---
-        this.card.scale.set(5);
-        this.centerX(this.card, 0); // since parent is centered
-        this.centerY(this.card, 0);
+        this.currentCard.scale.set(3);
+        this.centerX(this.currentCard, 0); // since parent is centered
+        this.centerY(this.currentCard, 0);
 
         // --- fancy skip button ---
-        this.scaleToWidth(this.fancySkipButton, this.card.width / 1.5 + padding, false);
-        this.SetPositionTo(this.fancySkipButton, this.card.x + this.card.width / 2);
-        this.placeBelow(this.fancySkipButton, this.card, 0, true);
+        this.scaleToWidth(this.fancySkipButton, this.currentCard.width / 1.5 + padding, false);
+        this.SetPositionTo(this.fancySkipButton, this.currentCard.x + this.currentCard.width / 2);
+        this.placeBelow(this.fancySkipButton, this.currentCard, 0, true);
 
         // --- up / down buttons ---
         this.upButton.scale.set(0.75);
         this.downButton.scale.set(0.75);
 
-        const horizontalOffset = this.card.width / 2 + padding * 4;
+        const horizontalOffset = this.currentCard.width / 2 + padding * 4;
         this.SetPositionTo(this.upButton, -this.upButton.width - horizontalOffset);
         this.SetPositionTo(this.downButton, horizontalOffset);
         this.upButton.y = this.downButton.y = -this.downButton.height / 2;
@@ -338,6 +516,24 @@ export class NextScreen extends Container {
         // Align vertically inside background
         const baseY = this.profitBackground.height - this.pHigherItem.getHeight() / 2 - padding * 1.5;
         this.pHigherItem.y = this.pLowerItem.y = this.pTotalItem.y = baseY;
+    }
+
+    private CardHistoryLayout(padding: number) {
+        // --- Resize and position background ---
+        this.cardsHistoryBackground.setSize(this.cardsContainer.width, this.cardsContainer.height / 2);
+
+        this.SetPositionTo(this.cardsHistoryContainer, this.cardsContainer.x - this.cardsContainer.width / 2);
+        this.placeBelow(this.cardsHistoryContainer, this.profitContainer, padding, true);
+
+        // --- Update mask to match background ---
+        this.cardsHistoryMask.clear()
+            .rect(
+                this.cardsHistoryBackground.x,
+                this.cardsHistoryBackground.y,
+                this.cardsHistoryBackground.width,
+                this.cardsHistoryBackground.height
+            )
+            .fill(0xffffff);
     }
 
     // --- layout helpers ---
@@ -412,4 +608,23 @@ export class NextScreen extends Container {
 
         await finalPromise;
     }
+
+
+}
+export enum GuessAction {
+    Higher = "Higher",
+    Lower = "Lower",
+    Skip = "Skip",
+    Start = "Start",
+}
+
+export enum GuessResult {
+    Win = "Win",
+    Lose = "Lose",
+    Skip = "Skip",
+}
+
+export enum GameState {
+    NonBetting = "NonBetting",
+    Betting = "Betting",
 }
