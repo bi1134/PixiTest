@@ -54,8 +54,17 @@ export class ProfitItem extends Container {
     }
 
     /** Resize width dynamically */
-    public resize(width: number) {
-        this.background.width = width;
+    public resize(targetWidth: number, padding: number = 0) {
+        // Compute the current full width and height of the item
+        const currentWidth = this.width;
+
+        // Calculate scale factor based on desired width
+        const scale = targetWidth / currentWidth;
+
+        // Apply the same scale to both width and height 
+        this.scale.set(scale);
+
+        // reflow the text layout
         this.layout();
     }
 

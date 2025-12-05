@@ -5,7 +5,7 @@ import { GuessAction } from "../screens/next/NextScreen";
 export class CardHistoryItem extends Container {
     private cardSprite: Sprite;
     private actionSprite: Sprite;
-    private actionLabel: Label;
+    private multiplierTextLabel: Label;
     private multiplierBackground: Graphics;
 
     private _rank: string;
@@ -53,6 +53,7 @@ export class CardHistoryItem extends Container {
             case GuessAction.Higher: return "higher-icon.jpg";
             case GuessAction.Lower: return "lower-icon.jpg";
             case GuessAction.Skip: return "skip-icon.jpg";
+            case GuessAction.Start: return "transparent.png";
             default: return "blank-icon.jpg"; // fallback (optional)
         }
     }
@@ -84,5 +85,23 @@ export class CardHistoryItem extends Container {
 
     public get heightScaled(): number {
         return this.cardSprite.height * this.cardSprite.scale.y + this.multiplierBackground.height;
+    }
+
+    // --- clean up resources ---
+    public override destroy(options?: { children?: boolean; texture?: boolean; baseTexture?: boolean }) {
+        // explicitly destroy all children (to ensure Label and Graphics are cleaned up)
+        this.cardSprite?.destroy();
+        this.actionSprite?.destroy();
+        this.multiplierBackground?.destroy();
+        this.multiplierTextLabel?.destroy();
+
+        // null references so GC can clean up CPU memory
+        this.cardSprite = null!;
+        this.actionSprite = null!;
+        this.multiplierBackground = null!;
+        this.multiplierTextLabel = null!;
+
+        // finally call the parent destroy
+        super.destroy(options);
     }
 }

@@ -99,7 +99,9 @@ export class MainScreen extends Container {
       await engine().navigation.showScreen(NextScreen);
     });
     this.addChild(this.nextButton);
+
   }
+
 
   /** Prepare the screen just before showing */
   public prepare() { }

@@ -6,8 +6,8 @@
             "inheritedMetaData": {},
             "transformData": {},
             "stats": {
-                "date": 1764840530637,
-                "duration": 25.21059999987483,
+                "date": 1764915510017,
+                "duration": 169.49049999998533,
                 "success": true
             }
         },
@@ -20,8 +20,8 @@
             "inheritedMetaData": {},
             "transformData": {},
             "stats": {
-                "date": 1764840530637,
-                "duration": 25.189600000157952,
+                "date": 1764915510017,
+                "duration": 169.38349999999627,
                 "success": true
             }
         },
@@ -34,10 +34,244 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1764840530637,
-                "duration": 25.177000001072884,
+                "date": 1764915510017,
+                "duration": 169.34400000001187,
                 "success": true
             }
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/cards/card-back.jpg": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/cards",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1764907403506,
+                "duration": 390.80269999988377,
+                "success": true
+            },
+            "hash": "_-iDvw"
+        },
+        ".assetpack/mipmap/main{m}/cards/card-back.jpg": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/cards/card-back.jpg",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/cards/card-back.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/cards/card-back.jpg",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/cards/card-back.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/cards/card-back.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/cards/card-back.jpg": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/cards/card-back.jpg",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/cards/card-back.jpg": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/cards/card-back.jpg",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/mipmap/main{m}/cards/card-back@0.5x.jpg": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/cards/card-back.jpg",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/cards/card-back@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/cards/card-back@0.5x.jpg",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/cards/card-back@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/cards/card-back@0.5x.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/cards/card-back@0.5x.jpg": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/cards/card-back@0.5x.jpg",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/cards/card-back@0.5x.jpg": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/cards/card-back@0.5x.jpg",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/cards/card.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/cards",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1764846847965,
+                "duration": 503.6404999999795,
+                "success": true
+            },
+            "hash": "9BKpCw"
+        },
+        ".assetpack/mipmap/main{m}/cards/card.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/cards/card.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/cards/card.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/cards/card.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/cards/card.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/cards/card.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/cards/card.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/cards/card.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/cards/card.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/cards/card.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/mipmap/main{m}/cards/card@0.5x.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/cards/card.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/cards/card@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/cards/card@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/cards/card@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/cards/card@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/cards/card@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/cards/card@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/cards/card@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/cards/card@0.5x.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/cards/card.skel": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/cards",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1764846847801,
+                "duration": 165.3636000000406,
+                "success": true
+            },
+            "hash": "Nl5R"
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/cards/card.skel": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/cards/card.skel",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
         },
         "E:/PixiJS/PixiTest/raw-assets/main{m}/cards/club-card-10.jpg": {
             "isFolder": false,
@@ -5499,7 +5733,7 @@
             },
             "transformData": {}
         },
-        "E:/PixiJS/PixiTest/raw-assets/main{m}/cards/card.png": {
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/cards/card.atlas": {
             "isFolder": false,
             "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/cards",
             "metaData": {},
@@ -5508,144 +5742,96 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1764840477924,
-                "duration": 608.1466000005603,
-                "success": true
-            },
-            "hash": "9BKpCw"
-        },
-        ".assetpack/mipmap/main{m}/cards/card.png": {
-            "isFolder": false,
-            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/cards/card.png",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        ".assetpack/compress/main{m}/cards/card.png": {
-            "isFolder": false,
-            "transformParent": ".assetpack/mipmap/main{m}/cards/card.png",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        "E:/PixiJS/PixiTest/public/assets/main/cards/card.png": {
-            "isFolder": false,
-            "transformParent": ".assetpack/compress/main{m}/cards/card.png",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        ".assetpack/compress/main{m}/cards/card.webp": {
-            "isFolder": false,
-            "transformParent": ".assetpack/mipmap/main{m}/cards/card.png",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        "E:/PixiJS/PixiTest/public/assets/main/cards/card.webp": {
-            "isFolder": false,
-            "transformParent": ".assetpack/compress/main{m}/cards/card.webp",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        ".assetpack/mipmap/main{m}/cards/card@0.5x.png": {
-            "isFolder": false,
-            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/cards/card.png",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        ".assetpack/compress/main{m}/cards/card@0.5x.png": {
-            "isFolder": false,
-            "transformParent": ".assetpack/mipmap/main{m}/cards/card@0.5x.png",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        "E:/PixiJS/PixiTest/public/assets/main/cards/card@0.5x.png": {
-            "isFolder": false,
-            "transformParent": ".assetpack/compress/main{m}/cards/card@0.5x.png",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        ".assetpack/compress/main{m}/cards/card@0.5x.webp": {
-            "isFolder": false,
-            "transformParent": ".assetpack/mipmap/main{m}/cards/card@0.5x.png",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        "E:/PixiJS/PixiTest/public/assets/main/cards/card@0.5x.webp": {
-            "isFolder": false,
-            "transformParent": ".assetpack/compress/main{m}/cards/card@0.5x.webp",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        "E:/PixiJS/PixiTest/raw-assets/main{m}/cards/card.skel": {
-            "isFolder": false,
-            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/cards",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {},
-            "stats": {
-                "date": 1764840478069,
-                "duration": 9.897100001573563,
-                "success": true
-            },
-            "hash": "Nl5R"
-        },
-        "E:/PixiJS/PixiTest/public/assets/main/cards/card.skel": {
-            "isFolder": false,
-            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/cards/card.skel",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        "E:/PixiJS/PixiTest/raw-assets/main{m}/cards/card.atlas.txt": {
-            "isFolder": false,
-            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/cards",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {},
-            "stats": {
-                "date": 1764840530637,
-                "duration": 25.16660000011325,
+                "date": 1764915510017,
+                "duration": 169.29550000000745,
                 "success": true
             },
             "hash": "82vnrQ"
         },
-        "E:/PixiJS/PixiTest/public/assets/main/cards/card.atlas.txt": {
+        ".assetpack/mipmap-spine-atlas/main{m}/cards/card.atlas": {
             "isFolder": false,
-            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/cards/card.atlas.txt",
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/cards/card.atlas",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/spine-atlas-compress/main{m}/cards/card.png.atlas": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap-spine-atlas/main{m}/cards/card.atlas",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/cards/card.png.atlas": {
+            "isFolder": false,
+            "transformParent": ".assetpack/spine-atlas-compress/main{m}/cards/card.png.atlas",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/spine-atlas-compress/main{m}/cards/card.webp.atlas": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap-spine-atlas/main{m}/cards/card.atlas",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/cards/card.webp.atlas": {
+            "isFolder": false,
+            "transformParent": ".assetpack/spine-atlas-compress/main{m}/cards/card.webp.atlas",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/mipmap-spine-atlas/main{m}/cards/card@0.5x.atlas": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/cards/card.atlas",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/spine-atlas-compress/main{m}/cards/card@0.5x.png.atlas": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap-spine-atlas/main{m}/cards/card@0.5x.atlas",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/cards/card@0.5x.png.atlas": {
+            "isFolder": false,
+            "transformParent": ".assetpack/spine-atlas-compress/main{m}/cards/card@0.5x.png.atlas",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/spine-atlas-compress/main{m}/cards/card@0.5x.webp.atlas": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap-spine-atlas/main{m}/cards/card@0.5x.atlas",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/cards/card@0.5x.webp.atlas": {
+            "isFolder": false,
+            "transformParent": ".assetpack/spine-atlas-compress/main{m}/cards/card@0.5x.webp.atlas",
             "metaData": {},
             "inheritedMetaData": {
                 "m": true
@@ -5854,10 +6040,43 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1764840406834,
-                "duration": 153.75950000062585,
+                "date": 1764915282983,
+                "duration": 327.69040000000314,
                 "success": true
             }
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}/blank-icon.jpg": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true
+            },
+            "transformData": {},
+            "hash": "o3y2Dg"
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}/button-icon-down.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true
+            },
+            "transformData": {},
+            "hash": "I6iTZA"
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}/button-icon-up.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true
+            },
+            "transformData": {},
+            "hash": "4aJzjw"
         },
         "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}/button.png": {
             "isFolder": false,
@@ -5869,6 +6088,17 @@
             },
             "transformData": {},
             "hash": "33gC"
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}/higher-icon.jpg": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true
+            },
+            "transformData": {},
+            "hash": "jE8bJQ"
         },
         "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}/icon-pause.png": {
             "isFolder": false,
@@ -5892,17 +6122,6 @@
             "transformData": {},
             "hash": "xq0X7Q"
         },
-        "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}/rounded-rectangle.png": {
-            "isFolder": false,
-            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true,
-                "tps": true
-            },
-            "transformData": {},
-            "hash": "fUycdg"
-        },
         "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}/lower-icon.jpg": {
             "isFolder": false,
             "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}",
@@ -5914,7 +6133,7 @@
             "transformData": {},
             "hash": "vKW5jQ"
         },
-        "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}/higher-icon.jpg": {
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}/rounded-rectangle.png": {
             "isFolder": false,
             "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}",
             "metaData": {},
@@ -5923,7 +6142,7 @@
                 "tps": true
             },
             "transformData": {},
-            "hash": "jE8bJQ"
+            "hash": "fUycdg"
         },
         "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}/skip-icon.jpg": {
             "isFolder": false,
@@ -5936,7 +6155,7 @@
             "transformData": {},
             "hash": "o3y2Dg"
         },
-        "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}/blank-icon.jpg": {
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}/transparent.png": {
             "isFolder": false,
             "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}",
             "metaData": {},
@@ -5945,152 +6164,7 @@
                 "tps": true
             },
             "transformData": {},
-            "hash": "o3y2Dg"
-        },
-        ".assetpack/texture-packer/main{m}/ui.png": {
-            "isFolder": false,
-            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}",
-            "metaData": {
-                "mIgnore": true,
-                "nomip": true
-            },
-            "inheritedMetaData": {
-                "m": true,
-                "tps": true
-            },
-            "transformData": {}
-        },
-        ".assetpack/compress/main{m}/ui.png": {
-            "isFolder": false,
-            "transformParent": ".assetpack/texture-packer/main{m}/ui.png",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true,
-                "tps": true,
-                "mIgnore": true,
-                "nomip": true
-            },
-            "transformData": {}
-        },
-        "E:/PixiJS/PixiTest/public/assets/main/ui.png": {
-            "isFolder": false,
-            "transformParent": ".assetpack/compress/main{m}/ui.png",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true,
-                "tps": true,
-                "mIgnore": true,
-                "nomip": true
-            },
-            "transformData": {}
-        },
-        ".assetpack/compress/main{m}/ui.webp": {
-            "isFolder": false,
-            "transformParent": ".assetpack/texture-packer/main{m}/ui.png",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true,
-                "tps": true,
-                "mIgnore": true,
-                "nomip": true
-            },
-            "transformData": {}
-        },
-        "E:/PixiJS/PixiTest/public/assets/main/ui.webp": {
-            "isFolder": false,
-            "transformParent": ".assetpack/compress/main{m}/ui.webp",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true,
-                "tps": true,
-                "mIgnore": true,
-                "nomip": true
-            },
-            "transformData": {}
-        },
-        ".assetpack/texture-packer/main{m}/ui.json": {
-            "isFolder": false,
-            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true,
-                "tps": true
-            },
-            "transformData": {
-                "page": 0
-            }
-        },
-        ".assetpack/texture-packer-compress/main{m}/ui.png.json": {
-            "isFolder": false,
-            "transformParent": ".assetpack/texture-packer/main{m}/ui.json",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true,
-                "tps": true
-            },
-            "transformData": {
-                "page": 0
-            }
-        },
-        ".assetpack/json/main{m}/ui.png.json": {
-            "isFolder": false,
-            "transformParent": ".assetpack/texture-packer-compress/main{m}/ui.png.json",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true,
-                "tps": true
-            },
-            "transformData": {
-                "page": 0
-            }
-        },
-        "E:/PixiJS/PixiTest/public/assets/main/ui.png.json": {
-            "isFolder": false,
-            "transformParent": ".assetpack/json/main{m}/ui.png.json",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true,
-                "tps": true
-            },
-            "transformData": {
-                "page": 0
-            }
-        },
-        ".assetpack/texture-packer-compress/main{m}/ui.webp.json": {
-            "isFolder": false,
-            "transformParent": ".assetpack/texture-packer/main{m}/ui.json",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true,
-                "tps": true
-            },
-            "transformData": {
-                "page": 0
-            }
-        },
-        ".assetpack/json/main{m}/ui.webp.json": {
-            "isFolder": false,
-            "transformParent": ".assetpack/texture-packer-compress/main{m}/ui.webp.json",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true,
-                "tps": true
-            },
-            "transformData": {
-                "page": 0
-            }
-        },
-        "E:/PixiJS/PixiTest/public/assets/main/ui.webp.json": {
-            "isFolder": false,
-            "transformParent": ".assetpack/json/main{m}/ui.webp.json",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true,
-                "tps": true
-            },
-            "transformData": {
-                "page": 0
-            }
+            "hash": "9QbNzw"
         },
         ".assetpack/texture-packer/main{m}/ui@0.5x.png": {
             "isFolder": false,
@@ -6237,6 +6311,151 @@
                 "page": 0
             }
         },
+        ".assetpack/texture-packer/main{m}/ui.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}",
+            "metaData": {
+                "mIgnore": true,
+                "nomip": true
+            },
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/ui.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/texture-packer/main{m}/ui.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true,
+                "mIgnore": true,
+                "nomip": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/ui.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/ui.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true,
+                "mIgnore": true,
+                "nomip": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/ui.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/texture-packer/main{m}/ui.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true,
+                "mIgnore": true,
+                "nomip": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/ui.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/ui.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true,
+                "mIgnore": true,
+                "nomip": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/texture-packer/main{m}/ui.json": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true
+            },
+            "transformData": {
+                "page": 0
+            }
+        },
+        ".assetpack/texture-packer-compress/main{m}/ui.png.json": {
+            "isFolder": false,
+            "transformParent": ".assetpack/texture-packer/main{m}/ui.json",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true
+            },
+            "transformData": {
+                "page": 0
+            }
+        },
+        ".assetpack/json/main{m}/ui.png.json": {
+            "isFolder": false,
+            "transformParent": ".assetpack/texture-packer-compress/main{m}/ui.png.json",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true
+            },
+            "transformData": {
+                "page": 0
+            }
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/ui.png.json": {
+            "isFolder": false,
+            "transformParent": ".assetpack/json/main{m}/ui.png.json",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true
+            },
+            "transformData": {
+                "page": 0
+            }
+        },
+        ".assetpack/texture-packer-compress/main{m}/ui.webp.json": {
+            "isFolder": false,
+            "transformParent": ".assetpack/texture-packer/main{m}/ui.json",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true
+            },
+            "transformData": {
+                "page": 0
+            }
+        },
+        ".assetpack/json/main{m}/ui.webp.json": {
+            "isFolder": false,
+            "transformParent": ".assetpack/texture-packer-compress/main{m}/ui.webp.json",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true
+            },
+            "transformData": {
+                "page": 0
+            }
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/ui.webp.json": {
+            "isFolder": false,
+            "transformParent": ".assetpack/json/main{m}/ui.webp.json",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true
+            },
+            "transformData": {
+                "page": 0
+            }
+        },
         "E:/PixiJS/PixiTest/raw-assets/preload{m}": {
             "isFolder": true,
             "parent": "E:/PixiJS/PixiTest/raw-assets",
@@ -6246,8 +6465,8 @@
             "inheritedMetaData": {},
             "transformData": {},
             "stats": {
-                "date": 1764840222789,
-                "duration": 0.0426000002771616,
+                "date": 1764846847966,
+                "duration": 0.08559999999124557,
                 "success": true
             }
         },

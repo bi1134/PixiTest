@@ -5,18 +5,19 @@ import type { FillInput, Ticker } from "pixi.js";
 import { Assets, Container, Graphics, Sprite, Texture } from "pixi.js";
 
 import { engine } from "../../getEngine";
-import { PausePopup } from "../../popups/PausePopup";
+import { ResultPopup } from "../../popups/ResultPopup";
 import { SettingsPopup } from "../../popups/SettingsPopup";
 import { Button } from "../../ui/Button";
 
 import { MainScreen } from "../main/MainScreen";
 import { input, th } from "motion/react-client";
 import { Label } from "../../ui/Label";
-import { Spine } from "@esotericsoftware/spine-pixi-v8";
 
 import { ProfitItem } from "./ProfitItem";
 import { Card } from "../../ui/Card";
 import { CardHistoryItem } from "../../ui/CardHistoryItem";
+import { Assets } from 'pixi.js';
+import { Spine } from '@esotericsoftware/spine-pixi-v8';
 
 
 export class NextScreen extends Container {
@@ -49,6 +50,7 @@ export class NextScreen extends Container {
 
     //the visuals and its elements
     private currentCard: Card;
+    private backCard: Sprite;
 
     private upButton: FancyButton;
     private downButton: FancyButton;
@@ -71,10 +73,6 @@ export class NextScreen extends Container {
 
     private currentState: GameState.NonBetting;
 
-    private testCard: Spine;
-    private testSprite: Sprite;
-
-
     constructor() {
         super();
 
@@ -86,14 +84,6 @@ export class NextScreen extends Container {
         this.CreateProfitContainer();
         this.CreateCardsHistoryContainer();
 
-        // finally add it to history once layout sizes are ready
-        this.AddCardToHistory(this.currentCard.rank, this.currentCard.suit, GuessAction.Start);
-
-
-        /*
-        this.testCard = Spine.from({ atlas: 'card.atlas', skeleton: 'card.skel' });
-        this.fancyBoxContainer.addChild(this.testCard);
-*/
         //back button
         this.backButton = new Button({
             text: "Back to Main",
@@ -105,8 +95,7 @@ export class NextScreen extends Container {
         });
         this.addChild(this.backButton);
 
-        this.EnterNonBettingState();
-
+        this.EnterBettingState();
     }
 
     private CreateSidebar(width: number, height: number) {
@@ -120,29 +109,37 @@ export class NextScreen extends Container {
         this.amountContainer = new Container();
         this.boxContainer.addChild(this.amountContainer);
 
+        //the input box
         const sprite = Sprite.from("input.png");
         sprite.width = this.box.width;
 
         this.title = new Label({
             text: "Amount",
-            style: { fill: "#b2b2b2ff", fontSize: 40, fontFamily: "Arial" },
+            style: { fill: "#b2b2b2ff", fontSize: 35, fontFamily: "Arial" },
         });
         this.amountContainer.addChild(this.title);
 
         this.inputBox = new Input({
             bg: sprite,
-            placeholder: "0",
+            placeholder: "0.02",
             padding: 11,
             textStyle: { fill: 'white' },
+            cleanOnFocus: true
         });
         this.amountContainer.addChild(this.inputBox);
 
+        // set the default value initially
+        this.inputBox.value = "0.02";
+
+        this.inputBox.onEnter.connect(() => {
+            this.ValidateInput();
+        });
         // buttons
         this.higherLowerContainer = new Container();
         this.boxContainer.addChild(this.higherLowerContainer);
 
-        this.higherButton = new Button({ text: "Higher or Equal", width: this.box.width / 2, height: 75 });
-        this.lowerButton = new Button({ text: "Lower or Equal", width: this.box.width / 2, height: 75 });
+        this.higherButton = new Button({ text: "Higher or Equal \n 111%", width: this.box.width / 2, height: 75 });
+        this.lowerButton = new Button({ text: "Lower or Equal \n 111%", width: this.box.width / 2, height: 75 });
 
         this.higherButton.onPress.connect(() => this.HigherButton());
         this.lowerButton.onPress.connect(() => this.LowerButton());
@@ -158,7 +155,11 @@ export class NextScreen extends Container {
         this.betButton = new Button({ text: "Bet", width: this.box.width, height: 90 });
 
         this.betButton.onPress.connect(() => {
-            this.EnterBettingState();
+            if (this.currentState === GameState.Betting) {
+                this.EnterNonBettingState(); // start playing
+            } else if (this.currentState === GameState.NonBetting) {
+                this.CashOut();
+            }
         });
 
         this.skipBetContainer.addChild(this.skipButton, this.betButton);
@@ -177,10 +178,10 @@ export class NextScreen extends Container {
 
         // --- create the card ---
         this.currentCard = new Card();
-        this.cardsContainer.addChild(this.currentCard);
 
-        // --- randomize the starting card (rank + suit) ---
-        this.currentCard.RandomizeValue();
+        this.backCard = Sprite.from("card-back.jpg");
+        this.cardsContainer.addChild(this.backCard);
+
 
         // --- create the buttons ---
         this.upButton = new FancyButton({ defaultView: "high.png" });
@@ -283,7 +284,8 @@ export class NextScreen extends Container {
                     this.currentCard.SetValue(nextRank, nextSuit);
                 } else {
                     result = GuessResult.Lose;
-                    this.EnterNonBettingState();
+                    this.currentCard.SetValue(nextRank, nextSuit);
+                    this.EnterBettingState();
                 }
                 break;
 
@@ -293,11 +295,16 @@ export class NextScreen extends Container {
                     this.currentCard.SetValue(nextRank, nextSuit);
                 } else {
                     result = GuessResult.Lose;
-                    this.EnterNonBettingState();
+                    this.currentCard.SetValue(nextRank, nextSuit);
+                    this.EnterBettingState();
                 }
                 break;
         }
 
+        // if win then can cash out now
+        if (result === GuessResult.Win) {
+            this.enableButton(this.betButton);
+        }
         // --- Add the NEW current card (after pressing button) to history ---
         this.AddCardToHistory(this.currentCard.rank, this.currentCard.suit, action);
 
@@ -342,46 +349,89 @@ export class NextScreen extends Container {
         }
     }
 
-    private UpdateUIState() {
-        const isBetting = this.currentState === GameState.Betting;
+    private EnterNonBettingState() {
+        this.currentState = GameState.NonBetting;
 
-        this.inputBox.interactive = !isBetting;
-        this.betButton.disabled = isBetting;
+        console.log(this.inputBox.value);
 
-        this.higherButton.disabled = !isBetting;
-        this.lowerButton.disabled = !isBetting;
-        this.skipButton.disabled = !isBetting;
+        //clear card history
+        for (const item of this.cardHistory) {
+            item.destroy();
+        }
+        this.cardHistory.length = 0;
+
+        //prepare for new round
+        if (!this.cardsContainer.children.includes(this.currentCard)) {
+            this.cardsContainer.addChild(this.currentCard);
+            this.cardsContainer.setChildIndex(this.fancySkipButton, this.cardsContainer.children.length - 1);
+        }
+        // --- randomize the starting card (rank + suit) ---
+        this.currentCard.RandomizeValue();
+
+        this.AddCardToHistory(this.currentCard.rank, this.currentCard.suit, GuessAction.Start);
+
+        //input and buttons
+        this.inputBox.interactive = false;
+        this.disableButton(this.betButton);
+        this.betButton.text = "Cash Out";
+
+        // Disable in-game action buttons
+        this.enableButton(this.higherButton);
+        this.enableButton(this.lowerButton);
+        this.enableButton(this.skipButton);
+
+        this.enableButton(this.upButton);
+        this.enableButton(this.downButton);
+        this.enableButton(this.fancySkipButton);
+
+        console.log("Entered Non Betting State");
     }
 
     private EnterBettingState() {
         this.currentState = GameState.Betting;
 
-        // Disable the amount input & bet button once betting starts
-        this.inputBox.interactive = false;
-        this.betButton.disabled = true;
+        // Enable input again for new round
+        this.inputBox.interactive = true;
 
-        // Enable game action buttons
-        this.higherButton.disabled = false;
-        this.lowerButton.disabled = false;
-        this.skipButton.disabled = false;
+        this.enableButton(this.betButton);
+        this.betButton.text = "Bet";
+
+        // Disable in-game action buttons
+        this.disableButton(this.higherButton);
+        this.disableButton(this.lowerButton);
+        this.disableButton(this.skipButton);
+
+        this.disableButton(this.upButton);
+        this.disableButton(this.downButton);
+        this.fancySkipButton.interactive = false;
 
         console.log("Entered Betting State");
     }
 
-    private EnterNonBettingState() {
-        this.currentState = GameState.NonBetting;
+    private CashOut() {
+        const multiplier = 6.5; // example
+        const base = parseFloat(this.inputBox.value) || 0.02;
 
-        // Enable input again for new round
-        this.inputBox.interactive = true;
-        this.betButton.disabled = false;
+        engine().navigation.presentPopup(ResultPopup, (popup) => {
+            (popup as ResultPopup).setResult(multiplier, base);
+        });
 
-        // Disable in-game action buttons
-        this.higherButton.disabled = true;
-        this.lowerButton.disabled = true;
-        this.skipButton.disabled = true;
-
-        console.log("Entered Non-Betting State");
+        this.EnterBettingState();
     }
+
+    private ValidateInput() {
+        let val = parseFloat(this.inputBox.value);
+
+        // reset invalid or below-zero values
+        if (isNaN(val) || val <= 0) {
+            this.inputBox.value = "0.02";
+            return;
+        }
+
+        // optionally clamp decimals
+        this.inputBox.value = val.toFixed(2);
+    }
+
 
     public prepare() { }
 
@@ -425,10 +475,12 @@ export class NextScreen extends Container {
 
         // --- higher/lower container ---
         this.scaleToWidth(this.higherButton, sidebarWidth / 2.25 - padding);
+        this.higherButton.height = this.inputBox.height * 1.75;
         this.SetPositionTo(this.higherButton, this.higherButton.width / 2 + padding);
         this.higherButton.y = 0;
 
         this.scaleToWidth(this.lowerButton, sidebarWidth / 2.25 - padding);
+        this.lowerButton.height = this.inputBox.height * 1.75;
         this.SetPositionTo(this.lowerButton, sidebarWidth - this.lowerButton.width / 2 - padding);
         this.lowerButton.y = 0;
 
@@ -450,7 +502,7 @@ export class NextScreen extends Container {
 
         this.skipBetContainer.x = 0;
         this.skipBetContainer.y =
-            this.higherLowerContainer.y + this.higherLowerContainer.height + padding * 2;
+            this.higherLowerContainer.y + this.higherLowerContainer.height;
     }
 
     private FancyBoxLayout(fancyWidth: number, fancyHeight: number, padding: number) {
@@ -464,16 +516,23 @@ export class NextScreen extends Container {
         this.centerX(this.currentCard, 0); // since parent is centered
         this.centerY(this.currentCard, 0);
 
+        this.backCard.scale.set(3);
+        this.centerX(this.backCard, 0); // since parent is centered
+        this.centerY(this.backCard, 0);
+
         // --- fancy skip button ---
         this.scaleToWidth(this.fancySkipButton, this.currentCard.width / 1.5 + padding, false);
         this.SetPositionTo(this.fancySkipButton, this.currentCard.x + this.currentCard.width / 2);
-        this.placeBelow(this.fancySkipButton, this.currentCard, 0, true);
+
+        this.scaleToWidth(this.fancySkipButton, this.backCard.width / 1.5 + padding, false);
+        this.SetPositionTo(this.fancySkipButton, this.backCard.x + this.backCard.width / 2);
+        this.placeBelow(this.fancySkipButton, this.backCard, 0, true);
 
         // --- up / down buttons ---
         this.upButton.scale.set(0.75);
         this.downButton.scale.set(0.75);
 
-        const horizontalOffset = this.currentCard.width / 2 + padding * 4;
+        const horizontalOffset = this.backCard.width / 2 + padding * 4;
         this.SetPositionTo(this.upButton, -this.upButton.width - horizontalOffset);
         this.SetPositionTo(this.downButton, horizontalOffset);
         this.upButton.y = this.downButton.y = -this.downButton.height / 2;
@@ -495,7 +554,7 @@ export class NextScreen extends Container {
 
     private ProfitItemsLayout(padding: number) {
         // --- Profit container positioning ---
-        this.profitBackground.setSize(this.cardsContainer.width, this.cardsContainer.height / 4);
+        this.profitBackground.setSize(this.cardsContainer.width, this.cardsContainer.height / 5);
 
         this.SetPositionTo(this.profitContainer, this.cardsContainer.x - this.cardsContainer.width / 2);
         this.placeBelow(this.profitContainer, this.cardsContainer, padding * 4, false);
@@ -596,17 +655,17 @@ export class NextScreen extends Container {
             this.betButton,
         ];
 
-        let finalPromise!: AnimationPlaybackControls;
-        for (const element of elementsToAnimate) {
-            element.alpha = 0;
-            finalPromise = animate(
-                element,
-                { alpha: 1 },
-                { duration: 0.3, delay: 0.75, ease: "backOut" },
-            );
-        }
+    }
 
-        await finalPromise;
+
+    private disableButton(button: FancyButton) {
+        button.interactive = false;
+        button.alpha = 0.5; // visually indicate disabled state
+    }
+
+    private enableButton(button: FancyButton) {
+        button.interactive = true;
+        button.alpha = 1; // reset to normal opacity
     }
 
 
