@@ -1,58 +1,315 @@
-// src/ui/Card.ts
-import { Container, Sprite } from "pixi.js";
-import { Label } from "../ui/Label";
+import { Spine } from "@esotericsoftware/spine-pixi-v8";
+import { Container, PerspectiveMesh, Texture, Ticker, Rectangle } from "pixi.js";
 
 export type CardSuit = "spade" | "heart" | "club" | "diamond";
-export class Card extends Container {
-    private background: Sprite;
+export enum AnimationState {
+    OpenIdle = "open-idle",
+    Flip = "flip",
+    CloseIdle = "close-idle",
+}
 
-    private _rank: string = "A"; // Default rank
-    private _suit: CardSuit = "spade"; // Default suit
+export class Card extends Container {
+    private spineCard: Spine;
+    private mesh: PerspectiveMesh;
+
+    private _rank: string = "A";
+    private _suit: CardSuit = "spade";
 
     private ranks = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
     private suits: CardSuit[] = ["spade", "heart", "club", "diamond"];
 
+    private angleX = 0;
+    private angleY = 0;
+    private targetX = 0;
+    private targetY = 0;
+    private readonly maxAngle = 8;
+    private readonly perspective = 400;
+
+    private hovering = false;
+    private baseWidth: number;
+    private baseHeight: number;
+    private baseScale = 1;
+
     constructor() {
         super();
 
-        // --- default texture ---
-        this.background = Sprite.from("main/cards/spade-card-a.jpg");
-        this.addChild(this.background);
+        //setup spine
+        this.spineCard = Spine.from(
+            {
+                skeleton: "card.skel",
+                atlas: "card.atlas"
+            }
+        );
+
+        this.spineCard.state.setAnimation(0, AnimationState.OpenIdle, true);
+        this.addChild(this.spineCard);
+
+        const texture = Texture.from("main/cards/spade-card-a.jpg");
+        this.mesh = new PerspectiveMesh({
+            texture,
+            width: texture.width,
+            height: texture.height,
+        });
+
+        this.baseWidth = texture.width;
+        this.baseHeight = texture.height;
+
+        // Center mesh visually
+        this.mesh.x = -this.baseWidth / 2;
+        this.mesh.y = -this.baseHeight / 2;
+        this.addChild(this.mesh);
+
+        //make the card "hitbox" bigger
+        this.setHoverPadding(15);
+
+        // make Spine visually match the mesh’s center alignment
+        this.spineCard.scale.set(1);
+        this.spineCard.x = 0;
+        this.spineCard.y = 0;
+
+        // ensure mesh is hidden initially
+        this.mesh.visible = false;
+
+        // initial texture update (to match default A spade)
+        this.UpdateTexture();
+
+        // --- Interactivity ---
+        this.eventMode = "static";
+        this.interactive = true;
+
+        this.on("pointermove", this.onPointerMove.bind(this));
+        this.on("pointerover", this.onPointerOver.bind(this));
+        this.on("pointerout", this.onPointerOut.bind(this));
+
+        this.tiltLoop(); // keep the follow system always running
     }
 
-    // --- randomize the card value ---
+    // --- same API as before ---
     public RandomizeValue(): void {
         this._rank = this.ranks[Math.floor(Math.random() * this.ranks.length)];
         this._suit = this.suits[Math.floor(Math.random() * this.suits.length)];
-
         this.UpdateTexture();
     }
 
-    // --- get the card's numeric value based on its rank ---
-    // Returns 0 for "A", 1 for "2", ..., 10 for "10", 11 for "J", 12 for "Q", 13 for "K"
     public GetNumericValue(): number {
         return this.ranks.indexOf(this._rank);
     }
 
-    /** Manually set card (useful when game logic picks a specific card) */
     public SetValue(rank: string, suit: CardSuit): void {
         this._rank = rank;
         this._suit = suit;
         this.UpdateTexture();
     }
 
-    /** Update displayed texture to match rank + suit */
     private UpdateTexture(): void {
+        // build texture file name
         const textureName = `${this._suit}-card-${this._rank.toLowerCase()}.jpg`;
-        this.background.texture = Sprite.from(textureName).texture;
+        this.mesh.texture = Texture.from(textureName);
+
+        // match mesh size with texture
+        this.baseWidth = this.mesh.texture.width;
+        this.baseHeight = this.mesh.texture.height;
+        this.mesh.x = -this.baseWidth / 2;
+        this.mesh.y = -this.baseHeight / 2;
+
+        // spine skin name convention
+        // e.g. "spade-a", "heart-10", "diamond-k"
+        const skinName = `${this._suit}-${this._rank.toLowerCase()}`;
+
+        try {
+            this.spineCard.skeleton.setSkinByName(skinName);
+            this.spineCard.skeleton.setSlotsToSetupPose();
+        } catch (e) {
+            console.warn(`Spine skin '${skinName}' not found.`);
+        }
+
+        this.setHoverPadding(15); // refresh hitbox if size changed
     }
 
-    // Expose rank and suit if needed
-    public get rank(): string {
-        return this._rank;
+    // ========== LOGIC ==========
+
+    private onPointerMove(e: any): void {
+        const local = e.getLocalPosition(this.mesh);
+        const nx = (local.x / this.baseWidth) * 2 - 1;
+        const ny = (local.y / this.baseHeight) * 2 - 1;
+
+        this.targetX = ny * this.maxAngle;
+        this.targetY = -nx * this.maxAngle;
     }
 
-    public get suit(): CardSuit {
-        return this._suit;
+    private async onPointerOver(): Promise<void> {
+        if (this.hovering) return;
+        this.hovering = true;
+
+        // swap visible targets
+        this.spineCard.visible = false;
+        this.mesh.visible = true;
+
+        // play hover animations
+        this.playTiltSequence();
+        this.playLiftSequence();
     }
+
+    private onPointerOut(): void {
+        this.hovering = false;
+        this.targetX = 0;
+        this.targetY = 0;
+        this.resetScale();
+
+        // swap back
+        this.mesh.visible = false;
+        this.spineCard.visible = true;
+    }
+
+    // ===== ANIMATION ========
+
+    private tiltLoop(): void {
+        const points = [
+            { x: 0, y: 0 },
+            { x: this.baseWidth, y: 0 },
+            { x: this.baseWidth, y: this.baseHeight },
+            { x: 0, y: this.baseHeight },
+        ];
+        const outPoints = points.map((p) => ({ ...p }));
+
+        const rotate3D = (angleX: number, angleY: number) => {
+            const radX = (angleX * Math.PI) / 180;
+            const radY = (angleY * Math.PI) / 180;
+            const cosX = Math.cos(radX);
+            const sinX = Math.sin(radX);
+            const cosY = Math.cos(radY);
+            const sinY = Math.sin(radY);
+
+            for (let i = 0; i < 4; i++) {
+                const src = points[i];
+                const out = outPoints[i];
+                const x = src.x - this.baseWidth / 2;
+                const y = src.y - this.baseHeight / 2;
+                let z = 0;
+
+                // Rotate Y
+                const xY = cosY * x + sinY * z;
+                z = -sinY * x + cosY * z;
+
+                // Rotate X
+                const yX = cosX * y - sinX * z;
+                z = sinX * y + cosX * z;
+
+                const scale = this.perspective / (this.perspective - z);
+                out.x = xY * scale + this.baseWidth / 2;
+                out.y = yX * scale + this.baseHeight / 2;
+            }
+
+            this.mesh.setCorners(
+                outPoints[0].x, outPoints[0].y,
+                outPoints[1].x, outPoints[1].y,
+                outPoints[2].x, outPoints[2].y,
+                outPoints[3].x, outPoints[3].y,
+            );
+        };
+
+
+        const tiltSpeed = 0.15;
+        const ticker = Ticker.shared;
+
+        ticker.add(() => {
+            this.angleX += (this.targetX - this.angleX) * tiltSpeed * 2;
+            this.angleY += (this.targetY - this.angleY) * tiltSpeed * 2;
+            rotate3D(this.angleX, this.angleY);
+        });
+    }
+
+    //one time tilt seq
+    private async playTiltSequence() {
+        // tilt left -> right -> center
+        const tiltAngle = 3;
+        await this.tweenAngle(-tiltAngle, 50);
+        await this.tweenAngle(tiltAngle, 50);
+        await this.tweenAngle(0, 50);
+    }
+
+    private tweenAngle(targetAngle: number, durationMs: number): Promise<void> {
+        return new Promise((resolve) => {
+            const start = this.angleY;
+            const startTime = performance.now();
+
+            const tick = (time: number) => {
+                const t = Math.min(1, (time - startTime) / durationMs);
+                const eased = 1 - Math.pow(1 - t, 3); // easeOutCubic
+                this.angle = start + (targetAngle - start) * eased;
+
+                if (t < 1 && this.hovering) {
+                    requestAnimationFrame(tick);
+                } else {
+                    resolve();
+                }
+            };
+            requestAnimationFrame(tick);
+        });
+    }
+
+    //lift effect
+    private async playLiftSequence() {
+        const targetBig = this.baseScale + 0.3;
+        const targetSettle = this.baseScale + 0.2;
+
+        await this.tweenScale(targetBig, 100);
+        await this.tweenScale(targetSettle, 150);
+    }
+
+    private tweenScale(target: number, durationMs: number): Promise<void> {
+        return new Promise((resolve) => {
+            const start = this.scale.x;
+            const startTime = performance.now();
+
+            const tick = (time: number) => {
+                const t = Math.min(1, (time - startTime) / durationMs);
+                const eased = 1 - Math.pow(1 - t, 2.5); // easeOut
+                const val = start + (target - start) * eased;
+                this.scale.set(val);
+
+                if (t < 1 && this.hovering) {
+                    requestAnimationFrame(tick);
+                } else {
+                    resolve();
+                }
+            };
+            requestAnimationFrame(tick);
+        });
+    }
+
+    private resetScale() {
+        const start = this.scale.x;
+        const target = this.baseScale;
+        const startTime = performance.now();
+
+        const tick = (time: number) => {
+            const t = Math.min(1, (time - startTime) / 200);
+            const eased = t * (2 - t); // easeOutQuad
+            const val = start + (target - start) * eased;
+            this.scale.set(val);
+
+            if (t < 1 && !this.hovering) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+    }
+
+    // ========== UTILITY ==========
+
+    public setBaseScale(scale: number): void {
+        this.baseScale = scale;
+        this.scale.set(scale);
+    }
+
+    public setHoverPadding(pixels: number) {
+        this.hitArea = new Rectangle(
+            -this.baseWidth / 2 - pixels,
+            -this.baseHeight / 2 - pixels,
+            this.baseWidth + pixels * 2,
+            this.baseHeight + pixels * 2
+        );
+    }
+    // --- public getters ---
+    public get rank(): string { return this._rank; }
+    public get suit(): CardSuit { return this._suit; }
 }

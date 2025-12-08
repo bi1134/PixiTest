@@ -26,6 +26,23 @@
         },
         {
           "alias": [
+            "main/cards/card.atlas",
+            "card.atlas"
+          ],
+          "src": [
+            "main/cards/card@0.5x.webp.atlas",
+            "main/cards/card@0.5x.png.atlas",
+            "main/cards/card.webp.atlas",
+            "main/cards/card.png.atlas"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
             "main/cards/card.skel",
             "card.skel"
           ],
@@ -915,23 +932,6 @@
             "main/cards/spade-card-q@0.5x.jpg",
             "main/cards/spade-card-q.webp",
             "main/cards/spade-card-q.jpg"
-          ],
-          "data": {
-            "tags": {
-              "m": true
-            }
-          }
-        },
-        {
-          "alias": [
-            "main/cards/card.atlas",
-            "card.atlas"
-          ],
-          "src": [
-            "main/cards/card@0.5x.webp.atlas",
-            "main/cards/card@0.5x.png.atlas",
-            "main/cards/card.webp.atlas",
-            "main/cards/card.png.atlas"
           ],
           "data": {
             "tags": {

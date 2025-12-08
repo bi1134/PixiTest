@@ -512,9 +512,7 @@ export class NextScreen extends Container {
         this.cardsContainer.y -= 150; // intentional upward offset
 
         // --- main card ---
-        this.currentCard.scale.set(3);
-        this.centerX(this.currentCard, 0); // since parent is centered
-        this.centerY(this.currentCard, 0);
+        this.currentCard.setBaseScale(3);
 
         this.backCard.scale.set(3);
         this.centerX(this.backCard, 0); // since parent is centered
