@@ -309,6 +309,10 @@ export class Card extends Container {
             this.baseHeight + pixels * 2
         );
     }
+    public cardSize() {
+        return { width: this.baseWidth, height: this.baseHeight };
+    }
+
     // --- public getters ---
     public get rank(): string { return this._rank; }
     public get suit(): CardSuit { return this._suit; }

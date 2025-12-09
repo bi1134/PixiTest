@@ -1,5 +1,5 @@
 import { Container, Graphics } from "pixi.js";
-import { Label } from "../../ui/Label";
+import { Label } from "../../../ui/Label";
 
 export class ProfitItem extends Container {
     private background: Graphics;
@@ -55,13 +55,18 @@ export class ProfitItem extends Container {
 
     /** Resize width dynamically */
     public resize(targetWidth: number, padding: number = 0) {
-        // Compute the current full width and height of the item
+        // Reset scale to 1 to get the natural unscaled width
+        this.scale.set(1);
+
         const currentWidth = this.width;
+
+        // Avoid division by zero
+        if (currentWidth === 0) return;
 
         // Calculate scale factor based on desired width
         const scale = targetWidth / currentWidth;
 
-        // Apply the same scale to both width and height 
+        // Apply scale
         this.scale.set(scale);
 
         // reflow the text layout
@@ -76,6 +81,10 @@ export class ProfitItem extends Container {
     /** Change title text */
     public setTitle(text: string) {
         this.title.text = text;
+    }
+
+    public getBackgroundHeight(): number {
+        return this.background.height;
     }
 
     /** Get the background height (so parent can use it for layout) */

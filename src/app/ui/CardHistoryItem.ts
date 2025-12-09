@@ -1,19 +1,37 @@
 import { Container, Graphics, Sprite } from "pixi.js";
 import { Label } from "../ui/Label";
-import { GuessAction } from "../screens/next/NextScreen";
+import { GuessAction } from "../screens/next/types/GameTypes";
 
 export class CardHistoryItem extends Container {
-    private cardSprite: Sprite;
-    private actionSprite: Sprite;
-    private multiplierTextLabel: Label;
-    private multiplierBackground: Graphics;
+    private cardSprite!: Sprite;
+    private actionSprite!: Sprite;
+    private multiplierTextLabel!: Label;
+    private multiplierBackground!: Graphics;
 
-    private _rank: string;
-    private _suit: string;
-    private _action: GuessAction;
+    private _rank!: string;
+    private _suit!: string;
+    private _action!: GuessAction;
+
+    public targetX: number = 0; // The true "logical" X position, ignoring animation
 
     constructor(rank: string, suit: string, action: GuessAction) {
         super();
+        this.Setup(rank, suit, action);
+    }
+
+    public Reset(rank: string, suit: string, action: GuessAction) {
+        this.Setup(rank, suit, action);
+        this.scale.set(1); // Reset scale
+        this.alpha = 1; // Reset alpha
+        this.visible = true;
+        this.x = 0; // Reset position
+        this.y = 0;
+        this.targetX = 0;
+    }
+
+    private Setup(rank: string, suit: string, action: GuessAction) {
+        // Clear previous if reusing (though we might just update textures)
+        this.removeChildren();
 
         this._rank = rank;
         this._suit = suit;

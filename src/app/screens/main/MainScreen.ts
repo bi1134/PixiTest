@@ -13,7 +13,7 @@ import { Bouncer } from "./Bouncer";
 
 import { CreationEngine } from "./engine/engine";
 import { LoadScreen } from "../LoadScreen";
-import { NextScreen } from "../next/NextScreen";
+import { NextScreenDesktop } from "../next/NextScreenDesktop";
 
 /** The screen that holds the app */
 export class MainScreen extends Container {
@@ -96,7 +96,7 @@ export class MainScreen extends Container {
       await engine().navigation.showScreen(LoadScreen);
 
       // Show the main screen once loading is done
-      await engine().navigation.showScreen(NextScreen);
+      await engine().navigation.showScreen(NextScreenDesktop);
     });
     this.addChild(this.nextButton);
 
