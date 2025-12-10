@@ -1,11 +1,11 @@
 import { FancyButton, Input } from "@pixi/ui";
-import { Container, Graphics, Sprite } from "pixi.js";
-import { Label } from "../../ui/Label";
-import { Button } from "../../ui/Button";
-import { Card } from "../../ui/Card";
-import { LayoutHelper } from "../../utils/LayoutHelper";
-import { ProfitLayout } from "./layout/ProfitLayout";
-import { CardHistoryLayout } from "./layout/CardHistoryLayout";
+import { Container, Graphics, setPositions, Sprite } from "pixi.js";
+import { Label } from "../../../ui/Label";
+import { Button } from "../../../ui/Button";
+import { Card } from "../../../ui/Card";
+import { LayoutHelper } from "../../../utils/LayoutHelper";
+import { ProfitLayout } from "./ProfitLayout";
+import { CardHistoryLayout } from "./CardHistoryLayout";
 
 export class MobileLayout extends Container {
     public fancyBoxContainer!: Container;
@@ -19,7 +19,7 @@ export class MobileLayout extends Container {
     public titleLow!: Label;
     public highDes!: Label;
     public lowDes!: Label;
-    public fancySkipButton!: Button;
+    public fancySkipButton!: FancyButton;
     public profitLayout!: ProfitLayout;
     public cardHistoryLayout!: CardHistoryLayout;
 
@@ -28,7 +28,7 @@ export class MobileLayout extends Container {
     public inputContainerBg!: Graphics;
     public moneyLabel!: Label;
     public inputBox!: Input;
-    public betButton!: Button;
+    public betButton!: FancyButton;
 
     constructor(width: number, height: number) {
         super();
@@ -119,45 +119,46 @@ export class MobileLayout extends Container {
 
         // --- 1. Profit Layout (Top Header) ---
         const profitWidth = width * 0.95;
-        const profitHeight = 50;
+        const profitHeight = 100;
         this.profitLayout.resize(profitWidth, profitHeight, 10);
         this.profitLayout.x = (width - profitWidth) / 2;
         this.profitLayout.y = 0 + padding * 2;
 
-        const profitBottom = this.profitLayout.y + this.profitLayout.height;
-
         // --- Footer Buttons (Skip & Bet) ---
-        const footerY = height - padding * 8;
 
         // Sizing: Share width
         const footerBtnWidth = (width - padding * 3) / 2;
+
+
+        // Bet Button (Right)
+        if (this.betButton.width !== footerBtnWidth) LayoutHelper.scaleToWidth(this.betButton, footerBtnWidth, true);
+
+        this.betButton.x = width - footerBtnWidth - padding;
+        const footerY = height - this.betButton.height / 2 - padding * 2;
+        this.betButton.y = footerY;
+
 
         // Skip Button (Left)
         if (this.fancySkipButton.width !== footerBtnWidth) LayoutHelper.scaleToWidth(this.fancySkipButton, footerBtnWidth, false);
         this.fancySkipButton.x = padding;
         this.fancySkipButton.y = footerY;
 
-        // Bet Button (Right)
-        if (this.betButton.width !== footerBtnWidth) LayoutHelper.scaleToWidth(this.betButton, footerBtnWidth, false);
-        this.betButton.x = width - footerBtnWidth - padding;
-        this.betButton.y = footerY;
-
         // --- Available Space (Main Game Area) ---
         // Back Card
         LayoutHelper.centerX(this.backCard, width);
-        this.backCard.y = (this.backCard.height * this.backCard.scale.y) / 2 - padding * 5;
+
+        this.backCard.scale.set(3);
+        this.currentCard.setBaseScale(3);
+        this.backCard.y = (this.backCard.height * this.backCard.scale.y) / 2 - padding * 25;
 
         this.currentCard.x = this.backCard.x + this.backCard.width / 2;
         this.currentCard.y = this.backCard.y + this.backCard.height / 2;
-
-        this.backCard.scale.set(1.5);
-        this.currentCard.setBaseScale(1.5);
 
         // Hi/Lo Buttons
         this.upButton.scale.set(0.6);
         this.downButton.scale.set(0.6);
 
-        const btnY = this.backCard.y + (this.backCard.height * this.backCard.scale.y) / 2 + padding * 9;
+        const btnY = this.backCard.y + (this.backCard.height * this.backCard.scale.y) / 2 - padding * 10;
         this.upButton.y = btnY;
         this.downButton.y = btnY;
 
@@ -171,15 +172,15 @@ export class MobileLayout extends Container {
         this.lowDes.y = this.downButton.y;
 
         // Titles
-        LayoutHelper.setPositionTo(this.titleHigh, this.upButton.x + this.upButton.width / 2);
+        LayoutHelper.setPositionX(this.titleHigh, this.upButton.x + this.upButton.width / 2);
         this.titleHigh.y = this.upButton.y + this.upButton.height / 2 + this.titleHigh.height / 4;
 
-        LayoutHelper.setPositionTo(this.titleLow, this.downButton.x + this.downButton.width / 2);
+        LayoutHelper.setPositionX(this.titleLow, this.downButton.x + this.downButton.width / 2);
         this.titleLow.y = this.downButton.y + this.downButton.height / 2 + this.titleLow.height / 4;
 
         // --- Input Container (History Box) ---
 
-        const historyStartY = this.titleLow.y + this.titleLow.height + padding * 2;
+        const historyStartY = this.upButton.y + this.upButton.height + padding * 2;
         const containerW = width * 0.9;
         const innerWidth = containerW;
 
@@ -187,21 +188,22 @@ export class MobileLayout extends Container {
         // Calculate position relative to container (0,0)
         let currentY = padding * 2; // Top padding
 
-        LayoutHelper.setPositionTo(this.moneyLabel, innerWidth / 2);
+        LayoutHelper.setPositionX(this.moneyLabel, innerWidth / 2);
         this.moneyLabel.y = currentY;
 
-        currentY += this.moneyLabel.height; // Spacing after label
+        currentY += this.moneyLabel.height + padding; // Spacing after label
 
         // --- 2. Input Box ---
-        const inputW = innerWidth * 0.9;
+        const inputW = innerWidth * 0.95;
         LayoutHelper.scaleToWidth(this.inputBox, inputW, false);
+        this.inputBox.height = 125;
         this.inputBox.x = (innerWidth - inputW) / 2;
         this.inputBox.y = currentY;
 
         currentY += this.inputBox.height + padding; // Spacing after input
 
         // --- 3. History List ---
-        const historyHeight = this.inputBox.height;
+        const historyHeight = this.inputBox.height * 1.5;
 
         this.cardHistoryLayout.resize(innerWidth * 0.95, historyHeight);
         this.cardHistoryLayout.x = (innerWidth - innerWidth * 0.95) / 2;

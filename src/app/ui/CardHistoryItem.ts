@@ -19,16 +19,6 @@ export class CardHistoryItem extends Container {
         this.Setup(rank, suit, action);
     }
 
-    public Reset(rank: string, suit: string, action: GuessAction) {
-        this.Setup(rank, suit, action);
-        this.scale.set(1); // Reset scale
-        this.alpha = 1; // Reset alpha
-        this.visible = true;
-        this.x = 0; // Reset position
-        this.y = 0;
-        this.targetX = 0;
-    }
-
     private Setup(rank: string, suit: string, action: GuessAction) {
         // Clear previous if reusing (though we might just update textures)
         this.removeChildren();

@@ -1,4 +1,4 @@
-import { Input } from "@pixi/ui";
+import { Input, FancyButton } from "@pixi/ui";
 import { Container, Graphics, Sprite } from "pixi.js";
 import { Label } from "../../../ui/Label";
 import { Button } from "../../../ui/Button";
@@ -10,11 +10,11 @@ export class SidebarLayout extends Container {
     public title!: Label;
     public inputBox!: Input;
     public higherLowerContainer!: Container;
-    public higherButton!: Button;
-    public lowerButton!: Button;
+    public higherButton!: FancyButton;
+    public lowerButton!: FancyButton;
     public skipBetContainer!: Container;
-    public skipButton!: Button;
-    public betButton!: Button;
+    public skipButton!: FancyButton;
+    public betButton!: FancyButton;
 
     constructor(width: number, height: number) {
         super();
@@ -77,7 +77,7 @@ export class SidebarLayout extends Container {
         this.box.setSize(sidebarWidth, sidebarHeight);
 
         // --- amount container ---
-        LayoutHelper.setPositionTo(this.title, this.title.width / 2 + padding);
+        LayoutHelper.setPositionX(this.title, this.title.width / 2 + padding);
         this.title.y = this.title.height / 2 + padding;
 
         LayoutHelper.scaleToWidth(this.inputBox, sidebarWidth - padding * 2, false);
@@ -87,12 +87,12 @@ export class SidebarLayout extends Container {
         // --- higher/lower container ---
         LayoutHelper.scaleToWidth(this.higherButton, sidebarWidth / 2.25 - padding);
         this.higherButton.height = this.inputBox.height * 1.75;
-        LayoutHelper.setPositionTo(this.higherButton, this.higherButton.width / 2 + padding);
+        LayoutHelper.setPositionX(this.higherButton, this.higherButton.width / 2 + padding);
         this.higherButton.y = 0;
 
         LayoutHelper.scaleToWidth(this.lowerButton, sidebarWidth / 2.25 - padding);
         this.lowerButton.height = this.inputBox.height * 1.75;
-        LayoutHelper.setPositionTo(this.lowerButton, sidebarWidth - this.lowerButton.width / 2 - padding);
+        LayoutHelper.setPositionX(this.lowerButton, sidebarWidth - this.lowerButton.width / 2 - padding);
         this.lowerButton.y = 0;
 
         // --- skip/bet container ---

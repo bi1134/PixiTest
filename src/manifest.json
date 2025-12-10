@@ -1023,6 +1023,57 @@
       "assets": [
         {
           "alias": [
+            "preload/audio_off.png",
+            "audio_off.png"
+          ],
+          "src": [
+            "preload/audio_off@0.5x.webp",
+            "preload/audio_off@0.5x.png",
+            "preload/audio_off.webp",
+            "preload/audio_off.png"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "preload/audio_on.png",
+            "audio_on.png"
+          ],
+          "src": [
+            "preload/audio_on@0.5x.webp",
+            "preload/audio_on@0.5x.png",
+            "preload/audio_on.webp",
+            "preload/audio_on.png"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "preload/bg-setting.png",
+            "bg-setting.png"
+          ],
+          "src": [
+            "preload/bg-setting@0.5x.webp",
+            "preload/bg-setting@0.5x.png",
+            "preload/bg-setting.webp",
+            "preload/bg-setting.png"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
             "preload/Card1.png",
             "Card1.png"
           ],
@@ -1048,6 +1099,23 @@
             "preload/high@0.5x.png",
             "preload/high.webp",
             "preload/high.png"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "preload/history.png",
+            "history.png"
+          ],
+          "src": [
+            "preload/history@0.5x.webp",
+            "preload/history@0.5x.png",
+            "preload/history.webp",
+            "preload/history.png"
           ],
           "data": {
             "tags": {
@@ -1130,6 +1198,57 @@
             "preload/low@0.5x.png",
             "preload/low.webp",
             "preload/low.png"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "preload/question_mark.png",
+            "question_mark.png"
+          ],
+          "src": [
+            "preload/question_mark@0.5x.webp",
+            "preload/question_mark@0.5x.png",
+            "preload/question_mark.webp",
+            "preload/question_mark.png"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "preload/settings_icon_close.png",
+            "settings_icon_close.png"
+          ],
+          "src": [
+            "preload/settings_icon_close@0.5x.webp",
+            "preload/settings_icon_close@0.5x.png",
+            "preload/settings_icon_close.webp",
+            "preload/settings_icon_close.png"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "preload/settings_icon_open.png",
+            "settings_icon_open.png"
+          ],
+          "src": [
+            "preload/settings_icon_open@0.5x.webp",
+            "preload/settings_icon_open@0.5x.png",
+            "preload/settings_icon_open.webp",
+            "preload/settings_icon_open.png"
           ],
           "data": {
             "tags": {

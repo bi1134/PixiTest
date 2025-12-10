@@ -93,10 +93,10 @@ export class FancyLayout extends Container {
 
         // --- fancy skip button ---
         LayoutHelper.scaleToWidth(this.fancySkipButton, this.currentCard.width / 1.5 + padding, false);
-        LayoutHelper.setPositionTo(this.fancySkipButton, this.currentCard.x + this.currentCard.width / 2);
+        LayoutHelper.setPositionX(this.fancySkipButton, this.currentCard.x + this.currentCard.width / 2);
 
         LayoutHelper.scaleToWidth(this.fancySkipButton, this.backCard.width / 1.5 + padding, false);
-        LayoutHelper.setPositionTo(this.fancySkipButton, this.backCard.x + this.backCard.width / 2);
+        LayoutHelper.setPositionX(this.fancySkipButton, this.backCard.x + this.backCard.width / 2);
         LayoutHelper.placeBelow(this.fancySkipButton, this.backCard, 0, true);
 
         // --- up / down buttons ---
@@ -104,20 +104,20 @@ export class FancyLayout extends Container {
         this.downButton.scale.set(0.75);
 
         const horizontalOffset = this.backCard.width / 2 + padding * 4;
-        LayoutHelper.setPositionTo(this.upButton, -this.upButton.width - horizontalOffset);
-        LayoutHelper.setPositionTo(this.downButton, horizontalOffset);
+        LayoutHelper.setPositionX(this.upButton, -this.upButton.width - horizontalOffset);
+        LayoutHelper.setPositionX(this.downButton, horizontalOffset);
         this.upButton.y = this.downButton.y = -this.downButton.height / 2;
 
         // --- titles for up / down buttons ---
-        LayoutHelper.setPositionTo(this.titleHigh, this.upButton.x + this.upButton.width / 2);
-        LayoutHelper.setPositionTo(this.titleLow, this.downButton.x + this.downButton.width / 2);
+        LayoutHelper.setPositionX(this.titleHigh, this.upButton.x + this.upButton.width / 2);
+        LayoutHelper.setPositionX(this.titleLow, this.downButton.x + this.downButton.width / 2);
 
         this.titleHigh.y = this.upButton.y + this.upButton.height / 2 + padding;
         this.titleLow.y = this.downButton.y + this.downButton.height / 2 - padding;
 
         // --- descriptions ---
-        LayoutHelper.setPositionTo(this.highDes, this.upButton.x + this.upButton.width / 2);
-        LayoutHelper.setPositionTo(this.lowDes, this.downButton.x + this.downButton.width / 2);
+        LayoutHelper.setPositionX(this.highDes, this.upButton.x + this.upButton.width / 2);
+        LayoutHelper.setPositionX(this.lowDes, this.downButton.x + this.downButton.width / 2);
 
         this.highDes.y = this.upButton.y + this.upButton.height + padding * 2;
         this.lowDes.y = this.downButton.y - padding * 2;
@@ -126,7 +126,7 @@ export class FancyLayout extends Container {
 
         // Profit Layout
         this.profitLayout.resize(this.cardsContainer.width, this.cardsContainer.height / 5, padding);
-        LayoutHelper.setPositionTo(this.profitLayout, this.cardsContainer.x - this.cardsContainer.width / 2);
+        LayoutHelper.setPositionX(this.profitLayout, this.cardsContainer.x - this.cardsContainer.width / 2);
         this.profitLayout.y = 0; // Reset Y before relative placement
         // The original code uses cardsContainer as reference for Y
         // "this.placeBelow(this.profitContainer, this.cardsContainer, padding * 4, false);"
@@ -135,7 +135,7 @@ export class FancyLayout extends Container {
 
         // Card History Layout
         this.cardHistoryLayout.resize(this.cardsContainer.width, this.cardsContainer.height / 2, padding);
-        LayoutHelper.setPositionTo(this.cardHistoryLayout, this.cardsContainer.x - this.cardsContainer.width / 2);
+        LayoutHelper.setPositionX(this.cardHistoryLayout, this.cardsContainer.x - this.cardsContainer.width / 2);
         LayoutHelper.placeBelow(this.cardHistoryLayout, this.profitLayout, padding, true);
     }
 

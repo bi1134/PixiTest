@@ -6,6 +6,7 @@ import { CardSuit } from "../../ui/Card";
 import { MainScreen } from "../main/MainScreen";
 import { FancyLayout } from "./layout/FancyLayout";
 import { SidebarLayout } from "./layout/SidebarLayout";
+import { FancyButton } from "@pixi/ui";
 import { GameState, GuessAction, GuessResult } from "./types/GameTypes";
 
 export class NextScreenDesktop extends Container {
@@ -13,7 +14,7 @@ export class NextScreenDesktop extends Container {
 
     private sidebar!: SidebarLayout;
     public fancy!: FancyLayout;
-    private backButton!: Button;
+    private backButton!: FancyButton;
 
     private currentState: GameState = GameState.NonBetting;
 

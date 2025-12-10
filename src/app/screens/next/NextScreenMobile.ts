@@ -4,9 +4,10 @@ import { ResultPopup } from "../../popups/ResultPopup";
 import { Button } from "../../ui/Button";
 import { CardSuit } from "../../ui/Card";
 import { MainScreen } from "../main/MainScreen";
-import { MobileLayout } from "./MobileLayout"; // Updated import
-import { Input } from "@pixi/ui";
+import { SettingsUI } from "../../ui/SettingsUI";
+import { MobileLayout } from "./layout/MobileLayout"; // Updated import
 import { GameState, GuessAction, GuessResult } from "./types/GameTypes";
+import { LayoutHelper } from "../../utils/LayoutHelper";
 
 export class NextScreenMobile extends Container {
     public static assetBundles = ["main"];
@@ -14,6 +15,8 @@ export class NextScreenMobile extends Container {
     public layout!: MobileLayout; // Renamed for clarity
 
     private currentState: GameState = GameState.NonBetting;
+
+    private settingsUI: SettingsUI;
 
     constructor() {
         super();
@@ -23,13 +26,16 @@ export class NextScreenMobile extends Container {
         this.layout = new MobileLayout(width, height);
         this.addChild(this.layout);
 
+
+        this.settingsUI = new SettingsUI();
+        this.addChild(this.settingsUI);
+
         // --- Setup Event Listeners ---
         this.setupEvents();
 
         this.EnterBettingState();
         this.resize(width, height);
     }
-
 
     private setupEvents() {
         this.layout.upButton.onPress.connect(() => this.HigherButton());
@@ -214,6 +220,8 @@ export class NextScreenMobile extends Container {
         const padding = width * 0.02;
 
         this.layout.resize(width, height, padding);
+        LayoutHelper.setPositionX(this.settingsUI, width - this.settingsUI.width);
+        LayoutHelper.setPositionY(this.settingsUI, height - this.settingsUI.height);
     }
 
     public async show(): Promise<void> {

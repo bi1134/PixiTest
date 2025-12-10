@@ -18,10 +18,13 @@ export class LayoutHelper {
             target.y = reference.y + reference.height / 2 + padding;
     }
 
-    public static setPositionTo(element: any, x: number) {
+    public static setPositionX(element: any, x: number) {
         element.x = x;
     }
 
+public static setPositionY(element: any, y: number) {
+        element.y = y;
+    }
     public static scaleToWidth(element: any, width: number, maintainAspect = true) {
         if (maintainAspect) {
             // Cache the original width the first time

@@ -39,9 +39,9 @@ export class ProfitLayout extends Container {
         this.pTotalItem.resize(itemWidth);
 
         // Position horizontally (anchored left → center → right)
-        LayoutHelper.setPositionTo(this.pHigherItem, padding);
-        LayoutHelper.setPositionTo(this.pLowerItem, this.pHigherItem.x + itemWidth + padding);
-        LayoutHelper.setPositionTo(this.pTotalItem, this.pLowerItem.x + itemWidth + padding);
+        LayoutHelper.setPositionX(this.pHigherItem, padding);
+        LayoutHelper.setPositionX(this.pLowerItem, this.pHigherItem.x + itemWidth + padding);
+        LayoutHelper.setPositionX(this.pTotalItem, this.pLowerItem.x + itemWidth + padding);
 
         // Align vertically inside background
         // Align vertically inside background - Align bottom of item background to bottom of layout

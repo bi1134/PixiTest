@@ -92,35 +92,15 @@ export class CardHistoryLayout extends Container {
         this.addChild(item);
         this.cardHistory.push(item);
 
+
         // 7. Animate Entry (Pop In + Slide Back)
         // Pop In
         animate(item, { alpha: 1 }, { duration: popDuration, ease: "linear" });
         animate(item.scale, { x: finalScale, y: finalScale }, { duration: popDuration, ease: "backOut" });
 
         // Slide Back to Logical Target
-        animate(item, { x: item.targetX }, { duration: slideDuration, delay: slideDelay, ease: "circOut" });
+        animate(item, { x: item.targetX }, { duration: slideDuration, delay: slideDelay, ease: "backOut" });
 
-        // 8. Garbage Collection (Buffer Check)
-        // DISABLED FOR DEBUGGING as per user request
-        /*
-        const bufferSize = 3;
-        if (this.cardHistory.length > bufferSize) {
-            // Check the item at the edge of the buffer (index 3)
-            // If THIS item is also off-screen, then items 0, 1, 2 are definitely off-screen.
-            // We can safely remove item 0.
-            const bufferItem = this.cardHistory[bufferSize];
-            const bufferItemWidth = bufferItem.getLocalBounds().width * bufferItem.scale.x;
-
-            // Check if buffer item is effectively off-screen to the left
-            if (bufferItem.targetX + bufferItemWidth < 0) {
-                const removed = this.cardHistory.shift();
-                if (removed) {
-                    this.removeChild(removed);
-                    removed.destroy();
-                }
-            }
-        }
-        */
     }
 
     public clearHistory() {
