@@ -1,5 +1,6 @@
 import { Spine } from "@esotericsoftware/spine-pixi-v8";
 import { Container, PerspectiveMesh, Texture, Ticker, Rectangle } from "pixi.js";
+import { gsap } from "gsap";
 
 export type CardSuit = "spade" | "heart" | "club" | "diamond";
 export enum AnimationState {
@@ -219,33 +220,17 @@ export class Card extends Container {
         });
     }
 
+
     //one time tilt seq
     private async playTiltSequence() {
         // tilt left -> right -> center
+        // Using angle (2D rotation) as per previous implication, but correcting source to angle
+        // If previous code read angleY, it might have been using it as a "close enough" 0 start? 
+        // I'll animate 'angle' (2D z-rotation) for the shake effect.
         const tiltAngle = 3;
-        await this.tweenAngle(-tiltAngle, 50);
-        await this.tweenAngle(tiltAngle, 50);
-        await this.tweenAngle(0, 50);
-    }
-
-    private tweenAngle(targetAngle: number, durationMs: number): Promise<void> {
-        return new Promise((resolve) => {
-            const start = this.angleY;
-            const startTime = performance.now();
-
-            const tick = (time: number) => {
-                const t = Math.min(1, (time - startTime) / durationMs);
-                const eased = 1 - Math.pow(1 - t, 3); // easeOutCubic
-                this.angle = start + (targetAngle - start) * eased;
-
-                if (t < 1 && this.hovering) {
-                    requestAnimationFrame(tick);
-                } else {
-                    resolve();
-                }
-            };
-            requestAnimationFrame(tick);
-        });
+        await gsap.to(this, { angle: -tiltAngle, duration: 0.05, ease: "power1.out" });
+        await gsap.to(this, { angle: tiltAngle, duration: 0.05, ease: "power1.out" });
+        await gsap.to(this, { angle: 0, duration: 0.05, ease: "power1.out" });
     }
 
     //lift effect
@@ -253,45 +238,13 @@ export class Card extends Container {
         const targetBig = this.baseScale + 0.3;
         const targetSettle = this.baseScale + 0.2;
 
-        await this.tweenScale(targetBig, 100);
-        await this.tweenScale(targetSettle, 150);
-    }
-
-    private tweenScale(target: number, durationMs: number): Promise<void> {
-        return new Promise((resolve) => {
-            const start = this.scale.x;
-            const startTime = performance.now();
-
-            const tick = (time: number) => {
-                const t = Math.min(1, (time - startTime) / durationMs);
-                const eased = 1 - Math.pow(1 - t, 2.5); // easeOut
-                const val = start + (target - start) * eased;
-                this.scale.set(val);
-
-                if (t < 1 && this.hovering) {
-                    requestAnimationFrame(tick);
-                } else {
-                    resolve();
-                }
-            };
-            requestAnimationFrame(tick);
-        });
+        await gsap.to(this.scale, { x: targetBig, y: targetBig, duration: 0.1, ease: "power1.out" });
+        await gsap.to(this.scale, { x: targetSettle, y: targetSettle, duration: 0.15, ease: "power1.out" });
     }
 
     private resetScale() {
-        const start = this.scale.x;
-        const target = this.baseScale;
-        const startTime = performance.now();
-
-        const tick = (time: number) => {
-            const t = Math.min(1, (time - startTime) / 200);
-            const eased = t * (2 - t); // easeOutQuad
-            const val = start + (target - start) * eased;
-            this.scale.set(val);
-
-            if (t < 1 && !this.hovering) requestAnimationFrame(tick);
-        };
-        requestAnimationFrame(tick);
+        gsap.to(this.scale, { x: this.baseScale, y: this.baseScale, duration: 0.2, ease: "power2.out" });
+        gsap.to(this, { angle: 0, duration: 0.2, ease: "power2.out" }); // Also reset angle
     }
 
     // ========== UTILITY ==========

@@ -941,6 +941,23 @@
         },
         {
           "alias": [
+            "main/cards/opened-card-area.png",
+            "opened-card-area.png"
+          ],
+          "src": [
+            "main/cards/opened-card-area@0.5x.webp",
+            "main/cards/opened-card-area@0.5x.png",
+            "main/cards/opened-card-area.webp",
+            "main/cards/opened-card-area.png"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
             "main/history/crown_count.png",
             "crown_count.png"
           ],

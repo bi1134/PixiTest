@@ -1,5 +1,5 @@
 import { Container, Graphics } from "pixi.js";
-import { animate } from "motion";
+import { gsap } from "gsap";
 import { List } from "@pixi/ui";
 import { CardHistoryItem } from "../../../ui/CardHistoryItem";
 import { GuessAction } from "../types/GameTypes";
@@ -90,10 +90,10 @@ export class CardHistoryLayout extends Container {
         const popDuration = 0.3;
 
 
-        const animAlpha = animate(item, { alpha: 1 }, { duration: popDuration, ease: "linear" });
+        const animAlpha = gsap.to(item, { alpha: 1, duration: popDuration, ease: "linear" });
         item.trackAnimation(animAlpha as any);
 
-        const animScale = animate(item.scale, { x: finalScale, y: finalScale }, { duration: popDuration, ease: "backOut" });
+        const animScale = gsap.to(item.scale, { x: finalScale, y: finalScale, duration: popDuration, ease: "back.out" });
         item.trackAnimation(animScale as any);
 
         // "Fake Position" Slide In 
@@ -120,16 +120,12 @@ export class CardHistoryLayout extends Container {
 
             // Stop previous scroll animation if any to prevent fighting
             if (this.currentListScrollAnim) {
-                if (typeof this.currentListScrollAnim.cancel === "function") {
-                    this.currentListScrollAnim.cancel();
-                } else {
-                    this.currentListScrollAnim.stop();
-                }
+                this.currentListScrollAnim.kill();
                 this.currentListScrollAnim = null;
             }
 
             // Smoothly animate the List container to the new position
-            this.currentListScrollAnim = animate(this.list, { x: finalX }, { duration: 0.3, ease: "backOut" });
+            this.currentListScrollAnim = gsap.to(this.list, { x: finalX, duration: 0.3, ease: "back.out" });
         });
 
     }
@@ -137,11 +133,7 @@ export class CardHistoryLayout extends Container {
     public clearHistory() {
         // Stop global scroll animation immediately
         if (this.currentListScrollAnim) {
-            if (typeof this.currentListScrollAnim.cancel === "function") {
-                this.currentListScrollAnim.cancel();
-            } else {
-                this.currentListScrollAnim.stop();
-            }
+            this.currentListScrollAnim.kill();
             this.currentListScrollAnim = null;
         }
 

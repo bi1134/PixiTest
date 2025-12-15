@@ -1,5 +1,5 @@
 import { Container, Graphics } from "pixi.js";
-import { animate } from "motion";
+import { gsap } from "gsap";
 import { GameHistoryItem } from "./GameHistoryItem";
 
 export class GameHistoryContainer extends Container {
@@ -26,9 +26,6 @@ export class GameHistoryContainer extends Container {
     }
 
     public addResult(multiplier: number, isWin: boolean) {
-        // We could also pass the full object here if the container's method signature changed,
-        // but for now we construct it here or change the signature.
-        // Let's match the GameRoundResult interface, roughly.
         const item = new GameHistoryItem({
             multiplier,
             isWin,
@@ -37,61 +34,41 @@ export class GameHistoryContainer extends Container {
         });
 
         const padding = 10;
-        const itemWidth = 80; // Approximate
+        // Calculate item width to fit ~5-6 items
+        const itemWidth = this.background.width / 4;
+        const itemHeight = this.background.height * 0.8;
+
+        item.resize(itemWidth, itemHeight);
 
         // Start position (Offscreen Right)
         item.x = this.background.width + itemWidth;
         item.y = this.background.height / 2;
 
-        this.addChild(item);
+        // Add at index 2 (after Background and Mask) so it appears behind previous items
+        this.addChildAt(item, 2);
         this.historyItems.push(item);
 
-        // Calculate targets for ALL items (Pushing Left)
-        // Newest item goes to the Rightmost visible slot
-        // Actually, "push from right to left" usually means:
-        // [Oldest] <--- [Newer] <--- [Newest]
-        // So Newest enters at Right edge, pushes everything Left.
-
-        // Let's position them based on index from the right
-        // We need to re-calculate targetX for everyone.
-
-        // Logic: The list grows. The last item in array is right-most.
-        // Wait, CardHistoryLayout pushes them. 
-        // "Push from right to left" -> New items appear at Right, shifting previous items to Left.
-
-        // Let's just place the Newest at a specific "Entry" slot, 
-        // and if there was someone there, they move left.
-
-        // BUT, usually history is time based. 
-        // Let's say we align them from Right to Left.
-        // [Item N-2] [Item N-1] [Item N (New)] |
-
-        // Let's loop backwards to determine positions?
-        // Or just shift everyone by (ItemWidth + Gap)
-
-        const gap = 10;
+        // Overlap: Negative gap
+        const gap = -itemWidth * 0.15; // 15% overlap
         const shiftAmount = itemWidth + gap;
 
         // 1. Shift existing items Left
-        // We iterate backwards? No, all move left.
         for (const historyItem of this.historyItems) {
             if (historyItem === item) continue; // Skip new one for now
 
             historyItem.targetX -= shiftAmount;
-            animate(historyItem, { x: historyItem.targetX }, { duration: 0.3, ease: "backOut" });
+            // Use GSAP for speed control reference
+            gsap.to(historyItem, { x: historyItem.targetX, duration: 0.3, ease: "back.out" });
 
             // Cull items that go offscreen left
             if (historyItem.targetX < -itemWidth) {
-                // Determine removal later or now?
-                // Let's just hide/destroy if too far
-                if (historyItem.targetX < -500) { // Safety buffer
-                    // cleanup if needed
-                }
+                // cleanup if needed
+                if (historyItem.targetX < -500) { }
             }
         }
 
         // 2. Position New Item
-        // It enters at: Width - Padding - ItemWidth/2 (since anchor 0.5)
+        // It enters at: Width - Padding - ItemWidth/2
         const entryX = this.background.width - padding - (itemWidth / 2);
 
         item.targetX = entryX;
@@ -100,7 +77,7 @@ export class GameHistoryContainer extends Container {
         item.x = this.background.width + 100; // Start offscreen right
         item.alpha = 0;
 
-        // Animate In
-        animate(item, { x: item.targetX, alpha: 1 }, { duration: 0.3, ease: "backOut" });
+        // Animate In - GSAP
+        gsap.to(item, { x: item.targetX, alpha: 1, duration: 0.3, ease: "back.out" });
     }
 }

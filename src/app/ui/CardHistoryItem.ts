@@ -1,13 +1,7 @@
 import { Container, Graphics, Sprite } from "pixi.js";
 import { Label } from "../ui/Label";
 import { GuessAction } from "../screens/next/types/GameTypes";
-import { animate } from "motion";
-
-// interface for the object returned by animate()
-interface IAnimation {
-    stop: () => void;
-    finished: Promise<any>;
-}
+import { gsap } from "gsap";
 
 export class CardHistoryItem extends Container {
     private innerContainer: Container;
@@ -19,9 +13,6 @@ export class CardHistoryItem extends Container {
     private _rank!: string;
     private _suit!: string;
     private _action!: GuessAction;
-
-    // Track active animations so we can stop them on destroy
-    private activeAnimations: IAnimation[] = [];
 
     public get value(): string { return this._rank; }
     public get suit(): string { return this._suit; }
@@ -125,6 +116,9 @@ export class CardHistoryItem extends Container {
         return this.cardSprite.height * this.cardSprite.scale.y + this.multiplierBackground.height;
     }
 
+    // Track active animations so we can stop them on destroy
+    private activeAnimations: gsap.core.Tween[] = [];
+
     /**
      * Animates the entry of the card content (slide in from right/offset).
      * @param startOffset The X offset to start from (relative to 0)
@@ -135,19 +129,17 @@ export class CardHistoryItem extends Container {
         this.innerContainer.x = startOffset;
 
         // Animate to 0
-        const anim = animate(this.innerContainer, { x: 0 }, { duration: duration, ease: "backOut" });
-        this.trackAnimation(anim as any);
+        const anim = gsap.to(this.innerContainer, { x: 0, duration: duration, ease: "back.out" });
+        this.trackAnimation(anim);
     }
 
-    public trackAnimation(anim: IAnimation) {
+    public trackAnimation(anim: gsap.core.Tween) {
         this.activeAnimations.push(anim);
-        anim.finished.then(() => {
+        anim.then(() => {
             const index = this.activeAnimations.indexOf(anim);
             if (index > -1) {
                 this.activeAnimations.splice(index, 1);
             }
-        }).catch(() => {
-            // ignore errors
         });
     }
 
@@ -155,11 +147,7 @@ export class CardHistoryItem extends Container {
     public override destroy(options?: { children?: boolean; texture?: boolean; baseTexture?: boolean }) {
         // STOP ALL ANIMATIONS
         this.activeAnimations.forEach(anim => {
-            if (typeof (anim as any).cancel === "function") {
-                (anim as any).cancel();
-            } else {
-                anim.stop();
-            }
+            anim.kill();
         });
         this.activeAnimations = [];
 

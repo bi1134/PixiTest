@@ -1,4 +1,6 @@
-import { Container } from "pixi.js";
+import { Container, Ticker } from "pixi.js";
+import { FancyButton } from "@pixi/ui";
+import { gsap } from "gsap";
 import { engine } from "../../getEngine";
 import { ResultPopup } from "../../popups/ResultPopup";
 import { Button } from "../../ui/Button";
@@ -19,6 +21,7 @@ export class NextScreenMobile extends Container {
     private currentState: GameState = GameState.NonBetting;
 
     private settingsUI: SettingsUI;
+    private speedButton: FancyButton;
 
     constructor() {
         super();
@@ -31,6 +34,30 @@ export class NextScreenMobile extends Container {
 
         this.settingsUI = new SettingsUI();
         this.addChild(this.settingsUI);
+
+        this.speedButton = new FancyButton({
+            defaultView: "rounded-rectangle.png",
+            text: "Speed: 1x",
+            textStyle: {
+                fill: 0xffffff,
+                fontSize: 20,
+                fontWeight: "bold",
+            },
+            anchor: 0.5,
+        });
+
+        let speedIndex = 0;
+        const speeds = [1, 2, 5, 10];
+
+        this.speedButton.onPress.connect(() => {
+            speedIndex = (speedIndex + 1) % speeds.length;
+            const speed = speeds[speedIndex];
+            Ticker.shared.speed = speed;
+            gsap.globalTimeline.timeScale(speed);
+            this.speedButton.text = `Speed: ${speed}x`;
+        });
+
+        this.addChild(this.speedButton);
 
         // --- Setup Event Listeners ---
         this.setupEvents();
@@ -341,8 +368,15 @@ export class NextScreenMobile extends Container {
         const padding = width * 0.02;
 
         this.layout.resize(width, height, padding);
+        LayoutHelper.scaleToHeight(this.settingsUI, this.layout.betButton.height);
         LayoutHelper.setPositionX(this.settingsUI, width - this.settingsUI.width);
-        LayoutHelper.setPositionY(this.settingsUI, height - this.settingsUI.height - padding * 5);
+        LayoutHelper.setPositionY(this.settingsUI, this.layout.betButton.y - this.settingsUI.height / 2);
+
+        // Position Speed Button (Top Left)
+        if (this.speedButton) {
+            this.speedButton.x = this.speedButton.width / 2 + padding;
+            this.speedButton.y = this.speedButton.height / 2 + padding;
+        }
     }
 
     public async show(): Promise<void> {

@@ -6,7 +6,6 @@ import { Card } from "../../../ui/Card";
 import { LayoutHelper } from "../../../utils/LayoutHelper";
 import { ProfitLayout } from "./ProfitLayout";
 import { CardHistoryLayout } from "./CardHistoryLayout";
-import { style, text } from "motion/react-client";
 import { GameHistoryContainer } from "../../../ui/GameHistoryContainer";
 
 export class MobileLayout extends Container {
@@ -15,6 +14,7 @@ export class MobileLayout extends Container {
     public cardsContainer!: Container;
     public currentCard!: Card;
     public backCard!: Sprite;
+    public cardPlaceHolder!: Sprite;
     public upButton!: FancyButton;
     public downButton!: FancyButton;
     public titleHigh!: Label;
@@ -58,6 +58,9 @@ export class MobileLayout extends Container {
         this.backCard = Sprite.from("card-back.jpg");
         this.cardsContainer.addChild(this.backCard);
 
+        this.cardPlaceHolder = Sprite.from("opened-card-area.png");
+        this.cardsContainer.addChild(this.cardPlaceHolder);
+
         // --- create the buttons ---
         this.upButton = new FancyButton({ defaultView: "high.png" });
         this.downButton = new FancyButton({ defaultView: "low.png" });
@@ -78,7 +81,7 @@ export class MobileLayout extends Container {
         this.cardsContainer.addChild(this.fancySkipButton);
 
         // Bet Button (from Sidebar)
-        this.betButton = new Button({ text: "Bet", width: 150, height: 100 });
+        this.betButton = new Button({ text: "Bet", width: 150, height: 75 });
         this.fancyBoxContainer.addChild(this.betButton); // We'll position this dynamically
 
         // --- Create Subcomponents ---
@@ -159,7 +162,7 @@ export class MobileLayout extends Container {
         if (this.betButton.width !== footerBtnWidth) LayoutHelper.scaleToWidth(this.betButton, footerBtnWidth, true);
 
         this.betButton.x = width - footerBtnWidth - padding;
-        const footerY = height - this.betButton.height / 2 - padding * 2;
+        const footerY = height - this.betButton.height / 2 - padding * 6;
         this.betButton.y = footerY;
 
 
@@ -170,11 +173,15 @@ export class MobileLayout extends Container {
 
         // --- Available Space (Main Game Area) ---
         // Back Card
-        LayoutHelper.centerX(this.backCard, width);
+        LayoutHelper.setPositionX(this.backCard, (width - this.backCard.width) / 2 + padding * 13);
+        LayoutHelper.setPositionX(this.cardPlaceHolder, (width - this.cardPlaceHolder.width) / 2 - padding * 13);
 
-        this.backCard.scale.set(3);
-        this.currentCard.setBaseScale(3);
-        this.backCard.y = (this.backCard.height * this.backCard.scale.y) / 2 - padding * 25;
+
+        this.backCard.scale.set(2.5);
+        this.cardPlaceHolder.scale.set(2.5);
+        this.currentCard.setBaseScale(2.5);
+        this.backCard.y = (this.backCard.height * this.backCard.scale.y) / 2 - padding * 10;
+        this.cardPlaceHolder.y = this.backCard.y;
 
         this.currentCard.x = this.backCard.x + this.backCard.width / 2;
         this.currentCard.y = this.backCard.y + this.backCard.height / 2;
@@ -183,12 +190,12 @@ export class MobileLayout extends Container {
         this.upButton.scale.set(0.6);
         this.downButton.scale.set(0.6);
 
-        const btnY = this.backCard.y + (this.backCard.height * this.backCard.scale.y) / 2 - padding * 10;
+        const btnY = this.backCard.y + (this.backCard.height * this.backCard.scale.y) / 2 - padding * 5;
         this.upButton.y = btnY;
         this.downButton.y = btnY;
 
-        this.upButton.x = width / 2 - this.upButton.width - padding;
-        this.downButton.x = width / 2 + padding;
+        this.upButton.x = this.cardPlaceHolder.x + this.cardPlaceHolder.width / 2 - this.upButton.width / 2;
+        this.downButton.x = this.backCard.x + this.backCard.width / 2 - this.downButton.width / 2;
 
         this.highDes.x = this.upButton.x + this.upButton.width / 2;
         this.lowDes.x = this.downButton.x + this.downButton.width / 2;
@@ -209,19 +216,21 @@ export class MobileLayout extends Container {
         const containerW = width * 0.9;
         const innerWidth = containerW;
 
-        // --- 1. Money Label ---
-        // Calculate position relative to container (0,0)
+        // --- 1. History List ---
         let currentY = padding * 2; // Top padding
+        const inputBoxHeight = 125;
+        const historyHeight = inputBoxHeight * 1.5;
 
-        LayoutHelper.setPositionX(this.moneyLabel, innerWidth / 2);
-        this.moneyLabel.y = currentY;
+        this.cardHistoryLayout.resize(innerWidth * 0.95, historyHeight);
+        this.cardHistoryLayout.x = (innerWidth - innerWidth * 0.95) / 2;
+        this.cardHistoryLayout.y = currentY;
 
-        currentY += this.moneyLabel.height + padding; // Spacing after label
+        currentY += historyHeight + padding; // Spacing after history
 
         // --- 2. Input Box ---
         const inputW = innerWidth * 0.95;
         LayoutHelper.scaleToWidth(this.inputBox, inputW, false);
-        this.inputBox.height = 125;
+        this.inputBox.height = inputBoxHeight;
         this.inputBox.x = (innerWidth - inputW) / 2;
         this.inputBox.y = currentY;
 
@@ -238,14 +247,13 @@ export class MobileLayout extends Container {
 
         currentY += this.inputBox.height + padding; // Spacing after input
 
-        // --- 3. History List ---
-        const historyHeight = this.inputBox.height * 1.5;
+        // --- 3. Money Label ---
+        // Calculate position relative to container (0,0)
 
-        this.cardHistoryLayout.resize(innerWidth * 0.95, historyHeight);
-        this.cardHistoryLayout.x = (innerWidth - innerWidth * 0.95) / 2;
-        this.cardHistoryLayout.y = currentY;
+        LayoutHelper.setPositionX(this.moneyLabel, innerWidth / 2);
+        this.moneyLabel.y = currentY + padding;
 
-        currentY += historyHeight + padding; // Spacing after history (Bottom padding)
+        currentY += this.moneyLabel.height + padding; // Spacing after label (Bottom padding)
 
         // --- 4. Background ---
         // Resize background to fit the total calculated content height

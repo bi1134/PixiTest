@@ -5,7 +5,7 @@ import { GameRoundResult } from "../data/GameData";
 
 export class GameHistoryItem extends Container {
     private button: FancyButton;
-    private label: Label;
+    private textLabel: Label;
     public targetX: number = 0; // For animation reference
 
 
@@ -13,40 +13,38 @@ export class GameHistoryItem extends Container {
         super();
 
         // 1. Create the button (visual background)
-        // Using "select.png" or similar as placeholder, or a colored rect if assets unavailable.
-        // Assuming we want distinct looks for win/loss.
-        // For now, let's use a generic generic button style, colored by code if possible or just standard.
-        // Since user mentioned "fancy button", we use that.
+        const bgTexture = data.multiplier > 0 ? "UI-bg-chart-lv-5.png" : "UI-bg-chart-lv-4.png";
 
         this.button = new FancyButton({
-            defaultView: "rounded-rectangle.png", // specific asset or placeholder
+            defaultView: bgTexture,
             anchor: 0.5,
         });
-        this.label = new Label({
+        this.textLabel = new Label({
             text: `${data.multiplier}x`,
             style: {
                 fill: 0xffffff,
-                fontSize: 20,
-                fontWeight: "bold",
+                fontSize: 40,
+                fontWeight: "bold", // "Arial" is default in Label or can be overridden
+                fontFamily: "Arial",
             }
         });
 
-
-        // Tint based on result
-        if (data.isWin) {
-            this.button.defaultView.tint = 0x00ff00; // Green for win
-        } else {
-            this.button.defaultView.tint = 0xff0000; // Red for loss
-        }
-
         // Set dimensions if needed, or rely on asset
-        this.button.width = 80;
+        this.button.width = 100;
         this.button.height = 40;
 
         this.addChild(this.button);
+        this.addChild(this.textLabel);
+    }
 
-        this.label.x = this.button.x;
-        this.label.y = this.button.y;
-        this.addChild(this.label);
+    public resize(width: number, height: number) {
+        this.button.width = width;
+        this.button.height = height;
+
+        // Center text on the button
+        // Since button anchor is 0.5, (0,0) is the center.
+        this.textLabel.x = 0;
+        this.textLabel.y = 0;
+        this.textLabel.anchor.set(0.5);
     }
 }
