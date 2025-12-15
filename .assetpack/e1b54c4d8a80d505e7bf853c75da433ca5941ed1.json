@@ -6,8 +6,8 @@
             "inheritedMetaData": {},
             "transformData": {},
             "stats": {
-                "date": 1765356662222,
-                "duration": 59.13719999999739,
+                "date": 1765778757252,
+                "duration": 55.38609999977052,
                 "success": true
             }
         },
@@ -20,8 +20,8 @@
             "inheritedMetaData": {},
             "transformData": {},
             "stats": {
-                "date": 1764915510017,
-                "duration": 169.38349999999627,
+                "date": 1765778757254,
+                "duration": 55.06929999962449,
                 "success": true
             }
         },
@@ -5838,6 +5838,1623 @@
             },
             "transformData": {}
         },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/history": {
+            "isFolder": true,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1765778757254,
+                "duration": 55.044999999925494,
+                "success": true
+            }
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/history/crown_count.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1765778757254,
+                "duration": 310.9747000001371,
+                "success": true
+            },
+            "hash": "2xL_Cg"
+        },
+        ".assetpack/mipmap/main{m}/history/crown_count.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/crown_count.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/crown_count.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/crown_count.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/crown_count.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/crown_count.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/crown_count.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/crown_count.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/crown_count.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/crown_count.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/mipmap/main{m}/history/crown_count@0.5x.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/crown_count.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/crown_count@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/crown_count@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/crown_count@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/crown_count@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/crown_count@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/crown_count@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/crown_count@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/crown_count@0.5x.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/history/king-cry-icon.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1765778757301,
+                "duration": 781.1235999986529,
+                "success": true
+            },
+            "hash": "Xz5F9Q"
+        },
+        ".assetpack/mipmap/main{m}/history/king-cry-icon.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/king-cry-icon.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/king-cry-icon.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/king-cry-icon.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/king-cry-icon.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/king-cry-icon.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/king-cry-icon.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/king-cry-icon.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/king-cry-icon.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/king-cry-icon.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/mipmap/main{m}/history/king-cry-icon@0.5x.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/king-cry-icon.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/king-cry-icon@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/king-cry-icon@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/king-cry-icon@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/king-cry-icon@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/king-cry-icon@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/king-cry-icon@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/king-cry-icon@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/king-cry-icon@0.5x.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup": {
+            "isFolder": true,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1765778757914,
+                "duration": 0.07880000025033951,
+                "success": true
+            }
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/bg-history-popup.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1765778757914,
+                "duration": 855.0886000003666,
+                "success": true
+            },
+            "hash": "ICwroA"
+        },
+        ".assetpack/mipmap/main{m}/history/popup/bg-history-popup.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/bg-history-popup.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/bg-history-popup.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/bg-history-popup.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/bg-history-popup.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/bg-history-popup.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/bg-history-popup.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/bg-history-popup.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/bg-history-popup.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/bg-history-popup.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/mipmap/main{m}/history/popup/bg-history-popup@0.5x.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/bg-history-popup.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/bg-history-popup@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/bg-history-popup@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/bg-history-popup@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/bg-history-popup@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/bg-history-popup@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/bg-history-popup@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/bg-history-popup@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/bg-history-popup@0.5x.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/board": {
+            "isFolder": true,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1765778758252,
+                "duration": 0.05289999954402447,
+                "success": true
+            }
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/board/bomb_not_selected.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/board",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1765778758253,
+                "duration": 744.8233000002801,
+                "success": true
+            },
+            "hash": "iPx_XA"
+        },
+        ".assetpack/mipmap/main{m}/history/popup/board/bomb_not_selected.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/board/bomb_not_selected.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/board/bomb_not_selected.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/board/bomb_not_selected.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/board/bomb_not_selected.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/board/bomb_not_selected.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/board/bomb_not_selected.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/board/bomb_not_selected.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/board/bomb_not_selected.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/board/bomb_not_selected.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/mipmap/main{m}/history/popup/board/bomb_not_selected@0.5x.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/board/bomb_not_selected.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/board/bomb_not_selected@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/board/bomb_not_selected@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/board/bomb_not_selected@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/board/bomb_not_selected@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/board/bomb_not_selected@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/board/bomb_not_selected@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/board/bomb_not_selected@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/board/bomb_not_selected@0.5x.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/board/bomb_selected.png.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/board",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1765778758397,
+                "duration": 611.3408000003546,
+                "success": true
+            },
+            "hash": "kFXm"
+        },
+        ".assetpack/mipmap/main{m}/history/popup/board/bomb_selected.png.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/board/bomb_selected.png.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/board/bomb_selected.png.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/board/bomb_selected.png.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/board/bomb_selected.png.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/board/bomb_selected.png.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/board/bomb_selected.png.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/board/bomb_selected.png.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/board/bomb_selected.png.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/board/bomb_selected.png.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/mipmap/main{m}/history/popup/board/bomb_selected.png@0.5x.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/board/bomb_selected.png.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/board/bomb_selected.png@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/board/bomb_selected.png@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/board/bomb_selected.png@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/board/bomb_selected.png@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/board/bomb_selected.png@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/board/bomb_selected.png@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/board/bomb_selected.png@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/board/bomb_selected.png@0.5x.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/board/copy-icon.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/board",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1765778758563,
+                "duration": 430.51669999957085,
+                "success": true
+            },
+            "hash": "HLH0lA"
+        },
+        ".assetpack/mipmap/main{m}/history/popup/board/copy-icon.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/board/copy-icon.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/board/copy-icon.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/board/copy-icon.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/board/copy-icon.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/board/copy-icon.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/board/copy-icon.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/board/copy-icon.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/board/copy-icon.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/board/copy-icon.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/mipmap/main{m}/history/popup/board/copy-icon@0.5x.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/board/copy-icon.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/board/copy-icon@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/board/copy-icon@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/board/copy-icon@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/board/copy-icon@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/board/copy-icon@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/board/copy-icon@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/board/copy-icon@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/board/copy-icon@0.5x.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/board/crown_not_selected.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/board",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1765778758750,
+                "duration": 268.89499999955297,
+                "success": true
+            },
+            "hash": "bbVXGw"
+        },
+        ".assetpack/mipmap/main{m}/history/popup/board/crown_not_selected.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/board/crown_not_selected.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/board/crown_not_selected.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/board/crown_not_selected.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/board/crown_not_selected.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/board/crown_not_selected.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/board/crown_not_selected.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/board/crown_not_selected.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/board/crown_not_selected.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/board/crown_not_selected.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/mipmap/main{m}/history/popup/board/crown_not_selected@0.5x.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/board/crown_not_selected.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/board/crown_not_selected@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/board/crown_not_selected@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/board/crown_not_selected@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/board/crown_not_selected@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/board/crown_not_selected@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/board/crown_not_selected@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/board/crown_not_selected@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/board/crown_not_selected@0.5x.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/board/crown_selected.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/board",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1765778758769,
+                "duration": 274.86779999919236,
+                "success": true
+            },
+            "hash": "xCE1"
+        },
+        ".assetpack/mipmap/main{m}/history/popup/board/crown_selected.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/board/crown_selected.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/board/crown_selected.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/board/crown_selected.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/board/crown_selected.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/board/crown_selected.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/board/crown_selected.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/board/crown_selected.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/board/crown_selected.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/board/crown_selected.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/mipmap/main{m}/history/popup/board/crown_selected@0.5x.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/board/crown_selected.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/board/crown_selected@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/board/crown_selected@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/board/crown_selected@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/board/crown_selected@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/board/crown_selected@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/board/crown_selected@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/board/crown_selected@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/board/crown_selected@0.5x.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/next-button-off.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1765778758067,
+                "duration": 495.60500000044703,
+                "success": true
+            },
+            "hash": "nl1ldA"
+        },
+        ".assetpack/mipmap/main{m}/history/popup/next-button-off.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/next-button-off.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/next-button-off.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/next-button-off.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/next-button-off.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/next-button-off.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/next-button-off.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/next-button-off.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/next-button-off.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/next-button-off.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/mipmap/main{m}/history/popup/next-button-off@0.5x.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/next-button-off.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/next-button-off@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/next-button-off@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/next-button-off@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/next-button-off@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/next-button-off@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/next-button-off@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/next-button-off@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/next-button-off@0.5x.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/next-button-on.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1765778758082,
+                "duration": 667.2710000015795,
+                "success": true
+            },
+            "hash": "m7ZgNA"
+        },
+        ".assetpack/mipmap/main{m}/history/popup/next-button-on.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/next-button-on.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/next-button-on.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/next-button-on.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/next-button-on.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/next-button-on.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/next-button-on.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/next-button-on.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/next-button-on.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/next-button-on.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/mipmap/main{m}/history/popup/next-button-on@0.5x.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/next-button-on.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/next-button-on@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/next-button-on@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/next-button-on@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/next-button-on@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/next-button-on@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/next-button-on@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/next-button-on@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/next-button-on@0.5x.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/history/UI-bg-chart-lv-1.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1765778757309,
+                "duration": 450.2254000008106,
+                "success": true
+            },
+            "hash": "fqSYMg"
+        },
+        ".assetpack/mipmap/main{m}/history/UI-bg-chart-lv-1.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/UI-bg-chart-lv-1.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/UI-bg-chart-lv-1.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/UI-bg-chart-lv-1.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/UI-bg-chart-lv-1.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/UI-bg-chart-lv-1.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/UI-bg-chart-lv-1.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/UI-bg-chart-lv-1.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/UI-bg-chart-lv-1.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/UI-bg-chart-lv-1.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/mipmap/main{m}/history/UI-bg-chart-lv-1@0.5x.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/UI-bg-chart-lv-1.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/UI-bg-chart-lv-1@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/UI-bg-chart-lv-1@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/UI-bg-chart-lv-1@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/UI-bg-chart-lv-1@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/UI-bg-chart-lv-1@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/UI-bg-chart-lv-1@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/UI-bg-chart-lv-1@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/UI-bg-chart-lv-1@0.5x.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/history/UI-bg-chart-lv-2.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1765778757316,
+                "duration": 597.9103999994695,
+                "success": true
+            },
+            "hash": "6jJE6g"
+        },
+        ".assetpack/mipmap/main{m}/history/UI-bg-chart-lv-2.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/UI-bg-chart-lv-2.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/UI-bg-chart-lv-2.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/UI-bg-chart-lv-2.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/UI-bg-chart-lv-2.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/UI-bg-chart-lv-2.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/UI-bg-chart-lv-2.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/UI-bg-chart-lv-2.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/UI-bg-chart-lv-2.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/UI-bg-chart-lv-2.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/mipmap/main{m}/history/UI-bg-chart-lv-2@0.5x.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/UI-bg-chart-lv-2.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/UI-bg-chart-lv-2@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/UI-bg-chart-lv-2@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/UI-bg-chart-lv-2@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/UI-bg-chart-lv-2@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/UI-bg-chart-lv-2@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/UI-bg-chart-lv-2@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/UI-bg-chart-lv-2@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/UI-bg-chart-lv-2@0.5x.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/history/UI-bg-chart-lv-3.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1765778757322,
+                "duration": 745.1570000015199,
+                "success": true
+            },
+            "hash": "kLvb-g"
+        },
+        ".assetpack/mipmap/main{m}/history/UI-bg-chart-lv-3.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/UI-bg-chart-lv-3.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/UI-bg-chart-lv-3.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/UI-bg-chart-lv-3.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/UI-bg-chart-lv-3.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/UI-bg-chart-lv-3.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/UI-bg-chart-lv-3.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/UI-bg-chart-lv-3.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/UI-bg-chart-lv-3.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/UI-bg-chart-lv-3.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/mipmap/main{m}/history/UI-bg-chart-lv-3@0.5x.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/UI-bg-chart-lv-3.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/UI-bg-chart-lv-3@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/UI-bg-chart-lv-3@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/UI-bg-chart-lv-3@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/UI-bg-chart-lv-3@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/UI-bg-chart-lv-3@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/UI-bg-chart-lv-3@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/UI-bg-chart-lv-3@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/UI-bg-chart-lv-3@0.5x.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/history/UI-bg-chart-lv-4.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1765778757565,
+                "duration": 687.5691999997944,
+                "success": true
+            },
+            "hash": "9zd4ig"
+        },
+        ".assetpack/mipmap/main{m}/history/UI-bg-chart-lv-4.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/UI-bg-chart-lv-4.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/UI-bg-chart-lv-4.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/UI-bg-chart-lv-4.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/UI-bg-chart-lv-4.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/UI-bg-chart-lv-4.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/UI-bg-chart-lv-4.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/UI-bg-chart-lv-4.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/UI-bg-chart-lv-4.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/UI-bg-chart-lv-4.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/mipmap/main{m}/history/UI-bg-chart-lv-4@0.5x.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/UI-bg-chart-lv-4.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/UI-bg-chart-lv-4@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/UI-bg-chart-lv-4@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/UI-bg-chart-lv-4@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/UI-bg-chart-lv-4@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/UI-bg-chart-lv-4@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/UI-bg-chart-lv-4@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/UI-bg-chart-lv-4@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/UI-bg-chart-lv-4@0.5x.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/history/UI-bg-chart-lv-5.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1765778757759,
+                "duration": 638.2785000000149,
+                "success": true
+            },
+            "hash": "a3C5LA"
+        },
+        ".assetpack/mipmap/main{m}/history/UI-bg-chart-lv-5.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/UI-bg-chart-lv-5.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/UI-bg-chart-lv-5.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/UI-bg-chart-lv-5.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/UI-bg-chart-lv-5.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/UI-bg-chart-lv-5.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/UI-bg-chart-lv-5.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/UI-bg-chart-lv-5.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/UI-bg-chart-lv-5.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/UI-bg-chart-lv-5.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/mipmap/main{m}/history/UI-bg-chart-lv-5@0.5x.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/UI-bg-chart-lv-5.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/UI-bg-chart-lv-5@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/UI-bg-chart-lv-5@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/UI-bg-chart-lv-5@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/UI-bg-chart-lv-5@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/UI-bg-chart-lv-5@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/UI-bg-chart-lv-5@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/UI-bg-chart-lv-5@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/UI-bg-chart-lv-5@0.5x.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
         "E:/PixiJS/PixiTest/raw-assets/main{m}/logo-white.svg": {
             "isFolder": false,
             "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}",
@@ -6040,8 +7657,8 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1764915282983,
-                "duration": 327.69040000000314,
+                "date": 1765509660376,
+                "duration": 693.0507999999681,
                 "success": true
             }
         },
@@ -6143,6 +7760,28 @@
             },
             "transformData": {},
             "hash": "fUycdg"
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}/select.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true
+            },
+            "transformData": {},
+            "hash": "_kXi9w"
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}/select_open.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true
+            },
+            "transformData": {},
+            "hash": "tbyajw"
         },
         "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}/skip-icon.jpg": {
             "isFolder": false,
@@ -6465,8 +8104,8 @@
             "inheritedMetaData": {},
             "transformData": {},
             "stats": {
-                "date": 1765356662222,
-                "duration": 59.71290000004228,
+                "date": 1765446589440,
+                "duration": 0.32730000000447035,
                 "success": true
             }
         },
@@ -6884,6 +8523,111 @@
         "E:/PixiJS/PixiTest/public/assets/preload/Card1@0.5x.webp": {
             "isFolder": false,
             "transformParent": ".assetpack/compress/preload{m}/Card1@0.5x.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/raw-assets/preload{m}/exitButton.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/preload{m}",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1765446589440,
+                "duration": 18.48990000039339,
+                "success": true
+            },
+            "hash": "a5Z4vQ"
+        },
+        ".assetpack/mipmap/preload{m}/exitButton.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/preload{m}/exitButton.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/preload{m}/exitButton.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/preload{m}/exitButton.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/preload/exitButton.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/preload{m}/exitButton.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/preload{m}/exitButton.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/preload{m}/exitButton.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/preload/exitButton.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/preload{m}/exitButton.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/mipmap/preload{m}/exitButton@0.5x.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/preload{m}/exitButton.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/preload{m}/exitButton@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/preload{m}/exitButton@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/preload/exitButton@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/preload{m}/exitButton@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/preload{m}/exitButton@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/preload{m}/exitButton@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/preload/exitButton@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/preload{m}/exitButton@0.5x.webp",
             "metaData": {},
             "inheritedMetaData": {
                 "m": true

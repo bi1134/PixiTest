@@ -6,6 +6,8 @@ import { Card } from "../../../ui/Card";
 import { LayoutHelper } from "../../../utils/LayoutHelper";
 import { ProfitLayout } from "./ProfitLayout";
 import { CardHistoryLayout } from "./CardHistoryLayout";
+import { style, text } from "motion/react-client";
+import { GameHistoryContainer } from "../../../ui/GameHistoryContainer";
 
 export class MobileLayout extends Container {
     public fancyBoxContainer!: Container;
@@ -22,13 +24,18 @@ export class MobileLayout extends Container {
     public fancySkipButton!: FancyButton;
     public profitLayout!: ProfitLayout;
     public cardHistoryLayout!: CardHistoryLayout;
+    public gameHistory!: GameHistoryContainer;
 
     // Mobile specific additions (from Sidebar)
     public inputContainer!: Container;
     public inputContainerBg!: Graphics;
     public moneyLabel!: Label;
     public inputBox!: Input;
+    public inputDefaultValue: number = 0.02;
     public betButton!: FancyButton;
+
+    public halfValueButton: FancyButton;
+    public doubleValueButton: FancyButton;
 
     constructor(width: number, height: number) {
         super();
@@ -99,13 +106,31 @@ export class MobileLayout extends Container {
         const inputBg = Sprite.from("input.png"); // Reusing input asset
         this.inputBox = new Input({
             bg: inputBg,
-            placeholder: "0.02",
-            padding: 11,
+            placeholder: this.inputDefaultValue.toString(),
             textStyle: { fill: 'white' },
-            cleanOnFocus: true
+            cleanOnFocus: true,
+            align: "center"
+
         });
-        this.inputBox.value = "0.02";
+        this.inputBox.value = this.inputDefaultValue;
         this.inputContainer.addChild(this.inputBox); // Add to input container
+
+        this.halfValueButton = new FancyButton({
+            defaultView: "icon-settings.png",
+            text: "x1/2",
+            style: { fontFamily: "Arial", fontWeight: "bold", align: "center" }
+        });
+        this.inputContainer.addChild(this.halfValueButton);
+
+        this.doubleValueButton = new FancyButton({
+            defaultView: "icon-settings.png",
+            text: "x2",
+            style: { fontFamily: "Arial", fontWeight: "bold", align: "center" }
+        });
+        this.inputContainer.addChild(this.doubleValueButton);
+
+        this.gameHistory = new GameHistoryContainer(width, 70);
+        this.fancyBoxContainer.addChild(this.gameHistory);
     }
 
     public resize(width: number, height: number, padding: number) {
@@ -200,6 +225,17 @@ export class MobileLayout extends Container {
         this.inputBox.x = (innerWidth - inputW) / 2;
         this.inputBox.y = currentY;
 
+        //half button
+        LayoutHelper.scaleToHeight(this.halfValueButton, this.inputBox.height);
+
+        LayoutHelper.setPositionX(this.halfValueButton, this.inputBox.x);
+        this.halfValueButton.y = this.inputBox.y + this.inputBox.height / 2 - this.halfValueButton.height / 2;
+
+        //double button
+        LayoutHelper.scaleToHeight(this.doubleValueButton, this.inputBox.height);
+        LayoutHelper.setPositionX(this.doubleValueButton, this.inputBox.x + this.inputBox.width - this.doubleValueButton.width);
+        LayoutHelper.setPositionY(this.doubleValueButton, this.halfValueButton.y);
+
         currentY += this.inputBox.height + padding; // Spacing after input
 
         // --- 3. History List ---
@@ -226,5 +262,7 @@ export class MobileLayout extends Container {
         this.inputBox.visible = true;
         this.cardHistoryLayout.visible = true;
 
+        this.gameHistory.y = height - this.gameHistory.height;
+        this.gameHistory.x = 0;
     }
 }

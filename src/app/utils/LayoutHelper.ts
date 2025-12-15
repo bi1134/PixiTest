@@ -7,8 +7,12 @@ export class LayoutHelper {
         }
     }
 
-    public static centerY(element: any, containerHeight: number) {
-        element.y = containerHeight / 2 - element.height / 2;
+    public static centerY(element: any, containerHeight: number, padding: number = 0, condition: boolean = true) {
+        if (condition) {
+            element.y = containerHeight / 2 - element.height / 2 - padding;
+        } else {
+            element.y = containerHeight / 2;
+        }
     }
 
     public static placeBelow(target: any, reference: any, padding: number, condition: boolean = true) {
@@ -22,7 +26,7 @@ export class LayoutHelper {
         element.x = x;
     }
 
-public static setPositionY(element: any, y: number) {
+    public static setPositionY(element: any, y: number) {
         element.y = y;
     }
     public static scaleToWidth(element: any, width: number, maintainAspect = true) {
@@ -36,6 +40,20 @@ public static setPositionY(element: any, y: number) {
             element.scale.set(ratio);
         } else {
             element.width = width;
+        }
+    }
+
+    public static scaleToHeight(element: any, height: number, maintainAspect = true) {
+        if (maintainAspect) {
+            // Cache the original width the first time
+            if (!element._originalHeight) {
+                element._originalHeight = element.height;
+            }
+
+            const ratio = height / element._originalHeight;
+            element.scale.set(ratio);
+        } else {
+            element.width = height;
         }
     }
 }

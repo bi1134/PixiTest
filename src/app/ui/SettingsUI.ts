@@ -4,6 +4,7 @@ import { BitmapText, ColorMatrixFilter, Container, Sprite } from "pixi.js";
 import { engine } from "../getEngine";
 import { CustomSettingSwitcher, CustomSwitcherType } from "./CustomSettingSwitcher";
 import { LayoutHelper } from "../utils/LayoutHelper";
+import { UI } from "./Manager/UIManager";
 
 export class SettingsUI extends Container {
     private settingsSwitcher: Switcher;
@@ -60,7 +61,7 @@ export class SettingsUI extends Container {
         this.historyIcon.visible = false;
         this.historyIcon.onChange.connect(() => {
             this.settingsSwitcher.switch(0);
-            this.openHistoryPopup?.();
+            UI.showHistory();
         });
 
         // Audio Icon

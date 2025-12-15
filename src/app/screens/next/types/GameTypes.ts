@@ -1,6 +1,9 @@
 export enum GuessAction {
-    Higher = "Higher",
-    Lower = "Lower",
+    Higher = "Higher", // Strictly higher
+    Lower = "Lower",   // Strictly lower
+    Equal = "Equal",   // Strictly equal
+    HigherOrEqual = "HigherOrEqual",
+    LowerOrEqual = "LowerOrEqual",
     Skip = "Skip",
     Start = "Start",
 }

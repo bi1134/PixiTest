@@ -1,6 +1,5 @@
-import { animate } from "motion";
 import { BlurFilter, Container, Sprite, Texture, Graphics } from "pixi.js";
-
+import { gsap } from "gsap/gsap-core"; // Using GSAP directly
 import { engine } from "../getEngine";
 import { Button } from "../ui/Button";
 import { Label } from "../ui/Label";
@@ -9,6 +8,8 @@ import { RoundedBox } from "../ui/RoundedBox";
 /** Popup that shows up when gameplay is paused */
 export class ResultPopup extends Container {
 
+    /** The dark semi-transparent background covering current screen */
+    private bg: Sprite;
     /** Container for the popup UI components */
     private panel: Container;
     /** The popup title label */
@@ -22,6 +23,13 @@ export class ResultPopup extends Container {
     constructor() {
         super();
 
+        // 1. Background Overlay
+        this.bg = new Sprite(Texture.WHITE);
+        this.bg.tint = 0x000000;
+        this.bg.interactive = true; // Block clicks
+        this.bg.alpha = 0;
+        this.addChild(this.bg);
+
         this.panel = new Container();
         this.addChild(this.panel);
 
@@ -30,7 +38,7 @@ export class ResultPopup extends Container {
 
         this.title = new Label({
             text: "1.25x",
-            style: { fill: 0xec1561, fontSize: 50, fontFamily: "Arial" },
+            style: { fill: 0xec1561, fontSize: 120, fontFamily: "Arial" },
         });
         this.title.y = -80;
         this.panel.addChild(this.title);
@@ -62,14 +70,24 @@ export class ResultPopup extends Container {
 
     /** Resize the popup, fired whenever window size changes */
     public resize(width: number, height: number) {
+        // --- Resize BG ---
+        this.bg.width = width;
+        this.bg.height = height;
+
         // --- Center the panel ---
         this.panel.x = width * 0.5;
         this.panel.y = height * 0.5;
 
         const padding = 40;
+        const isMobile = width < height;
 
         // --- Resize main panel background ---
-        const panelWidth = width / 4;
+        // Mobile: 90% width, Desktop: 30% width
+        const panelWidth = isMobile ? width * 0.9 : width * 0.3;
+
+        // Ensure minimum width?
+        // panelWidth = Math.max(panelWidth, 300);
+
         this.panelBase.width = panelWidth;
 
         const panelHeight = this.panelBase.height;
@@ -78,6 +96,8 @@ export class ResultPopup extends Container {
 
         // Optionally scale text to fit section (if you want dynamic font size)
         this.title.scale.set((labelHeight - padding * 2) / this.title.height);
+        // Clamp scale
+        if (this.title.scale.x > 1) this.title.scale.set(1);
 
         // --- Multiplier label (top section) ---
         this.title.x = 0;
@@ -88,7 +108,12 @@ export class ResultPopup extends Container {
         this.resultBackground.width = resultWidth;
         this.resultBackground.height = resultHeight;
         this.resultBackground.x = -resultWidth / 2;
-        this.resultBackground.y = this.title.y + this.title.height - padding;
+        this.resultBackground.y = this.title.y + this.title.height - padding; // adjust slightly
+
+        // Adjust result background Y to be more bottom aligned? 
+        // Let's stick to previous relative logic but safer
+        this.resultBackground.y = this.panelBase.y + this.panelBase.height / 2 - resultHeight - 20;
+
 
         // --- Result label centered on result background ---
         this.resultLabel.x = this.resultBackground.x + this.resultBackground.width / 2;
@@ -103,20 +128,30 @@ export class ResultPopup extends Container {
             ];
         }
 
+        // Initial State
+        this.bg.alpha = 0;
         this.panel.scale.set(0.5);
-        this.panel.alpha = 0;
+        this.visible = true;
 
-        // Animate both alpha and scale at the same time
-        await Promise.all([
-            animate(this.panel, { alpha: 1 }, { duration: 0.3, ease: "linear" }),
-            animate(this.panel.scale, { x: 1, y: 1 }, { duration: 0.3, ease: "backOut" }),
-        ]);
+        // --- Background fade in ---
+        gsap.to(this.bg, {
+            alpha: 0.8,
+            duration: 0.2,
+            ease: "power2.out",
+        });
 
-        //wait 2 seconds
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-
-        // Hide the popup
-        await engine().navigation.dismissPopup();
+        // --- Panel "pop in" effect (Clash Royale style) ---
+        gsap.to(this.panel.scale, {
+            x: 1,
+            y: 1,
+            duration: 0.1,
+            ease: "back.out",
+        });
+        // wait 2 seconds (non-blocking for animation but blocking for hide?)
+        // If we want it to auto-hide:
+        setTimeout(() => {
+            this.hide().then(() => engine().navigation.dismissPopup());
+        }, 2000);
     }
 
     /** Dismiss the popup, animated */
@@ -126,11 +161,24 @@ export class ResultPopup extends Container {
             currentEngine.navigation.currentScreen.filters = [];
         }
 
-        // shrink & fade out together
-        await Promise.all([
-            animate(this.panel, { alpha: 0 }, { duration: 0.4, ease: "linear" }),
-            animate(this.panel.scale, { x: 0.5, y: 0.5 }, { duration: 0.4, ease: "circIn" }),
-        ]);
+        // --- Panel "pop out" / shrink away ---
+        await gsap.to(this.panel.scale, {
+            x: 0.5,
+            y: 0.5,
+            duration: 0.3,
+            ease: "back.in(1.7)",
+        });
+
+        // Parallel fade out
+        gsap.to(this.panel, { alpha: 0, duration: 0.2 });
+
+        // Fade out the background
+        await gsap.to(this.bg, {
+            alpha: 0,
+            duration: 0.2,
+        });
+
+        this.visible = false;
     }
 
 }
