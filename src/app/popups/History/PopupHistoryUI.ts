@@ -7,228 +7,227 @@ import { TopHistoryUI } from "./TopHistoryUI";
 import { engine } from "../../getEngine";
 
 export class PopupHistoryUI extends Container {
-    private closeBtn: FancyButton;
-    private title: BitmapText;
-    private bg: Sprite;
-    /** The dark semi-transparent background covering current screen */
-    private dimmer: Sprite;
-    /** Container for the popup UI components */
-    private panel: Container;
+  private closeBtn: FancyButton;
+  private title: BitmapText;
+  private bg: Sprite;
+  /** The dark semi-transparent background covering current screen */
+  private dimmer: Sprite;
+  /** Container for the popup UI components */
+  private panel: Container;
 
-    private topHistoryUI: TopHistoryUI;
+  private topHistoryUI: TopHistoryUI;
 
-    private popupItemsWrapper: PopupItemWrapper;
+  private popupItemsWrapper: PopupItemWrapper;
 
-    // Loading text
-    private loadingText: BitmapText;
+  // Loading text
+  private loadingText: BitmapText;
 
-    // No history container
-    private noHistoryContainer: Container;
-    private crySprite: Sprite;
-    private noHistoryText: BitmapText;
+  // No history container
+  private noHistoryContainer: Container;
+  private crySprite: Sprite;
+  private noHistoryText: BitmapText;
 
-    public onHistoryPopupClosed?: () => void;
+  public onHistoryPopupClosed?: () => void;
 
-    constructor() {
-        super();
+  constructor() {
+    super();
 
-        // Initialize dimmer first so it's behind everything
-        this.dimmer = new Sprite(Texture.WHITE);
-        this.dimmer.tint = 0x000000;
-        this.dimmer.alpha = 0;
-        this.dimmer.interactive = true; // Blocks clicks behind
-        this.addChild(this.dimmer);
+    // Initialize dimmer first so it's behind everything
+    this.dimmer = new Sprite(Texture.WHITE);
+    this.dimmer.tint = 0x000000;
+    this.dimmer.alpha = 0;
+    this.dimmer.interactive = true; // Blocks clicks behind
+    this.addChild(this.dimmer);
 
-        // All popup content goes into this panel for easier animation/centering
-        this.panel = new Container();
-        this.addChild(this.panel);
+    // All popup content goes into this panel for easier animation/centering
+    this.panel = new Container();
+    this.addChild(this.panel);
 
-        this.bg = Sprite.from('bg-history-popup.png');
+    this.bg = Sprite.from("bg-history-popup.png");
 
-        this.title = new BitmapText({
-            text: 'HISTORY',
-            anchor: 0.5,
-            style: {
-                fontFamily: 'coccm-bitmap-3-normal.fnt',
-                fontSize: 20,
-            }
-        });
-        this.title.position.set(
-            this.bg.width / 2,
-            this.title.height + this.title.height / 2
-        );
+    this.title = new BitmapText({
+      text: "HISTORY",
+      anchor: 0.5,
+      style: {
+        fontFamily: "coccm-bitmap-3-normal.fnt",
+        fontSize: 20,
+      },
+    });
+    this.title.position.set(
+      this.bg.width / 2,
+      this.title.height + this.title.height / 2,
+    );
 
-        this.closeBtn = new FancyButton({
-            anchor: 0.5,
-            defaultView: 'exitButton.png',
-            animations: buttonAnimation
-        });
-        this.closeBtn.onPress.connect(() => {
-            engine().navigation.dismissPopup();
-            this.onHistoryPopupClosed?.();
-        });
-        this.closeBtn.position.set(
-            this.bg.width - this.closeBtn.width / 2 - 10,
-            this.title.y
-        );
+    this.closeBtn = new FancyButton({
+      anchor: 0.5,
+      defaultView: "exitButton.png",
+      animations: buttonAnimation,
+    });
+    this.closeBtn.onPress.connect(() => {
+      engine().navigation.dismissPopup();
+      this.onHistoryPopupClosed?.();
+    });
+    this.closeBtn.position.set(
+      this.bg.width - this.closeBtn.width / 2 - 10,
+      this.title.y,
+    );
 
-        this.topHistoryUI = new TopHistoryUI();
-        this.topHistoryUI.position.set(
-            this.title.x,
-            this.title.y + this.title.height * 2 + 5
-        );
-        this.topHistoryUI.onDayOffsetChange = this.onDayOffsetChange.bind(this);
+    this.topHistoryUI = new TopHistoryUI();
+    this.topHistoryUI.position.set(
+      this.title.x,
+      this.title.y + this.title.height * 2 + 5,
+    );
+    this.topHistoryUI.onDayOffsetChange = this.onDayOffsetChange.bind(this);
 
-        this.popupItemsWrapper = new PopupItemWrapper();
-        this.popupItemsWrapper.onHistoryLoaded = this.onHistoryLoaded.bind(this);
+    this.popupItemsWrapper = new PopupItemWrapper();
+    this.popupItemsWrapper.onHistoryLoaded = this.onHistoryLoaded.bind(this);
 
-        //#region Initial content
-        this.popupItemsWrapper.position.set(
-            35,
-            this.topHistoryUI.y + this.topHistoryUI.height + 10
-        );
-        //#endregion
+    //#region Initial content
+    this.popupItemsWrapper.position.set(
+      35,
+      this.topHistoryUI.y + this.topHistoryUI.height + 10,
+    );
+    //#endregion
 
-        //#region  No history cotainer
-        this.crySprite = Sprite.from('king-cry-icon.png');
-        this.noHistoryText = new BitmapText({
-            text: 'BELUM ADA TRANSAKSI',
-            style: {
-                fontFamily: 'coccm-bitmap-3-normal.fnt',
-                fontSize: 20,
-                align: 'center'
-            }
-        });
-        this.crySprite.position.x = (this.noHistoryText.width - this.crySprite.width) / 2;
-        this.noHistoryText.position.y = this.crySprite.height + this.noHistoryText.height * 2;
+    //#region  No history cotainer
+    this.crySprite = Sprite.from("king-cry-icon.png");
+    this.noHistoryText = new BitmapText({
+      text: "BELUM ADA TRANSAKSI",
+      style: {
+        fontFamily: "coccm-bitmap-3-normal.fnt",
+        fontSize: 20,
+        align: "center",
+      },
+    });
+    this.crySprite.position.x =
+      (this.noHistoryText.width - this.crySprite.width) / 2;
+    this.noHistoryText.position.y =
+      this.crySprite.height + this.noHistoryText.height * 2;
 
-        this.noHistoryContainer = new Container();
-        this.noHistoryContainer.addChild(this.crySprite, this.noHistoryText);
-        this.noHistoryContainer.pivot.set(
-            this.noHistoryContainer.width / 2,
-            this.noHistoryContainer.height / 2
-        );
-        this.noHistoryContainer.position.set(
-            this.bg.width / 2,
-            this.bg.height / 2
-        );
+    this.noHistoryContainer = new Container();
+    this.noHistoryContainer.addChild(this.crySprite, this.noHistoryText);
+    this.noHistoryContainer.pivot.set(
+      this.noHistoryContainer.width / 2,
+      this.noHistoryContainer.height / 2,
+    );
+    this.noHistoryContainer.position.set(this.bg.width / 2, this.bg.height / 2);
 
-        //#region Loading text
-        this.loadingText = new BitmapText({
-            text: 'LOADING...',
-            anchor: 0.5,
-            style: {
-                fontFamily: 'coccm-bitmap-3-normal.fnt',
-                fontSize: 23,
-                align: 'center'
-            }
-        });
-        this.loadingText.position.set(this.bg.width / 2, this.bg.height / 2);
-        this.updateLoadingTextVisible(false);
-        //#endregion
+    //#region Loading text
+    this.loadingText = new BitmapText({
+      text: "LOADING...",
+      anchor: 0.5,
+      style: {
+        fontFamily: "coccm-bitmap-3-normal.fnt",
+        fontSize: 23,
+        align: "center",
+      },
+    });
+    this.loadingText.position.set(this.bg.width / 2, this.bg.height / 2);
+    this.updateLoadingTextVisible(false);
+    //#endregion
 
-        this.panel.addChild(
-            this.bg,
-            this.title,
-            this.closeBtn,
-            this.topHistoryUI,
-            this.popupItemsWrapper,
-            this.noHistoryContainer,
-            this.loadingText
-        );
+    this.panel.addChild(
+      this.bg,
+      this.title,
+      this.closeBtn,
+      this.topHistoryUI,
+      this.popupItemsWrapper,
+      this.noHistoryContainer,
+      this.loadingText,
+    );
 
-        // Pivot panel to center for scaling animations
-        this.panel.pivot.set(this.bg.width / 2, this.bg.height / 2);
+    // Pivot panel to center for scaling animations
+    this.panel.pivot.set(this.bg.width / 2, this.bg.height / 2);
 
+    this.visible = false;
+  }
+
+  private onHistoryLoaded(hasHistory: boolean) {
+    // Disable loading text
+    this.updateLoadingTextVisible(false);
+
+    this.noHistoryContainer.visible = !hasHistory;
+  }
+
+  private updateLoadingTextVisible(visible: boolean) {
+    this.loadingText.visible = visible;
+
+    if (visible) {
+      this.noHistoryContainer.visible = false;
+    }
+  }
+
+  private onDayOffsetChange(dayOffset: number) {
+    this.updateLoadingTextVisible(true);
+
+    this.popupItemsWrapper.initItems(dayOffset);
+  }
+
+  /** Resize the popup, fired whenever window size changes */
+  public resize(width: number, height: number) {
+    this.dimmer.width = width;
+    this.dimmer.height = height;
+
+    this.panel.x = width * 0.5;
+    this.panel.y = height * 0.5;
+  }
+
+  public async show() {
+    this.visible = true;
+    this.updateLoadingTextVisible(true);
+    this.popupItemsWrapper.initItems();
+
+    this.dimmer.alpha = 0;
+    this.panel.scale.set(0.5);
+    this.panel.alpha = 0;
+
+    // Dimmer fade in
+    gsap.to(this.dimmer, {
+      alpha: 0.8,
+      duration: 0.2,
+      ease: "power2.out",
+    });
+
+    // Panel pop in
+    await gsap.to(this.panel, {
+      alpha: 1,
+      duration: 0.1,
+      ease: "power2.out",
+    });
+
+    await gsap.to(this.panel.scale, {
+      x: 1,
+      y: 1,
+      duration: 0.3,
+      ease: "back.out",
+    });
+  }
+
+  public async hide() {
+    // Panel pop out
+    await gsap.to(this.panel.scale, {
+      x: 0.5,
+      y: 0.5,
+      duration: 0.2,
+      ease: "back.in",
+    });
+
+    gsap.to(this.panel, {
+      alpha: 0,
+      duration: 0.2,
+    });
+
+    // Dimmer fade out
+    await gsap.to(this.dimmer, {
+      alpha: 0,
+      duration: 0.2,
+      onComplete: () => {
         this.visible = false;
-    }
-
-    private onHistoryLoaded(hasHistory: boolean) {
-        // Disable loading text
+        this.popupItemsWrapper.close();
+        this.topHistoryUI.reset();
         this.updateLoadingTextVisible(false);
-
-        this.noHistoryContainer.visible = !hasHistory;
-    }
-
-    private updateLoadingTextVisible(visible: boolean) {
-        this.loadingText.visible = visible;
-
-        if (visible) {
-            this.noHistoryContainer.visible = false;
-        }
-    }
-
-    private onDayOffsetChange(dayOffset: number) {
-        this.updateLoadingTextVisible(true);
-
-        this.popupItemsWrapper.initItems(dayOffset);
-    }
-
-    /** Resize the popup, fired whenever window size changes */
-    public resize(width: number, height: number) {
-        this.dimmer.width = width;
-        this.dimmer.height = height;
-
-        this.panel.x = width * 0.5;
-        this.panel.y = height * 0.5;
-    }
-
-    public async show() {
-        this.visible = true;
-        this.updateLoadingTextVisible(true);
-        this.popupItemsWrapper.initItems();
-
-        this.dimmer.alpha = 0;
-        this.panel.scale.set(0.5);
-        this.panel.alpha = 0;
-
-        // Dimmer fade in
-        gsap.to(this.dimmer, {
-            alpha: 0.8,
-            duration: 0.2,
-            ease: "power2.out"
-        });
-
-        // Panel pop in
-        await gsap.to(this.panel, {
-            alpha: 1,
-            duration: 0.1,
-            ease: "power2.out"
-        });
-
-        await gsap.to(this.panel.scale, {
-            x: 1,
-            y: 1,
-            duration: 0.3,
-            ease: "back.out"
-        });
-    }
-
-    public async hide() {
-        // Panel pop out
-        await gsap.to(this.panel.scale, {
-            x: 0.5,
-            y: 0.5,
-            duration: 0.2,
-            ease: "back.in"
-        });
-
-        gsap.to(this.panel, {
-            alpha: 0,
-            duration: 0.2
-        });
-
-        // Dimmer fade out
-        await gsap.to(this.dimmer, {
-            alpha: 0,
-            duration: 0.2,
-            onComplete: () => {
-                this.visible = false;
-                this.popupItemsWrapper.close();
-                this.topHistoryUI.reset();
-                this.updateLoadingTextVisible(false);
-                this.noHistoryContainer.visible = false;
-            }
-        });
-    }
+        this.noHistoryContainer.visible = false;
+      },
+    });
+  }
 }

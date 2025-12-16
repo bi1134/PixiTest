@@ -4,11 +4,11 @@ import { assetpackPlugin } from "./scripts/assetpack-vite-plugin"; // keep your 
 
 export default defineConfig({
   plugins: [
-    mkcert(),           // Enables HTTPS for local dev (self-signed certificate)
-    assetpackPlugin(),  // Keeps PixiJS asset manifest generation
+    mkcert(), // Enables HTTPS for local dev (self-signed certificate)
+    assetpackPlugin(), // Keeps PixiJS asset manifest generation
   ],
   server: {
-    https: true,  // important! enables HTTPS dev server
+    https: true, // important! enables HTTPS dev server
     port: 8080,
     open: true,
   },

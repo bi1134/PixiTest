@@ -31,7 +31,7 @@ interface AppScreen extends Container {
 
 /** Interface for app screens constructors */
 interface AppScreenConstructor {
-  new(): AppScreen;
+  new (): AppScreen;
   /** List of assets bundles required by the screen */
   assetBundles?: string[];
 }
@@ -180,7 +180,7 @@ export class Navigation {
    */
   public async presentPopup<T extends AppScreen>(
     ctor: new () => T,
-    setup?: (popup: T) => void
+    setup?: (popup: T) => void,
   ) {
     if (this.currentScreen) {
       this.currentScreen.interactiveChildren = false;
@@ -199,7 +199,6 @@ export class Navigation {
     this.currentPopup = popup;
     await this.addAndShowScreen(popup);
   }
-
 
   /**
    * Dismiss current popup, if there is one

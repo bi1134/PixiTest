@@ -1,395 +1,334 @@
-import { Container, Ticker } from "pixi.js";
-import { FancyButton } from "@pixi/ui";
-import { gsap } from "gsap";
+import { Container } from "pixi.js";
+import { SpeedButton } from "../../ui/SpeedButton";
 import { engine } from "../../getEngine";
-import { ResultPopup } from "../../popups/ResultPopup";
-import { Button } from "../../ui/Button";
-import { CardSuit } from "../../ui/Card";
 import { MainScreen } from "../main/MainScreen";
 import { SettingsUI } from "../../ui/SettingsUI";
 import { MobileLayout } from "./layout/MobileLayout"; // Updated import
 import { GameState, GuessAction, GuessResult } from "./types/GameTypes";
 import { LayoutHelper } from "../../utils/LayoutHelper";
 import { UI } from "../../ui/Manager/UIManager";
+import { NextGameLogic } from "./logic/NextGameLogic";
 import { GameData } from "../../data/GameData";
+import { FireEffect } from "../../effects/FireEffect";
 
 export class NextScreenMobile extends Container {
-    public static assetBundles = ["main"];
+  public static assetBundles = ["main"];
 
-    public layout!: MobileLayout; // Renamed for clarity
+  public layout!: MobileLayout; // Renamed for clarity
 
-    private currentState: GameState = GameState.NonBetting;
+  private currentState: GameState = GameState.NonBetting;
 
-    private settingsUI: SettingsUI;
-    private speedButton: FancyButton;
+  private settingsUI: SettingsUI;
+  private speedButton: SpeedButton;
 
-    constructor() {
-        super();
+  private fireEffect: FireEffect;
 
-        const { width, height } = engine().renderer.screen;
+  constructor() {
+    super();
 
-        this.layout = new MobileLayout(width, height);
-        this.addChild(this.layout);
+    const { width, height } = engine().renderer.screen;
 
+    this.layout = new MobileLayout(width, height);
+    this.addChild(this.layout);
 
-        this.settingsUI = new SettingsUI();
-        this.addChild(this.settingsUI);
+    this.settingsUI = new SettingsUI();
+    this.addChild(this.settingsUI);
 
-        this.speedButton = new FancyButton({
-            defaultView: "rounded-rectangle.png",
-            text: "Speed: 1x",
-            textStyle: {
-                fill: 0xffffff,
-                fontSize: 20,
-                fontWeight: "bold",
-            },
-            anchor: 0.5,
-        });
+    this.speedButton = new SpeedButton({
+      defaultView: "rounded-rectangle.png",
+    });
 
-        let speedIndex = 0;
-        const speeds = [1, 2, 5, 10];
+    this.addChild(this.speedButton);
 
-        this.speedButton.onPress.connect(() => {
-            speedIndex = (speedIndex + 1) % speeds.length;
-            const speed = speeds[speedIndex];
-            Ticker.shared.speed = speed;
-            gsap.globalTimeline.timeScale(speed);
-            this.speedButton.text = `Speed: ${speed}x`;
-        });
+    // --- Setup Event Listeners ---
+    this.setupEvents();
 
-        this.addChild(this.speedButton);
+    this.layout.currentCard.RandomizeValue();
+    this.EnterBettingState();
 
-        // --- Setup Event Listeners ---
-        this.setupEvents();
+    this.resize(width, height);
 
-        this.layout.currentCard.RandomizeValue();
-        this.EnterBettingState();
+    // Sync initial UI
+    this.layout.moneyLabel.text = `Balance: $${GameData.instance.totalMoney.toFixed(2)}`;
 
-        this.resize(width, height);
+    this.fireEffect = new FireEffect();
+    //this.addChild(this.fireEffect);
+    this.fireEffect.setColors(["#5252daff", "rgba(239, 193, 193, 0.9)"]);
+    this.fireEffect.start();
+  }
 
-        // Sync initial UI
-        this.layout.moneyLabel.text = `Balance: $${GameData.instance.totalMoney.toFixed(2)}`;
+  private setupEvents() {
+    this.layout.inputBox.onEnter.connect(() => {
+      this.ValidateInput();
+    });
+
+    this.layout.upButton.onPress.connect(() => this.HigherButton());
+    this.layout.downButton.onPress.connect(() => this.LowerButton());
+    this.layout.fancySkipButton.onPress.connect(() => this.SkipButton());
+    this.layout.betButton.onPress.connect(() => {
+      if (this.betButtonIsCashOut()) {
+        this.CashOut();
+      } else {
+        this.EnterNonBettingState();
+      }
+    });
+
+    this.layout.halfValueButton.onPress.connect(() => this.HalfButton());
+    this.layout.doubleValueButton.onPress.connect(() => this.DoubleButton());
+  }
+
+  private betButtonIsCashOut(): boolean {
+    return this.layout.betButton.text === "Cash Out";
+  }
+
+  private HigherButton() {
+    const rank = this.layout.currentCard.rank;
+    const action = NextGameLogic.getHighAction(rank);
+    this.EvaluateGuess(action);
+  }
+
+  private LowerButton() {
+    const rank = this.layout.currentCard.rank;
+    const action = NextGameLogic.getLowAction(rank);
+    this.EvaluateGuess(action);
+  }
+
+  private SkipButton() {
+    this.EvaluateGuess(GuessAction.Skip);
+  }
+
+  private HalfButton() {
+    if (this.layout.inputBox.value <= this.layout.inputDefaultValue) {
+      this.layout.inputBox.value = 0;
+    } else {
+      this.layout.inputBox.value = this.layout.inputBox.value / 2;
+    }
+  }
+
+  private DoubleButton() {
+    this.layout.inputBox.value = this.layout.inputBox.value * 2;
+  }
+
+  // Helper to update UI labels based on current card
+  private updateButtonLabels() {
+    const rank = this.layout.currentCard.rank;
+    console.log(`[UpdateLabels] Rank: ${rank}`);
+
+    const labels = NextGameLogic.getLabelData(rank);
+
+    this.layout.titleHigh.text = labels.highTitle;
+    this.layout.highDes.text = labels.highDesc;
+
+    this.layout.titleLow.text = labels.lowTitle;
+    this.layout.lowDes.text = labels.lowDesc;
+  }
+
+  //#region guessing logic
+  private EvaluateGuess(action: GuessAction) {
+    const prevRank = this.layout.currentCard.rank;
+    const prevNumeric = this.layout.currentCard.GetNumericValue();
+
+    // --- Generate the next card ---
+    const nextCardData = NextGameLogic.generateNextCard();
+    const nextRank = nextCardData.rank;
+    const nextSuit = nextCardData.suit;
+    const nextNumeric = nextCardData.numeric;
+
+    // --- Evaluate the guess ---
+    const result = NextGameLogic.evaluateGuess(
+      prevNumeric,
+      nextNumeric,
+      action,
+    );
+
+    // Update card visual
+    this.layout.currentCard.SetValue(nextRank, nextSuit);
+
+    // Handle Result
+    if (result === GuessResult.Win) {
+      // Win Logic
+      this.enableButton(this.layout.betButton);
+      this.layout.betButton.text = "Cash Out";
+    } else if (result === GuessResult.Lose) {
+      // Loss Logic
+      const lostAmount = parseFloat(this.layout.inputBox.value) || 0.02;
+      GameData.instance.addRoundResult(0, false, lostAmount);
+      this.layout.gameHistory.addResult(0, false);
+      this.layout.moneyLabel.text = `Balance: $${GameData.instance.totalMoney.toFixed(2)}`;
+
+      this.EnterBettingState();
+    }
+    // Skip does nothing extra beyond setting card (already done)
+
+    // --- Add the NEW current card (after pressing button) to history ---
+    this.layout.cardHistoryLayout.addCardToHistory(
+      this.layout.currentCard.rank,
+      this.layout.currentCard.suit,
+      action,
+      8,
+      4,
+    );
+    this.updateButtonLabels();
+
+    console.log(
+      `Prev: ${prevRank}, Next: ${nextRank}, Guess: ${action}, Result: ${result}`,
+    );
+  }
+
+  private EnterNonBettingState() {
+    this.currentState = GameState.NonBetting;
+
+    console.log(this.layout.inputBox.value);
+
+    //clear card history
+    this.layout.cardHistoryLayout.clearHistory();
+
+    //prepare for new round
+    if (
+      !this.layout.cardsContainer.children.includes(this.layout.currentCard)
+    ) {
+      this.layout.cardsContainer.addChild(this.layout.currentCard);
     }
 
-    private setupEvents() {
-        this.layout.inputBox.onEnter.connect(() => {
-            this.ValidateInput();
-        });
-
-        this.layout.upButton.onPress.connect(() => this.HigherButton());
-        this.layout.downButton.onPress.connect(() => this.LowerButton());
-        this.layout.fancySkipButton.onPress.connect(() => this.SkipButton());
-        this.layout.betButton.onPress.connect(() => {
-            if (this.betButtonIsCashOut()) {
-                this.CashOut();
-            } else {
-                this.EnterNonBettingState();
-            }
-        });
-
-        this.layout.halfValueButton.onPress.connect(() => this.HalfButton());
-        this.layout.doubleValueButton.onPress.connect(() => this.DoubleButton());
+    // Reset Card?
+    // Show back of card
+    if (this.layout.currentCard.parent) {
+      this.layout.currentCard.parent.removeChild(this.layout.currentCard);
     }
 
-    private betButtonIsCashOut(): boolean {
-        return this.layout.betButton.text === "Cash Out";
+    // Re-add logic or ensure z-order
+    if (this.layout.currentCard.parent !== this.layout.cardsContainer) {
+      this.layout.cardsContainer.addChild(this.layout.currentCard);
     }
 
-    private HigherButton() {
-        const rank = this.layout.currentCard.rank;
-        if (rank === "A") {
-            // Ace: Button is "Higher" (Strict)
-            this.EvaluateGuess(GuessAction.Higher);
-        } else if (rank === "K") {
-            // King: Button is "Equal"
-            this.EvaluateGuess(GuessAction.Equal);
-        } else {
-            // Normal: Higher or Equal
-            this.EvaluateGuess(GuessAction.HigherOrEqual);
-        }
+    // --- randomize the starting card (rank + suit) ---
+    this.layout.currentCard.RandomizeValue();
+    this.updateButtonLabels();
+
+    this.layout.cardHistoryLayout.addCardToHistory(
+      this.layout.currentCard.rank,
+      this.layout.currentCard.suit,
+      GuessAction.Start,
+      8,
+      4,
+    );
+
+    //input and buttons
+    this.layout.inputBox.interactive = false;
+    this.layout.betButton.text = "Cash Out";
+    this.disableButton(this.layout.betButton); // Cannot cash out immediately on start
+    this.disableButton(this.layout.halfValueButton);
+    this.disableButton(this.layout.doubleValueButton);
+
+    this.enableButton(this.layout.upButton);
+    this.enableButton(this.layout.downButton);
+    this.enableButton(this.layout.fancySkipButton);
+
+    console.log("Entered Non Betting State");
+  }
+
+  private EnterBettingState() {
+    this.currentState = GameState.Betting;
+
+    // Enable input again for new round
+    this.layout.inputBox.interactive = true;
+    this.layout.betButton.text = "Bet";
+    this.enableButton(this.layout.betButton);
+    this.enableButton(this.layout.halfValueButton);
+    this.enableButton(this.layout.doubleValueButton);
+
+    this.disableButton(this.layout.upButton);
+    this.disableButton(this.layout.downButton);
+    this.disableButton(this.layout.fancySkipButton);
+
+    this.updateButtonLabels();
+
+    console.log("Entered Betting State");
+  }
+
+  //#endregion
+
+  private CashOut() {
+    const multiplier = 6.5; // example
+    const base = parseFloat(this.layout.inputBox.value) || 0.02;
+
+    UI.showResult(multiplier, base);
+
+    // Show back of card
+    if (this.layout.currentCard.parent) {
+      this.layout.currentCard.parent.removeChild(this.layout.currentCard);
     }
 
-    private LowerButton() {
-        const rank = this.layout.currentCard.rank;
-        if (rank === "A") {
-            // Ace: Button is "Equal"
-            this.EvaluateGuess(GuessAction.Equal);
-        } else if (rank === "K") {
-            // King: Button is "Lower" (Strict)
-            this.EvaluateGuess(GuessAction.Lower);
-        } else {
-            // Normal: Lower or Equal
-            this.EvaluateGuess(GuessAction.LowerOrEqual);
-        }
+    const betAmount = parseFloat(this.layout.inputBox.value) || 0.02;
+    GameData.instance.addRoundResult(multiplier, true, betAmount);
+    this.layout.gameHistory.addResult(multiplier, true);
+    this.layout.moneyLabel.text = `Balance: $${GameData.instance.totalMoney.toFixed(2)}`;
+
+    this.EnterBettingState();
+  }
+
+  private ValidateInput() {
+    const val = parseFloat(this.layout.inputBox.value);
+
+    // reset invalid or below-zero values
+    if (isNaN(val) || val <= 0) {
+      this.layout.inputBox.value = "0.02";
+      return;
     }
 
-    private SkipButton() {
-        this.EvaluateGuess(GuessAction.Skip);
+    // optionally clamp decimals
+    this.layout.inputBox.value = val.toFixed(2);
+  }
+
+  public prepare() {}
+
+  public reset() {}
+
+  public resize(width: number, height: number) {
+    // Mobile layout takes full screen
+    const padding = width * 0.02;
+
+    this.layout.resize(width, height, padding);
+    LayoutHelper.scaleToHeight(this.settingsUI, this.layout.betButton.height);
+    LayoutHelper.setPositionX(this.settingsUI, width - this.settingsUI.width);
+    LayoutHelper.setPositionY(
+      this.settingsUI,
+      this.layout.betButton.y - this.settingsUI.height / 2,
+    );
+
+    // Position Speed Button (Top Left)
+    if (this.speedButton) {
+      this.speedButton.width = this.settingsUI.width * 0.75;
+      this.speedButton.height = this.settingsUI.height * 0.75;
+      LayoutHelper.setPositionX(
+        this.speedButton,
+        this.layout.betButton.x - this.speedButton.width * 2,
+      );
+      LayoutHelper.setPositionY(
+        this.speedButton,
+        this.layout.betButton.y - this.speedButton.height / 4,
+      );
     }
 
-    private HalfButton() {
-        if (this.layout.inputBox.value <= this.layout.inputDefaultValue) {
-            this.layout.inputBox.value = 0;
-        }
-        else {
-            this.layout.inputBox.value = this.layout.inputBox.value / 2;
-        }
+    if (this.fireEffect) {
+      this.fireEffect.x = width / 2;
+      this.fireEffect.y = height / 2;
+      this.fireEffect.intensity = 1;
+      this.fireEffect.setColors(["#5252daff", "#00000000"]);
     }
+  }
 
-    private DoubleButton() {
-        this.layout.inputBox.value = this.layout.inputBox.value * 2;
-    }
+  public async show(): Promise<void> {
+    engine().audio.bgm.play("main/sounds/bgm-main.mp3", { volume: 0.5 });
+  }
 
-    // Helper to update UI labels based on current card
-    private updateButtonLabels() {
-        const rank = this.layout.currentCard.rank;
-        console.log(`[UpdateLabels] Rank: ${rank}`);
+  private disableButton(button: any) {
+    button.interactive = false;
+    button.alpha = 0.5;
+  }
 
-        if (rank === "A") { // Ace
-            this.layout.titleHigh.text = "Hi";
-            this.layout.highDes.text = "Higher";
-
-            this.layout.titleLow.text = "Eq";
-            this.layout.lowDes.text = "Equal";
-        } else if (rank === "K") { // King
-            this.layout.titleHigh.text = "Eq";
-            this.layout.highDes.text = "Equal";
-
-            this.layout.titleLow.text = "Lo";
-            this.layout.lowDes.text = "Lower";
-        } else { // Normal
-            this.layout.titleHigh.text = "Hi";
-            this.layout.highDes.text = "Higher or equal";
-
-            this.layout.titleLow.text = "Lo";
-            this.layout.lowDes.text = "Lower or equal";
-        }
-    }
-
-
-
-    //#region guessing logic
-    private EvaluateGuess(action: GuessAction) {
-        const prevRank = this.layout.currentCard.rank;
-        const prevNumeric = this.layout.currentCard.GetNumericValue();
-
-        // --- Generate the next card ---
-        const ranks = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
-        const suits: CardSuit[] = ["spade", "heart", "club", "diamond"];
-
-        const nextRank = ranks[Math.floor(Math.random() * ranks.length)];
-        const nextSuit = suits[Math.floor(Math.random() * suits.length)];
-        const nextNumeric = ranks.indexOf(nextRank);
-
-        let result: GuessResult = GuessResult.Lose;
-
-        // Common loss handling logic
-        const processLoss = () => {
-            result = GuessResult.Lose;
-            this.layout.currentCard.SetValue(nextRank, nextSuit);
-
-            const lostAmount = parseFloat(this.layout.inputBox.value) || 0.02;
-            GameData.instance.addRoundResult(0, false, lostAmount);
-            this.layout.gameHistory.addResult(0, false);
-            this.layout.moneyLabel.text = `Balance: $${GameData.instance.totalMoney.toFixed(2)}`;
-
-            this.EnterBettingState();
-        };
-
-        // --- Evaluate the guess ---
-        switch (action) {
-            case GuessAction.Skip:
-                result = GuessResult.Skip;
-                this.layout.currentCard.SetValue(nextRank, nextSuit);
-                break;
-
-            case GuessAction.Higher: // Strict >
-                if (nextNumeric > prevNumeric) {
-                    result = GuessResult.Win;
-                    this.layout.currentCard.SetValue(nextRank, nextSuit);
-                } else {
-                    processLoss();
-                }
-                break;
-
-            case GuessAction.Lower: // Strict <
-                if (nextNumeric < prevNumeric) {
-                    result = GuessResult.Win;
-                    this.layout.currentCard.SetValue(nextRank, nextSuit);
-                } else {
-                    processLoss();
-                }
-                break;
-
-            case GuessAction.Equal: // Strict ==
-                if (nextNumeric === prevNumeric) {
-                    result = GuessResult.Win;
-                    this.layout.currentCard.SetValue(nextRank, nextSuit);
-                } else {
-                    processLoss();
-                }
-                break;
-
-            case GuessAction.HigherOrEqual: // Inclusive >=
-                if (nextNumeric >= prevNumeric) {
-                    result = GuessResult.Win;
-                    this.layout.currentCard.SetValue(nextRank, nextSuit);
-                } else {
-                    processLoss();
-                }
-                break;
-
-            case GuessAction.LowerOrEqual: // Inclusive <=
-                if (nextNumeric <= prevNumeric) {
-                    result = GuessResult.Win;
-                    this.layout.currentCard.SetValue(nextRank, nextSuit);
-                } else {
-                    processLoss();
-                }
-                break;
-        }
-
-        // if win then can cash out now
-        if (result === GuessResult.Win) {
-            this.enableButton(this.layout.betButton);
-            this.layout.betButton.text = "Cash Out";
-        }
-        // --- Add the NEW current card (after pressing button) to history ---
-        this.layout.cardHistoryLayout.addCardToHistory(this.layout.currentCard.rank, this.layout.currentCard.suit, action, 8, 4);
-        this.updateButtonLabels();
-
-        console.log(`Prev: ${prevRank}, Next: ${nextRank}, Guess: ${action}, Result: ${result}`);
-    }
-
-    private EnterNonBettingState() {
-        this.currentState = GameState.NonBetting;
-
-        console.log(this.layout.inputBox.value);
-
-        //clear card history
-        this.layout.cardHistoryLayout.clearHistory();
-
-        //prepare for new round
-        if (!this.layout.cardsContainer.children.includes(this.layout.currentCard)) {
-            this.layout.cardsContainer.addChild(this.layout.currentCard);
-        }
-
-        // Reset Card?
-        // Show back of card
-        if (this.layout.currentCard.parent) {
-            this.layout.currentCard.parent.removeChild(this.layout.currentCard);
-        }
-
-        // Re-add logic or ensure z-order
-        if (this.layout.currentCard.parent !== this.layout.cardsContainer) {
-            this.layout.cardsContainer.addChild(this.layout.currentCard);
-        }
-
-
-        // --- randomize the starting card (rank + suit) ---
-        this.layout.currentCard.RandomizeValue();
-        this.updateButtonLabels();
-
-        this.layout.cardHistoryLayout.addCardToHistory(this.layout.currentCard.rank, this.layout.currentCard.suit, GuessAction.Start, 8, 4);
-
-        //input and buttons
-        this.layout.inputBox.interactive = false;
-        this.layout.betButton.text = "Cash Out";
-        this.disableButton(this.layout.betButton); // Cannot cash out immediately on start
-        this.disableButton(this.layout.halfValueButton);
-        this.disableButton(this.layout.doubleValueButton);
-
-        this.enableButton(this.layout.upButton);
-        this.enableButton(this.layout.downButton);
-        this.enableButton(this.layout.fancySkipButton);
-
-        console.log("Entered Non Betting State");
-    }
-
-    private EnterBettingState() {
-        this.currentState = GameState.Betting;
-
-        // Enable input again for new round
-        this.layout.inputBox.interactive = true;
-        this.layout.betButton.text = "Bet";
-        this.enableButton(this.layout.betButton);
-        this.enableButton(this.layout.halfValueButton);
-        this.enableButton(this.layout.doubleValueButton);
-
-        this.disableButton(this.layout.upButton);
-        this.disableButton(this.layout.downButton);
-        this.disableButton(this.layout.fancySkipButton);
-
-        this.updateButtonLabels();
-
-        console.log("Entered Betting State");
-    }
-
-    //#endregion
-
-    private CashOut() {
-        const multiplier = 6.5; // example
-        const base = parseFloat(this.layout.inputBox.value) || 0.02;
-
-        UI.showResult(multiplier, base);
-
-        // Show back of card
-        if (this.layout.currentCard.parent) {
-            this.layout.currentCard.parent.removeChild(this.layout.currentCard);
-        }
-
-        const betAmount = parseFloat(this.layout.inputBox.value) || 0.02;
-        GameData.instance.addRoundResult(multiplier, true, betAmount);
-        this.layout.gameHistory.addResult(multiplier, true);
-        this.layout.moneyLabel.text = `Balance: $${GameData.instance.totalMoney.toFixed(2)}`;
-
-        this.EnterBettingState();
-    }
-
-    private ValidateInput() {
-        let val = parseFloat(this.layout.inputBox.value);
-
-        // reset invalid or below-zero values
-        if (isNaN(val) || val <= 0) {
-            this.layout.inputBox.value = "0.02";
-            return;
-        }
-
-        // optionally clamp decimals
-        this.layout.inputBox.value = val.toFixed(2);
-    }
-
-    public prepare() { }
-
-    public reset() { }
-
-    public resize(width: number, height: number) {
-        // Mobile layout takes full screen
-        const padding = width * 0.02;
-
-        this.layout.resize(width, height, padding);
-        LayoutHelper.scaleToHeight(this.settingsUI, this.layout.betButton.height);
-        LayoutHelper.setPositionX(this.settingsUI, width - this.settingsUI.width);
-        LayoutHelper.setPositionY(this.settingsUI, this.layout.betButton.y - this.settingsUI.height / 2);
-
-        // Position Speed Button (Top Left)
-        if (this.speedButton) {
-            this.speedButton.x = this.speedButton.width / 2 + padding;
-            this.speedButton.y = this.speedButton.height / 2 + padding;
-        }
-    }
-
-    public async show(): Promise<void> {
-        engine().audio.bgm.play("main/sounds/bgm-main.mp3", { volume: 0.5 });
-    }
-
-    private disableButton(button: any) {
-        button.interactive = false;
-        button.alpha = 0.5;
-    }
-
-    private enableButton(button: any) {
-        button.interactive = true;
-        button.alpha = 1;
-    }
+  private enableButton(button: any) {
+    button.interactive = true;
+    button.alpha = 1;
+  }
 }

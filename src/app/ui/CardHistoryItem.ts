@@ -4,171 +4,198 @@ import { GuessAction } from "../screens/next/types/GameTypes";
 import { gsap } from "gsap";
 
 export class CardHistoryItem extends Container {
-    private innerContainer: Container;
-    private cardSprite!: Sprite;
-    private actionSprite!: Sprite;
-    private multiplierTextLabel!: Label;
-    private multiplierBackground!: Graphics;
+  private innerContainer: Container;
+  private cardSprite!: Sprite;
+  private actionSprite!: Sprite;
+  private multiplierTextLabel!: Label;
+  private multiplierBackground!: Graphics;
 
-    private _rank!: string;
-    private _suit!: string;
-    private _action!: GuessAction;
+  private _rank!: string;
+  private _suit!: string;
+  private _action!: GuessAction;
 
-    public get value(): string { return this._rank; }
-    public get suit(): string { return this._suit; }
-    public get action(): GuessAction { return this._action; }
+  public get value(): string {
+    return this._rank;
+  }
+  public get suit(): string {
+    return this._suit;
+  }
+  public get action(): GuessAction {
+    return this._action;
+  }
 
-    // public targetX: number = 0; // Removed: Handled by PixiUI List
+  // public targetX: number = 0; // Removed: Handled by PixiUI List
 
-    constructor(rank: string, suit: string, action: GuessAction) {
-        super();
+  constructor(rank: string, suit: string, action: GuessAction) {
+    super();
 
-        // Create inner container for local animations (like "fake position" slide-in)
-        // independent of the parent Layout/List positioning.
-        this.innerContainer = new Container();
-        this.addChild(this.innerContainer);
+    // Create inner container for local animations (like "fake position" slide-in)
+    // independent of the parent Layout/List positioning.
+    this.innerContainer = new Container();
+    this.addChild(this.innerContainer);
 
-        this.Setup(rank, suit, action);
+    this.Setup(rank, suit, action);
+  }
+
+  private Setup(rank: string, suit: string, action: GuessAction) {
+    // Clear previous if reusing
+    this.innerContainer.removeChildren();
+
+    this._rank = rank;
+    this._suit = suit;
+    this._action = action;
+
+    // --- card sprite ---
+    const textureName = `${this._suit}-card-${this._rank.toLowerCase()}.jpg`;
+    this.cardSprite = Sprite.from(`${textureName}`);
+    this.innerContainer.addChild(this.cardSprite);
+
+    // --- action sprite ---
+    const actionTexture = this.ActionToIcon(this._action);
+    this.actionSprite = Sprite.from(actionTexture);
+    this.innerContainer.addChild(this.actionSprite);
+
+    // --- multiplier background (below card) ---
+    this.multiplierBackground = new Graphics()
+      .rect(0, 0, this.cardSprite.width, 25)
+      .fill("#653838ff");
+    this.innerContainer.addChild(this.multiplierBackground);
+
+    this.multiplierTextLabel = new Label({
+      text: "x1.5",
+      style: {
+        fill: "#ffffff",
+        fontSize: 18,
+        fontWeight: "bold",
+        align: "center",
+      },
+    });
+    this.innerContainer.addChild(this.multiplierTextLabel);
+  }
+
+  //guess enum to icon texture name
+  private ActionToIcon(action: GuessAction): string {
+    switch (action) {
+      case GuessAction.Higher:
+      case GuessAction.HigherOrEqual:
+        return "higher-icon.jpg";
+
+      case GuessAction.Lower:
+      case GuessAction.LowerOrEqual:
+        return "lower-icon.jpg";
+
+      case GuessAction.Equal:
+        return "skip-icon.jpg"; // Placeholder for specific Equal icon
+
+      case GuessAction.Skip:
+        return "skip-icon.jpg";
+      case GuessAction.Start:
+        return "transparent.png";
+      default:
+        return "blank-icon.jpg"; // fallback (optional)
     }
+  }
 
-    private Setup(rank: string, suit: string, action: GuessAction) {
-        // Clear previous if reusing
-        this.innerContainer.removeChildren();
+  /** Resize this item so it fits the history background height minus padding */
+  public ResizeToFit(maxHeight: number, padding: number) {
+    // --- Layout internal parts relative to this item’s origin ---
+    this.multiplierBackground.width = this.cardSprite.width;
+    this.multiplierBackground.height = this.cardSprite.height * 0.2;
+    this.multiplierBackground.x =
+      this.cardSprite.width / 2 - this.multiplierBackground.width / 2;
+    this.multiplierBackground.y = this.cardSprite.height + padding;
 
-        this._rank = rank;
-        this._suit = suit;
-        this._action = action;
+    this.actionSprite.x = this.cardSprite.x - this.actionSprite.width / 1.33;
+    this.actionSprite.y =
+      this.cardSprite.height / 2 - this.actionSprite.height / 2;
 
-        // --- card sprite ---
-        const textureName = `${this._suit}-card-${this._rank.toLowerCase()}.jpg`;
-        this.cardSprite = Sprite.from(`${textureName}`);
-        this.innerContainer.addChild(this.cardSprite);
+    this.multiplierTextLabel.x =
+      this.multiplierBackground.x +
+      this.multiplierTextLabel.width / 2 +
+      padding / 2;
+    this.multiplierTextLabel.y =
+      this.multiplierBackground.y + this.multiplierBackground.height / 2;
 
-        // --- action sprite ---
-        const actionTexture = this.ActionToIcon(this._action);
-        this.actionSprite = Sprite.from(actionTexture);
-        this.innerContainer.addChild(this.actionSprite);
+    // --- Scale whole thing to fit background height ---
+    const totalHeight =
+      this.cardSprite.height + this.multiplierBackground.height + padding * 2;
+    const scale = (maxHeight - padding) / totalHeight;
+    this.scale.set(scale);
+  }
 
-        // --- multiplier background (below card) ---
-        this.multiplierBackground = new Graphics()
-            .rect(0, 0, this.cardSprite.width, 25)
-            .fill("#653838ff");
-        this.innerContainer.addChild(this.multiplierBackground);
+  // --- expose scaled width & height ---
+  public get widthScaled(): number {
+    return this.cardSprite.width * this.cardSprite.scale.x;
+  }
 
-        this.multiplierTextLabel = new Label({
-            text: "x1.5",
-            style: {
-                fill: "#ffffff",
-                fontSize: 18,
-                fontWeight: "bold",
-                align: "center",
-            },
-        });
-        this.innerContainer.addChild(this.multiplierTextLabel);
-    }
+  public get heightScaled(): number {
+    return (
+      this.cardSprite.height * this.cardSprite.scale.y +
+      this.multiplierBackground.height
+    );
+  }
 
-    //guess enum to icon texture name
-    private ActionToIcon(action: GuessAction): string {
-        switch (action) {
-            case GuessAction.Higher:
-            case GuessAction.HigherOrEqual:
-                return "higher-icon.jpg";
+  // Track active animations so we can stop them on destroy
+  private activeAnimations: gsap.core.Tween[] = [];
 
-            case GuessAction.Lower:
-            case GuessAction.LowerOrEqual:
-                return "lower-icon.jpg";
+  /**
+   * Animates the entry of the card content (slide in from right/offset).
+   * @param startOffset The X offset to start from (relative to 0)
+   * @param duration Duration in seconds
+   */
+  public animateEntry(startOffset: number, duration: number) {
+    // Set initial position
+    this.innerContainer.x = startOffset;
 
-            case GuessAction.Equal:
-                return "skip-icon.jpg"; // Placeholder for specific Equal icon
+    // Animate to 0
+    const anim = gsap.to(this.innerContainer, {
+      x: 0,
+      duration: duration,
+      ease: "back.out",
+    });
+    this.trackAnimation(anim);
+  }
 
-            case GuessAction.Skip: return "skip-icon.jpg";
-            case GuessAction.Start: return "transparent.png";
-            default: return "blank-icon.jpg"; // fallback (optional)
-        }
-    }
+  public trackAnimation(anim: gsap.core.Tween) {
+    this.activeAnimations.push(anim);
+    anim.then(() => {
+      const index = this.activeAnimations.indexOf(anim);
+      if (index > -1) {
+        this.activeAnimations.splice(index, 1);
+      }
+    });
+  }
 
-    /** Resize this item so it fits the history background height minus padding */
-    public ResizeToFit(maxHeight: number, padding: number) {
-        // --- Layout internal parts relative to this item’s origin ---
-        this.multiplierBackground.width = this.cardSprite.width;
-        this.multiplierBackground.height = this.cardSprite.height * 0.2;
-        this.multiplierBackground.x = this.cardSprite.width / 2 - this.multiplierBackground.width / 2;
-        this.multiplierBackground.y = this.cardSprite.height + padding;
+  // --- clean up resources ---
+  public override destroy(options?: {
+    children?: boolean;
+    texture?: boolean;
+    baseTexture?: boolean;
+  }) {
+    // STOP ALL ANIMATIONS
+    this.activeAnimations.forEach((anim) => {
+      anim.kill();
+    });
+    this.activeAnimations = [];
 
-        this.actionSprite.x = this.cardSprite.x - this.actionSprite.width / 1.33;
-        this.actionSprite.y = this.cardSprite.height / 2 - this.actionSprite.height / 2;
+    // explicit safety check to avoid double-destroy issues
+    if (this.destroyed) return;
 
-        this.multiplierTextLabel.x = this.multiplierBackground.x + this.multiplierTextLabel.width / 2 + padding / 2;
-        this.multiplierTextLabel.y = this.multiplierBackground.y + this.multiplierBackground.height / 2;
+    // explicitly destroy all children (to ensure Label and Graphics are cleaned up)
+    this.innerContainer?.destroy({ children: true });
 
-        // --- Scale whole thing to fit background height ---
-        const totalHeight = this.cardSprite.height + this.multiplierBackground.height + padding * 2;
-        const scale = (maxHeight - padding) / totalHeight;
-        this.scale.set(scale);
-    }
+    // We don't need to destroy sprites individually if we destroy innerContainer with children:true,
+    // but keeping it explicit doesn't hurt if we want to be safe.
+    // Actually, best to just let Container destroy children.
 
-    // --- expose scaled width & height ---
-    public get widthScaled(): number {
-        return this.cardSprite.width * this.cardSprite.scale.x;
-    }
+    // null references
+    this.cardSprite = null!;
+    this.actionSprite = null!;
+    this.multiplierBackground = null!;
+    this.multiplierTextLabel = null!;
+    this.innerContainer = null!;
 
-    public get heightScaled(): number {
-        return this.cardSprite.height * this.cardSprite.scale.y + this.multiplierBackground.height;
-    }
-
-    // Track active animations so we can stop them on destroy
-    private activeAnimations: gsap.core.Tween[] = [];
-
-    /**
-     * Animates the entry of the card content (slide in from right/offset).
-     * @param startOffset The X offset to start from (relative to 0)
-     * @param duration Duration in seconds
-     */
-    public animateEntry(startOffset: number, duration: number) {
-        // Set initial position
-        this.innerContainer.x = startOffset;
-
-        // Animate to 0
-        const anim = gsap.to(this.innerContainer, { x: 0, duration: duration, ease: "back.out" });
-        this.trackAnimation(anim);
-    }
-
-    public trackAnimation(anim: gsap.core.Tween) {
-        this.activeAnimations.push(anim);
-        anim.then(() => {
-            const index = this.activeAnimations.indexOf(anim);
-            if (index > -1) {
-                this.activeAnimations.splice(index, 1);
-            }
-        });
-    }
-
-    // --- clean up resources ---
-    public override destroy(options?: { children?: boolean; texture?: boolean; baseTexture?: boolean }) {
-        // STOP ALL ANIMATIONS
-        this.activeAnimations.forEach(anim => {
-            anim.kill();
-        });
-        this.activeAnimations = [];
-
-        // explicit safety check to avoid double-destroy issues
-        if (this.destroyed) return;
-
-        // explicitly destroy all children (to ensure Label and Graphics are cleaned up)
-        this.innerContainer?.destroy({ children: true });
-
-        // We don't need to destroy sprites individually if we destroy innerContainer with children:true,
-        // but keeping it explicit doesn't hurt if we want to be safe.
-        // Actually, best to just let Container destroy children.
-
-        // null references
-        this.cardSprite = null!;
-        this.actionSprite = null!;
-        this.multiplierBackground = null!;
-        this.multiplierTextLabel = null!;
-        this.innerContainer = null!;
-
-        // finally call the parent destroy
-        super.destroy(options);
-    }
+    // finally call the parent destroy
+    super.destroy(options);
+  }
 }

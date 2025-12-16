@@ -39,7 +39,7 @@ export class MainScreen extends Container {
     const buttonAnimations = {
       hover: {
         props: {
-          scale: { x: .1, y: 1.1 },
+          scale: { x: 0.1, y: 1.1 },
         },
         duration: 100,
       },
@@ -99,12 +99,10 @@ export class MainScreen extends Container {
       await engine().navigation.showScreen(NextScreenDesktop);
     });
     this.addChild(this.nextButton);
-
   }
 
-
   /** Prepare the screen just before showing */
-  public prepare() { }
+  public prepare() {}
 
   /** Update the screen */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -126,7 +124,7 @@ export class MainScreen extends Container {
   }
 
   /** Fully reset */
-  public reset() { }
+  public reset() {}
 
   /** Resize the screen, fired whenever window size changes */
   public resize(width: number, height: number) {
@@ -177,7 +175,7 @@ export class MainScreen extends Container {
   }
 
   /** Hide screen with animations */
-  public async hide() { }
+  public async hide() {}
 
   /** Auto pause the app when window go out of focus */
   public blur() {

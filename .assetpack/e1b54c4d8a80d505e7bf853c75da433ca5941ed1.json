@@ -4473,6 +4473,111 @@
             },
             "transformData": {}
         },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/cards/opened-card-area.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/cards",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1765791941122,
+                "duration": 477.6139999999432,
+                "success": true
+            },
+            "hash": "0RR0"
+        },
+        ".assetpack/mipmap/main{m}/cards/opened-card-area.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/cards/opened-card-area.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/cards/opened-card-area.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/cards/opened-card-area.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/cards/opened-card-area.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/cards/opened-card-area.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/cards/opened-card-area.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/cards/opened-card-area.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/cards/opened-card-area.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/cards/opened-card-area.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/mipmap/main{m}/cards/opened-card-area@0.5x.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/cards/opened-card-area.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/cards/opened-card-area@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/cards/opened-card-area@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/cards/opened-card-area@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/cards/opened-card-area@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/cards/opened-card-area@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/cards/opened-card-area@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/cards/opened-card-area@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/cards/opened-card-area@0.5x.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
         "E:/PixiJS/PixiTest/raw-assets/main{m}/cards/spade-card-10.jpg": {
             "isFolder": false,
             "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/cards",
@@ -5832,111 +5937,6 @@
         "E:/PixiJS/PixiTest/public/assets/main/cards/spade-card-q@0.5x.jpg": {
             "isFolder": false,
             "transformParent": ".assetpack/compress/main{m}/cards/spade-card-q@0.5x.jpg",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        "E:/PixiJS/PixiTest/raw-assets/main{m}/cards/opened-card-area.png": {
-            "isFolder": false,
-            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/cards",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {},
-            "stats": {
-                "date": 1765791941122,
-                "duration": 477.6139999999432,
-                "success": true
-            },
-            "hash": "0RR0"
-        },
-        ".assetpack/mipmap/main{m}/cards/opened-card-area.png": {
-            "isFolder": false,
-            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/cards/opened-card-area.png",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        ".assetpack/compress/main{m}/cards/opened-card-area.png": {
-            "isFolder": false,
-            "transformParent": ".assetpack/mipmap/main{m}/cards/opened-card-area.png",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        "E:/PixiJS/PixiTest/public/assets/main/cards/opened-card-area.png": {
-            "isFolder": false,
-            "transformParent": ".assetpack/compress/main{m}/cards/opened-card-area.png",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        ".assetpack/compress/main{m}/cards/opened-card-area.webp": {
-            "isFolder": false,
-            "transformParent": ".assetpack/mipmap/main{m}/cards/opened-card-area.png",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        "E:/PixiJS/PixiTest/public/assets/main/cards/opened-card-area.webp": {
-            "isFolder": false,
-            "transformParent": ".assetpack/compress/main{m}/cards/opened-card-area.webp",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        ".assetpack/mipmap/main{m}/cards/opened-card-area@0.5x.png": {
-            "isFolder": false,
-            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/cards/opened-card-area.png",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        ".assetpack/compress/main{m}/cards/opened-card-area@0.5x.png": {
-            "isFolder": false,
-            "transformParent": ".assetpack/mipmap/main{m}/cards/opened-card-area@0.5x.png",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        "E:/PixiJS/PixiTest/public/assets/main/cards/opened-card-area@0.5x.png": {
-            "isFolder": false,
-            "transformParent": ".assetpack/compress/main{m}/cards/opened-card-area@0.5x.png",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        ".assetpack/compress/main{m}/cards/opened-card-area@0.5x.webp": {
-            "isFolder": false,
-            "transformParent": ".assetpack/mipmap/main{m}/cards/opened-card-area@0.5x.png",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        "E:/PixiJS/PixiTest/public/assets/main/cards/opened-card-area@0.5x.webp": {
-            "isFolder": false,
-            "transformParent": ".assetpack/compress/main{m}/cards/opened-card-area@0.5x.webp",
             "metaData": {},
             "inheritedMetaData": {
                 "m": true
