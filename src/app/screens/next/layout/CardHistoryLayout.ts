@@ -12,7 +12,8 @@ import { GuessAction } from "../types/GameTypes";
 export class CardHistoryLayout extends Container {
   private cardsHistoryBackground!: Graphics;
   private cardsHistoryMask!: Graphics;
-  private list!: List;
+  public list!: List;
+  public listYOffset: number = 0;
 
   private currentListScrollAnim: any = null; // Track full list scroll animation
 
@@ -119,7 +120,7 @@ export class CardHistoryLayout extends Container {
 
     // 5. Build Scroll / Overflow logic ("Push Back")
     this.list.y =
-      this.cardsHistoryBackground.height / 2 - item.heightScaled / 2; // Approximate centering
+      this.cardsHistoryBackground.height / 2 - item.heightScaled / 2 + this.listYOffset; // Approximate centering
 
     // Calculate needed scroll position to keep the new item visible.
     // We use requestAnimationFrame to ensure we read the List's width AFTER PixiUI has updated the layout.
@@ -187,6 +188,6 @@ export class CardHistoryLayout extends Container {
       .fill(0xffffff);
 
     // Keep list vertically centered roughly
-    this.list.y = height / 2 - 30; // Approx
+    this.list.y = height / 2 - 30 + this.listYOffset; // Approx
   }
 }
