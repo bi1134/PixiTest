@@ -11,14 +11,29 @@ export class GameHistoryContainer extends Container {
     super();
 
     // Background
-    this.background = new Graphics().rect(0, 0, width, height).fill(0x000000);
-    this.background.alpha = 0.5;
+    this.background = new Graphics();
+    this.background.alpha = 0.25;
     this.addChild(this.background);
 
     // Mask
-    this.maskGfx = new Graphics().rect(0, 0, width, height).fill(0xffffff);
+    this.maskGfx = new Graphics();
     this.addChild(this.maskGfx);
     this.mask = this.maskGfx;
+
+    // Initial draw
+    this.resize(width, height);
+  }
+
+  public resize(width: number, height: number) {
+    // 1. Resize Background & Mask
+    this.background.clear().rect(0, 0, width, height).fill(0x000000);
+    this.maskGfx.clear().rect(0, 0, width, height).fill(0x000000);
+
+    const centerY = height / 2;
+    for (const item of this.historyItems) {
+
+      item.y = centerY;
+    }
   }
 
   public addResult(multiplier: number, isWin: boolean) {

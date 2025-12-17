@@ -22,6 +22,23 @@ export class NextScreen extends Container {
   private async detectAndRedirect(): Promise<void> {
     const isMobile = this.isMobileDevice();
 
+    if (isMobile) {
+      engine().resizeOptions = {
+        minWidth: 100, // Small enough to allow full resize
+        minHeight: 100,
+        letterbox: false, // Allow full screen
+      };
+    } else {
+      engine().resizeOptions = {
+        minWidth: 1920,
+        minHeight: 1080,
+        letterbox: true,
+      };
+    }
+
+    // Force an immediate resize to apply the new options
+    engine().resize();
+
     console.log(
       `[NextScreen] Redirecting to ${isMobile ? "Mobile" : "Desktop"} version...`,
     );

@@ -7,6 +7,9 @@ import { LayoutHelper } from "../../../utils/LayoutHelper";
 import { ProfitLayout } from "./ProfitLayout";
 import { CardHistoryLayout } from "./CardHistoryLayout";
 import { GameHistoryContainer } from "../../../ui/GameHistoryContainer";
+import { SettingsUI } from "../../../ui/SettingsUI";
+import { SpeedButton } from "../../../ui/SpeedButton";
+
 
 export class MobileLayout extends Container {
   public fancyBoxContainer!: Container;
@@ -31,11 +34,15 @@ export class MobileLayout extends Container {
   public inputContainerBg!: Graphics;
   public moneyLabel!: Label;
   public inputBox!: Input;
+  public inputBgSprite!: Sprite; // Promoted from local variable
   public inputDefaultValue: number = 0.02;
   public betButton!: FancyButton;
 
   public halfValueButton: FancyButton;
   public doubleValueButton: FancyButton;
+
+  public settingsUI!: SettingsUI;
+  public speedButton!: SpeedButton;
 
   constructor(width: number, height: number) {
     super();
@@ -96,6 +103,16 @@ export class MobileLayout extends Container {
     this.betButton = new Button({ text: "Bet", width: 150, height: 75 });
     this.fancyBoxContainer.addChild(this.betButton); // We'll position this dynamically
 
+    // Settings UI
+    this.settingsUI = new SettingsUI();
+    this.fancyBoxContainer.addChild(this.settingsUI);
+
+    // Speed Button
+    this.speedButton = new SpeedButton({
+      defaultView: "rounded-rectangle.png",
+    });
+    this.fancyBoxContainer.addChild(this.speedButton);
+
     // --- Create Subcomponents ---
     this.profitLayout = new ProfitLayout();
     this.fancyBoxContainer.addChild(this.profitLayout);
@@ -123,11 +140,11 @@ export class MobileLayout extends Container {
     });
     this.inputContainer.addChild(this.moneyLabel); // Add to input container
 
-    const inputBg = Sprite.from("input.png"); // Reusing input asset
+    this.inputBgSprite = Sprite.from("input.png"); // Reusing input asset
     this.inputBox = new Input({
-      bg: inputBg,
+      bg: this.inputBgSprite,
       placeholder: this.inputDefaultValue.toString(),
-      textStyle: { fill: "white" },
+      textStyle: { fill: "white", fontSize: 75, fontFamily: "Arial", fontWeight: "bold" },
       cleanOnFocus: true,
       align: "center",
     });
@@ -198,24 +215,29 @@ export class MobileLayout extends Container {
       (width - this.cardPlaceHolder.width) / 2 - padding * 13,
     );
 
-    this.backCard.scale.set(2.5);
-    this.cardPlaceHolder.scale.set(2.5);
-    this.currentCard.setBaseScale(2.5);
+    const cardScale = 3.5;
+
+    this.backCard.scale.set(cardScale);
+    this.cardPlaceHolder.scale.set(cardScale);
+    this.currentCard.setBaseScale(cardScale);
     this.backCard.y =
-      (this.backCard.height * this.backCard.scale.y) / 2 - padding * 10;
+      (this.backCard.height * this.backCard.scale.y) / 2 - padding * 25;
     this.cardPlaceHolder.y = this.backCard.y;
 
     this.currentCard.x = this.backCard.x + this.backCard.width / 2;
     this.currentCard.y = this.backCard.y + this.backCard.height / 2;
 
     // Hi/Lo Buttons
-    this.upButton.scale.set(0.6);
-    this.downButton.scale.set(0.6);
+
+    const buttonScale = 1;
+
+    this.upButton.scale.set(buttonScale);
+    this.downButton.scale.set(buttonScale);
 
     const btnY =
       this.backCard.y +
       (this.backCard.height * this.backCard.scale.y) / 2 -
-      padding * 5;
+      padding * 15;
     this.upButton.y = btnY;
     this.downButton.y = btnY;
 
@@ -255,7 +277,7 @@ export class MobileLayout extends Container {
 
     // --- 1. History List ---
     let currentY = padding * 2; // Top padding
-    const inputBoxHeight = 125;
+    const inputBoxHeight = 155;
     const historyHeight = inputBoxHeight * 1.5;
 
     this.cardHistoryLayout.resize(innerWidth * 0.95, historyHeight);
@@ -266,8 +288,19 @@ export class MobileLayout extends Container {
 
     // --- 2. Input Box ---
     const inputW = innerWidth * 0.95;
-    LayoutHelper.scaleToWidth(this.inputBox, inputW, false);
-    this.inputBox.height = inputBoxHeight;
+
+    // Resize background directly to avoid scaling the container (which stretches text)
+    this.inputBgSprite.width = inputW;
+    this.inputBgSprite.height = inputBoxHeight;
+    this.inputBox.scale.set(1); // Ensure scale is 1
+
+    // We might need to tell Input about the size if it doesn't auto-detect from bg
+    // But usually it respects BG size for visuals. 
+    // Force update layout by re-setting value
+    const val = this.inputBox.value;
+    this.inputBox.value = "";
+    this.inputBox.value = val;
+
     this.inputBox.x = (innerWidth - inputW) / 2;
     this.inputBox.y = currentY;
 
@@ -316,5 +349,29 @@ export class MobileLayout extends Container {
 
     this.gameHistory.y = height - this.gameHistory.height;
     this.gameHistory.x = 0;
+
+    // Resize history container properly to avoid scaling distortion
+    this.gameHistory.resize(width, 70);
+
+    // --- Settings UI & Speed Button ---
+    // Settings UI
+    LayoutHelper.scaleToHeight(this.settingsUI, this.betButton.height);
+    LayoutHelper.setPositionX(this.settingsUI, width - this.settingsUI.width); // Align right with padding
+    LayoutHelper.setPositionY(
+      this.settingsUI,
+      this.betButton.y - this.settingsUI.height / 2
+    );
+
+    // Speed Button
+    this.speedButton.width = this.settingsUI.width * 0.75;
+    this.speedButton.height = this.settingsUI.height * 0.75;
+    LayoutHelper.setPositionX(
+      this.speedButton,
+      this.betButton.x - this.speedButton.width * 2,
+    );
+    LayoutHelper.setPositionY(
+      this.speedButton,
+      this.settingsUI.y + this.settingsUI.height / 2,
+    );
   }
 }

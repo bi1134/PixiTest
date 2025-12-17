@@ -1,11 +1,8 @@
-import { Container } from "pixi.js";
-import { SpeedButton } from "../../ui/SpeedButton";
+import { Container, Graphics } from "pixi.js";
 import { engine } from "../../getEngine";
-import { MainScreen } from "../main/MainScreen";
-import { SettingsUI } from "../../ui/SettingsUI";
+// MainScreen unused, removing
 import { MobileLayout } from "./layout/MobileLayout"; // Updated import
 import { GameState, GuessAction, GuessResult } from "./types/GameTypes";
-import { LayoutHelper } from "../../utils/LayoutHelper";
 import { UI } from "../../ui/Manager/UIManager";
 import { NextGameLogic } from "./logic/NextGameLogic";
 import { GameData } from "../../data/GameData";
@@ -18,9 +15,6 @@ export class NextScreenMobile extends Container {
 
   private currentState: GameState = GameState.NonBetting;
 
-  private settingsUI: SettingsUI;
-  private speedButton: SpeedButton;
-
   private fireEffect: FireEffect;
 
   constructor() {
@@ -30,15 +24,6 @@ export class NextScreenMobile extends Container {
 
     this.layout = new MobileLayout(width, height);
     this.addChild(this.layout);
-
-    this.settingsUI = new SettingsUI();
-    this.addChild(this.settingsUI);
-
-    this.speedButton = new SpeedButton({
-      defaultView: "rounded-rectangle.png",
-    });
-
-    this.addChild(this.speedButton);
 
     // --- Setup Event Listeners ---
     this.setupEvents();
@@ -98,15 +83,17 @@ export class NextScreenMobile extends Container {
   }
 
   private HalfButton() {
-    if (this.layout.inputBox.value <= this.layout.inputDefaultValue) {
-      this.layout.inputBox.value = 0;
+    const currentValue = parseFloat(this.layout.inputBox.value);
+    if (currentValue <= this.layout.inputDefaultValue) {
+      this.layout.inputBox.value = "0";
     } else {
-      this.layout.inputBox.value = this.layout.inputBox.value / 2;
+      this.layout.inputBox.value = (currentValue / 2).toString();
     }
   }
 
   private DoubleButton() {
-    this.layout.inputBox.value = this.layout.inputBox.value * 2;
+    const currentValue = parseFloat(this.layout.inputBox.value);
+    this.layout.inputBox.value = (currentValue * 2).toString();
   }
 
   // Helper to update UI labels based on current card
@@ -280,39 +267,93 @@ export class NextScreenMobile extends Container {
     this.layout.inputBox.value = val.toFixed(2);
   }
 
-  public prepare() {}
+  public prepare() { }
 
-  public reset() {}
+  public reset() { }
+
+  // New container for safe area content
+  private safeArea!: Container;
+  private background!: Graphics; // Using Graphics as placeholder for blurred background
 
   public resize(width: number, height: number) {
-    // Mobile layout takes full screen
-    const padding = width * 0.02;
+    if (!this.safeArea) {
+      this.safeArea = new Container();
+      this.addChild(this.safeArea);
+      // Move layout into safeArea
+      this.safeArea.addChild(this.layout);
 
-    this.layout.resize(width, height, padding);
-    LayoutHelper.scaleToHeight(this.settingsUI, this.layout.betButton.height);
-    LayoutHelper.setPositionX(this.settingsUI, width - this.settingsUI.width);
-    LayoutHelper.setPositionY(
-      this.settingsUI,
-      this.layout.betButton.y - this.settingsUI.height / 2,
-    );
+      // Ensure other UI elements that should be in safe area are moved
+      // MobileLayout contains SettingsUI and SpeedButton now, so just adding layout is enough for them.
 
-    // Position Speed Button (Top Left)
-    if (this.speedButton) {
-      this.speedButton.width = this.settingsUI.width * 0.75;
-      this.speedButton.height = this.settingsUI.height * 0.75;
-      LayoutHelper.setPositionX(
-        this.speedButton,
-        this.layout.betButton.x - this.speedButton.width * 2,
-      );
-      LayoutHelper.setPositionY(
-        this.speedButton,
-        this.layout.betButton.y - this.speedButton.height / 4,
-      );
+      if (this.fireEffect) this.safeArea.addChild(this.fireEffect);
+
+      // Create Background
+      this.background = new Graphics();
+      this.addChildAt(this.background, 0); // Add at bottom
     }
 
+    // 1. Calculate safe area scale
+    const targetAspect = 9 / 16;
+    const currentAspect = width / height;
+
+    let scale = 1;
+    let safeWidth = 1080;
+    let safeHeight = 1920;
+
+    // If screen is wider than target (e.g. Fold Open, Desktop-like mobile view)
+    // We want to force 9:16 safe area in the middle
+    if (currentAspect > targetAspect) {
+      scale = height / 1920; // Fit Height
+      safeWidth = 1080 * scale;
+      safeHeight = 1920 * scale;
+
+      this.safeArea.x = (width - safeWidth) / 2;
+      this.safeArea.y = (height - safeHeight) / 2; // Should be 0 effectively
+    } else {
+      // If screen is taller than target (e.g. Sony Xperia, Modern standard phones)
+      // We want to FILL the height, not letterbox top/bottom.
+      // So we match width, and let height range expand.
+      scale = width / 1080; // Fit Width
+
+      // Re-calculate logical height to match screen aspect
+      const contentHeight = height / scale;
+
+      safeWidth = 1080 * scale;
+      safeHeight = contentHeight * scale; // = height
+
+      this.safeArea.x = 0;
+      this.safeArea.y = 0;
+
+      // Update logical height passed to layout
+      // effectively > 1920
+      this.layout.resize(1080, contentHeight, 1080 * 0.02);
+
+      this.safeArea.scale.set(scale);
+      this.background.clear().rect(0, 0, width, height).fill(0x1a1a1a);
+      return; // Early return as we handled layout resize above
+    }
+
+    // 2. Apply Scale (For Wide Case)
+    this.safeArea.scale.set(scale);
+
+    // 3. Center Safe Area (For Wide Case)
+    // already set x/y above
+
+    // 4. Resize Internal Components to Fixed Reference Resolution (1080x1920)
+    const padding = 1080 * 0.02; // 2% of fixed width
+    this.layout.resize(1080, 1920, padding);
+
+    // 5. Update Background to fill real screen
+    this.background.clear();
+    this.background.rect(0, 0, width, height).fill(0x1a1a1a);
+
+    // 6. Update Position of overlaid elements within Safe Area
+    // Layout now handles SettingsUI and SpeedButton positioning internal to resize call
+
+    // Fire Effect
     if (this.fireEffect) {
-      this.fireEffect.x = width / 2;
-      this.fireEffect.y = height / 2;
+      this.fireEffect.x = 1080 / 2;
+      this.fireEffect.y = 1920 / 2;
       this.fireEffect.intensity = 1;
       this.fireEffect.setColors(["#5252daff", "#00000000"]);
     }
