@@ -103,16 +103,6 @@ export class MobileLayout extends Container {
     this.betButton = new Button({ text: "Bet", width: 150, height: 75 });
     this.fancyBoxContainer.addChild(this.betButton); // We'll position this dynamically
 
-    // Settings UI
-    this.settingsUI = new SettingsUI();
-    this.fancyBoxContainer.addChild(this.settingsUI);
-
-    // Speed Button
-    this.speedButton = new SpeedButton({
-      defaultView: "rounded-rectangle.png",
-    });
-    this.fancyBoxContainer.addChild(this.speedButton);
-
     // --- Create Subcomponents ---
     this.profitLayout = new ProfitLayout();
     this.fancyBoxContainer.addChild(this.profitLayout);
@@ -167,6 +157,17 @@ export class MobileLayout extends Container {
 
     this.gameHistory = new GameHistoryContainer(width, 70);
     this.fancyBoxContainer.addChild(this.gameHistory);
+
+    // Settings UI
+    this.settingsUI = new SettingsUI();
+    this.fancyBoxContainer.addChild(this.settingsUI);
+
+    // Speed Button
+    this.speedButton = new SpeedButton({
+      defaultView: "rounded-rectangle.png",
+    });
+    this.fancyBoxContainer.addChild(this.speedButton);
+
   }
 
   public resize(width: number, height: number, padding: number) {
