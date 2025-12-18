@@ -1,11 +1,11 @@
 import { Container } from "pixi.js";
 import { FancyButton } from "@pixi/ui";
-import { Label } from "./Label";
+import { BitmapLabel } from "./BitmapLabel";
 import { GameRoundResult } from "../data/GameData";
 
 export class GameHistoryItem extends Container {
   private button: FancyButton;
-  private textLabel: Label;
+  private textLabel: BitmapLabel;
   public targetX: number = 0; // For animation reference
 
   constructor(data: GameRoundResult) {
@@ -19,14 +19,9 @@ export class GameHistoryItem extends Container {
       defaultView: bgTexture,
       anchor: 0.5,
     });
-    this.textLabel = new Label({
+    this.textLabel = new BitmapLabel({
       text: `${data.multiplier}x`,
-      style: {
-        fill: 0xffffff,
-        fontSize: 40,
-        fontWeight: "bold", // "Arial" is default in Label or can be overridden
-        fontFamily: "Arial",
-      },
+      style: { fill: "#e9e9e9ff", fontSize: 25, fontFamily: "coccm-bitmap-3-normal" },
     });
 
     // Set dimensions if needed, or rely on asset

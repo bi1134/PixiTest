@@ -175,6 +175,7 @@ export class NextScreenDesktop extends Container {
 
         //input and buttons
         this.sidebar.inputBox.interactive = false;
+        this.sidebar.inputBox.alpha = 0.75;
         this.disableButton(this.sidebar.betButton);
         this.sidebar.betButton.text = "Cash Out";
 
@@ -195,6 +196,7 @@ export class NextScreenDesktop extends Container {
 
         // Enable input again for new round
         this.sidebar.inputBox.interactive = true;
+        this.sidebar.inputBox.alpha = 1;
 
         this.enableButton(this.sidebar.betButton);
         this.sidebar.betButton.text = "Bet";

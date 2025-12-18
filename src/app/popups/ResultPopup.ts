@@ -146,7 +146,7 @@ export class ResultPopup extends Container {
     });
 
     // --- Panel "pop in" effect (Clash Royale style) ---
-    gsap.to(this.panel.scale, {
+    await gsap.to(this.panel.scale, {
       x: 1,
       y: 1,
       duration: 0.1,

@@ -1,5 +1,5 @@
-import { Container, Graphics, Sprite } from "pixi.js";
-import { Label } from "../ui/Label";
+import { BitmapText, Container, Graphics, Sprite } from "pixi.js";
+import { BitmapLabel } from "../ui/BitmapLabel";
 import { GuessAction } from "../screens/next/types/GameTypes";
 import { gsap } from "gsap";
 
@@ -7,7 +7,7 @@ export class CardHistoryItem extends Container {
   private innerContainer: Container;
   private cardSprite!: Sprite;
   private actionSprite!: Sprite;
-  private multiplierTextLabel!: Label;
+  private multiplierTextLabel!: BitmapText;
   private multiplierBackground!: Graphics;
 
   private _rank!: string;
@@ -61,12 +61,12 @@ export class CardHistoryItem extends Container {
       .fill("#653838ff");
     this.innerContainer.addChild(this.multiplierBackground);
 
-    this.multiplierTextLabel = new Label({
-      text: "x1.5",
+    this.multiplierTextLabel = new BitmapText({
+      text: "1.5x",
+      anchor: 0.5,
       style: {
-        fill: "#ffffff",
-        fontSize: 18,
-        fontWeight: "bold",
+        fontSize: 10,
+        fontFamily: "coccm-bitmap-3-normal.fnt",
         align: "center",
       },
     });

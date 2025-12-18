@@ -172,7 +172,7 @@ export class CardHistoryLayout extends Container {
     }
   }
 
-  public resize(width: number, height: number) {
+  public resize(width: number, height: number, _padding?: number) {
     // --- Resize and position background ---
     this.cardsHistoryBackground.setSize(width, height);
 

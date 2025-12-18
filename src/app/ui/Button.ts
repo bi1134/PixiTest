@@ -2,7 +2,7 @@ import { FancyButton } from "@pixi/ui";
 
 import { engine } from "../getEngine";
 
-import { Label } from "./Label";
+import { BitmapLabel } from "./BitmapLabel";
 
 const defaultButtonOptions = {
   text: "",
@@ -24,12 +24,13 @@ export class Button extends FancyButton {
       defaultView: "button.png",
       nineSliceSprite: [38, 50, 38, 50],
       anchor: 0.5,
-      text: new Label({
+      text: new BitmapLabel({
         text: opts.text,
         style: {
-          fill: 0x4a4a4a,
+          tint: 0x4a4a4a,
           align: "center",
           fontSize: opts.fontSize,
+          fontName: "coccm-bitmap-3-normal", // Should we enforce this font for all Buttons?
         },
       }),
       textOffset: { x: 0, y: -13 },

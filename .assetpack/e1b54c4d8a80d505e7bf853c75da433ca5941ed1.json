@@ -6,8 +6,8 @@
             "inheritedMetaData": {},
             "transformData": {},
             "stats": {
-                "date": 1765791941121,
-                "duration": 23.1591999999946,
+                "date": 1765959346830,
+                "duration": 49.800600000002305,
                 "success": true
             }
         },
@@ -20,8 +20,8 @@
             "inheritedMetaData": {},
             "transformData": {},
             "stats": {
-                "date": 1765791941122,
-                "duration": 22.913200000068173,
+                "date": 1765959346830,
+                "duration": 50.489699999998265,
                 "success": true
             }
         },
@@ -5937,6 +5937,149 @@
         "E:/PixiJS/PixiTest/public/assets/main/cards/spade-card-q@0.5x.jpg": {
             "isFolder": false,
             "transformParent": ".assetpack/compress/main{m}/cards/spade-card-q@0.5x.jpg",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/fonts": {
+            "isFolder": true,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1765959346830,
+                "duration": 50.489300000001094,
+                "success": true
+            }
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/fonts/coccm-bitmap-3-normal.fnt": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/fonts",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1765959346830,
+                "duration": 50.52260000000024,
+                "success": true
+            },
+            "hash": "m1pXlA"
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/fonts/coccm-bitmap-3-normal.fnt": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/fonts/coccm-bitmap-3-normal.fnt",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/fonts/coccm-bitmap-3-normal.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/fonts",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1765959346833,
+                "duration": 304.8220000000001,
+                "success": true
+            },
+            "hash": "OQWVOw"
+        },
+        ".assetpack/mipmap/main{m}/fonts/coccm-bitmap-3-normal.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/fonts/coccm-bitmap-3-normal.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/fonts/coccm-bitmap-3-normal.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/fonts/coccm-bitmap-3-normal.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/fonts/coccm-bitmap-3-normal.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/fonts/coccm-bitmap-3-normal.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/fonts/coccm-bitmap-3-normal.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/fonts/coccm-bitmap-3-normal.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/fonts/coccm-bitmap-3-normal.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/fonts/coccm-bitmap-3-normal.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/mipmap/main{m}/fonts/coccm-bitmap-3-normal@0.5x.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/fonts/coccm-bitmap-3-normal.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/fonts/coccm-bitmap-3-normal@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/fonts/coccm-bitmap-3-normal@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/fonts/coccm-bitmap-3-normal@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/fonts/coccm-bitmap-3-normal@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/fonts/coccm-bitmap-3-normal@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/fonts/coccm-bitmap-3-normal@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/fonts/coccm-bitmap-3-normal@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/fonts/coccm-bitmap-3-normal@0.5x.webp",
             "metaData": {},
             "inheritedMetaData": {
                 "m": true

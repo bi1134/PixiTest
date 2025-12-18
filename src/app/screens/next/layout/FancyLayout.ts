@@ -1,11 +1,12 @@
 import { FancyButton } from "@pixi/ui";
 import { Container, Graphics, Sprite } from "pixi.js";
 import { Label } from "../../../ui/Label";
-import { Button } from "../../../ui/Button";
+import { CustomButton } from "../../../ui/CustomButton";
 import { Card } from "../../../ui/Card";
 import { LayoutHelper } from "../../../utils/LayoutHelper";
 import { ProfitLayout } from "./ProfitLayout";
 import { CardHistoryLayout } from "./CardHistoryLayout";
+import { BitmapLabel } from "../../../ui/BitmapLabel";
 
 export class FancyLayout extends Container {
   public fancyBoxContainer!: Container;
@@ -15,11 +16,11 @@ export class FancyLayout extends Container {
   public backCard!: Sprite;
   public upButton!: FancyButton;
   public downButton!: FancyButton;
-  public titleHigh!: Label;
-  public titleLow!: Label;
-  public highDes!: Label;
-  public lowDes!: Label;
-  public fancySkipButton!: Button;
+  public titleHigh!: BitmapLabel;
+  public titleLow!: BitmapLabel;
+  public highDes!: BitmapLabel;
+  public lowDes!: BitmapLabel;
+  public fancySkipButton!: CustomButton;
   public profitLayout!: ProfitLayout;
   public cardHistoryLayout!: CardHistoryLayout;
 
@@ -51,31 +52,36 @@ export class FancyLayout extends Container {
     this.cardsContainer.addChild(this.upButton, this.downButton);
 
     // --- labels and descriptions ---
-    this.titleHigh = new Label({
+    this.titleHigh = new BitmapLabel({
       text: "Hi",
-      style: { fill: "#b2b2b2ff", fontSize: 40, fontFamily: "Arial" },
+      style: { fill: "#b2b2b2ff", fontSize: 40, fontFamily: "coccm-bitmap-3-normal" },
     });
-    this.titleLow = new Label({
+    this.titleLow = new BitmapLabel({
       text: "Lo",
-      style: { fill: "#b2b2b2ff", fontSize: 40, fontFamily: "Arial" },
+      style: { fill: "#b2b2b2ff", fontSize: 40, fontFamily: "coccm-bitmap-3-normal" },
     });
     this.cardsContainer.addChild(this.titleHigh, this.titleLow);
 
-    this.highDes = new Label({
+    this.highDes = new BitmapLabel({
       text: "Higher or equal",
-      style: { fill: "#b2b2b2ff", fontSize: 30, fontFamily: "Arial" },
+      style: { fill: "#b2b2b2ff", fontSize: 18, fontFamily: "coccm-bitmap-3-normal" },
     });
-    this.lowDes = new Label({
+    this.lowDes = new BitmapLabel({
       text: "Lower or equal",
-      style: { fill: "#b2b2b2ff", fontSize: 30, fontFamily: "Arial" },
+      style: { fill: "#b2b2b2ff", fontSize: 18, fontFamily: "coccm-bitmap-3-normal" },
     });
     this.cardsContainer.addChild(this.highDes, this.lowDes);
 
-    this.fancySkipButton = new Button({
+    this.fancySkipButton = new CustomButton({
       text: "Skip",
-      width: 150,
-      height: 100,
+      fontSize: 28,
+      textColor: 0x4a4a4a,
+    }, {
+      defaultView: "button.png",
+      nineSliceSprite: [38, 50, 38, 50],
     });
+    this.fancySkipButton.width = 150;
+    this.fancySkipButton.height = 100;
     this.cardsContainer.addChild(this.fancySkipButton);
 
     // --- Create Subcomponents ---

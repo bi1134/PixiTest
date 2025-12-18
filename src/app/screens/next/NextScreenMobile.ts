@@ -202,6 +202,7 @@ export class NextScreenMobile extends Container {
 
     //input and buttons
     this.layout.inputBox.interactive = false;
+    this.layout.inputBox.alpha = 0.75;
     this.layout.betButton.text = "Cash Out";
     this.disableButton(this.layout.betButton); // Cannot cash out immediately on start
     this.disableButton(this.layout.halfValueButton);
@@ -219,6 +220,7 @@ export class NextScreenMobile extends Container {
 
     // Enable input again for new round
     this.layout.inputBox.interactive = true;
+    this.layout.inputBox.alpha = 1;
     this.layout.betButton.text = "Bet";
     this.enableButton(this.layout.betButton);
     this.enableButton(this.layout.halfValueButton);
@@ -282,14 +284,14 @@ export class NextScreenMobile extends Container {
       // Move layout into safeArea
       this.safeArea.addChild(this.layout);
 
-      // Ensure other UI elements that should be in safe area are moved
-      // MobileLayout contains SettingsUI and SpeedButton now, so just adding layout is enough for them.
-
       if (this.fireEffect) this.safeArea.addChild(this.fireEffect);
 
       // Create Background
       this.background = new Graphics();
       this.addChildAt(this.background, 0); // Add at bottom
+
+      //offset change for the card fit within the box
+      this.layout.cardHistoryLayout.listYOffset = -20;
     }
 
     // 1. Calculate safe area scale

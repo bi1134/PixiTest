@@ -1,20 +1,20 @@
-import { Input, FancyButton } from "@pixi/ui";
 import { Container, Graphics, Sprite } from "pixi.js";
-import { Label } from "../../../ui/Label";
-import { Button } from "../../../ui/Button";
+import { CustomButton } from "../../../ui/CustomButton";
+import { CustomInput } from "../../../ui/CustomInput";
 import { LayoutHelper } from "../../../utils/LayoutHelper";
+import { BitmapLabel } from "../../../ui/BitmapLabel";
 
 export class SidebarLayout extends Container {
   public box!: Graphics;
   public amountContainer!: Container;
-  public title!: Label;
-  public inputBox!: Input;
+  public title!: BitmapLabel;
+  public inputBox!: CustomInput;
   public higherLowerContainer!: Container;
-  public higherButton!: FancyButton;
-  public lowerButton!: FancyButton;
+  public higherButton!: CustomButton;
+  public lowerButton!: CustomButton;
   public skipBetContainer!: Container;
-  public skipButton!: FancyButton;
-  public betButton!: FancyButton;
+  public skipButton!: CustomButton;
+  public betButton!: CustomButton;
 
   constructor(width: number, height: number) {
     super();
@@ -33,18 +33,20 @@ export class SidebarLayout extends Container {
     const sprite = Sprite.from("input.png");
     sprite.width = this.box.width;
 
-    this.title = new Label({
+    this.title = new BitmapLabel({
       text: "Amount",
-      style: { fill: "#b2b2b2ff", fontSize: 35, fontFamily: "Arial" },
+      style: { fill: "#b2b2b2ff", fontSize: 35, fontFamily: "coccm-bitmap-3-normal" },
     });
     this.amountContainer.addChild(this.title);
 
-    this.inputBox = new Input({
+    this.inputBox = new CustomInput({
       bg: sprite,
       placeholder: "0.02",
       padding: 11,
-      textStyle: { fill: "white" },
-      cleanOnFocus: true,
+      fontSize: 30, // Adjust as needed
+      fontFamily: "coccm-bitmap-3-normal",
+      textColor: 0xFFFFFF,
+      align: 'center'
     });
     this.amountContainer.addChild(this.inputBox);
 
@@ -55,32 +57,54 @@ export class SidebarLayout extends Container {
     this.higherLowerContainer = new Container();
     this.addChild(this.higherLowerContainer);
 
-    this.higherButton = new Button({
+    this.higherButton = new CustomButton({
       text: "Higher or Equal \n 111%",
-      width: this.box.width / 2,
-      height: 75,
+      fontSize: 20,
+      textColor: 0x4a4a4a, // Dark grey for button text
+    }, {
+      defaultView: "button.png",
+      nineSliceSprite: [38, 50, 38, 50],
     });
-    this.lowerButton = new Button({
+    this.higherButton.width = this.box.width / 2;
+    this.higherButton.height = 75;
+
+    this.lowerButton = new CustomButton({
       text: "Lower or Equal \n 111%",
-      width: this.box.width / 2,
-      height: 75,
+      fontSize: 20,
+      textColor: 0x4a4a4a,
+    }, {
+      defaultView: "button.png",
+      nineSliceSprite: [38, 50, 38, 50],
     });
+    this.lowerButton.width = this.box.width / 2;
+    this.lowerButton.height = 75;
 
     this.higherLowerContainer.addChild(this.higherButton, this.lowerButton);
 
     this.skipBetContainer = new Container();
     this.addChild(this.skipBetContainer);
 
-    this.skipButton = new Button({
+    this.skipButton = new CustomButton({
       text: "Skip >>",
-      width: this.box.width,
-      height: 75,
+      fontSize: 20,
+      textColor: 0x4a4a4a,
+    }, {
+      defaultView: "button.png",
+      nineSliceSprite: [38, 50, 38, 50],
     });
-    this.betButton = new Button({
+    this.skipButton.width = this.box.width;
+    this.skipButton.height = 75;
+
+    this.betButton = new CustomButton({
       text: "Bet",
-      width: this.box.width,
-      height: 90,
+      fontSize: 28,
+      textColor: 0x4a4a4a,
+    }, {
+      defaultView: "button.png",
+      nineSliceSprite: [38, 50, 38, 50],
     });
+    this.betButton.width = this.box.width;
+    this.betButton.height = 90;
 
     this.skipBetContainer.addChild(this.skipButton, this.betButton);
   }
@@ -96,7 +120,8 @@ export class SidebarLayout extends Container {
     LayoutHelper.setPositionX(this.title, this.title.width / 2 + padding);
     this.title.y = this.title.height / 2 + padding;
 
-    LayoutHelper.scaleToWidth(this.inputBox, sidebarWidth - padding * 2, false);
+    // LayoutHelper.scaleToWidth(this.inputBox, sidebarWidth - padding * 2, false);
+    this.inputBox.resize(sidebarWidth - padding * 2, 50); // Assuming decent height for desktop input
     LayoutHelper.centerX(this.inputBox, sidebarWidth);
     LayoutHelper.placeBelow(this.inputBox, this.title, 0 - padding);
 
@@ -120,17 +145,17 @@ export class SidebarLayout extends Container {
     // --- skip/bet container ---
     LayoutHelper.scaleToWidth(
       this.skipButton,
-      sidebarWidth + padding * 2,
+      sidebarWidth - padding,
       false,
     );
     LayoutHelper.scaleToWidth(
       this.betButton,
-      sidebarWidth + padding * 2,
+      sidebarWidth - padding,
       false,
     );
     LayoutHelper.centerX(this.skipButton, sidebarWidth, 0, false);
     LayoutHelper.centerX(this.betButton, sidebarWidth, 0, false);
-    this.skipButton.y = -padding;
+    LayoutHelper.placeBelow(this.skipButton, this.higherLowerContainer, -padding * 6);
     LayoutHelper.placeBelow(this.betButton, this.skipButton, padding);
 
     // --- container positioning ---

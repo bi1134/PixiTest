@@ -1,7 +1,6 @@
-import { FancyButton, Input } from "@pixi/ui";
+import { FancyButton } from "@pixi/ui";
 import { Container, Graphics, setPositions, Sprite } from "pixi.js";
-import { Label } from "../../../ui/Label";
-import { Button } from "../../../ui/Button";
+import { BitmapLabel } from "../../../ui/BitmapLabel";
 import { Card } from "../../../ui/Card";
 import { LayoutHelper } from "../../../utils/LayoutHelper";
 import { ProfitLayout } from "./ProfitLayout";
@@ -9,6 +8,8 @@ import { CardHistoryLayout } from "./CardHistoryLayout";
 import { GameHistoryContainer } from "../../../ui/GameHistoryContainer";
 import { SettingsUI } from "../../../ui/SettingsUI";
 import { SpeedButton } from "../../../ui/SpeedButton";
+import { CustomButton } from "../../../ui/CustomButton";
+import { CustomInput } from "../../../ui/CustomInput";
 
 
 export class MobileLayout extends Container {
@@ -20,11 +21,11 @@ export class MobileLayout extends Container {
   public cardPlaceHolder!: Sprite;
   public upButton!: FancyButton;
   public downButton!: FancyButton;
-  public titleHigh!: Label;
-  public titleLow!: Label;
-  public highDes!: Label;
-  public lowDes!: Label;
-  public fancySkipButton!: FancyButton;
+  public titleHigh!: BitmapLabel;
+  public titleLow!: BitmapLabel;
+  public highDes!: BitmapLabel;
+  public lowDes!: BitmapLabel;
+  public fancySkipButton!: CustomButton;
   public profitLayout!: ProfitLayout;
   public cardHistoryLayout!: CardHistoryLayout;
   public gameHistory!: GameHistoryContainer;
@@ -32,14 +33,13 @@ export class MobileLayout extends Container {
   // Mobile specific additions (from Sidebar)
   public inputContainer!: Container;
   public inputContainerBg!: Graphics;
-  public moneyLabel!: Label;
-  public inputBox!: Input;
-  public inputBgSprite!: Sprite; // Promoted from local variable
+  public moneyLabel!: BitmapLabel;
+  public inputBox!: CustomInput;
   public inputDefaultValue: number = 0.02;
-  public betButton!: FancyButton;
+  public betButton!: CustomButton;
 
-  public halfValueButton: FancyButton;
-  public doubleValueButton: FancyButton;
+  public halfValueButton: CustomButton;
+  public doubleValueButton: CustomButton;
 
   public settingsUI!: SettingsUI;
   public speedButton!: SpeedButton;
@@ -75,32 +75,52 @@ export class MobileLayout extends Container {
     this.cardsContainer.addChild(this.upButton, this.downButton);
 
     // --- labels and descriptions ---
-    this.titleHigh = new Label({
+    this.titleHigh = new BitmapLabel({
       text: "Hi",
-      style: { fill: "#b2b2b2ff", fontSize: 40, fontFamily: "Arial" },
+      style: { tint: 0xb2b2b2, fontSize: 40, fontFamily: "coccm-bitmap-3-normal" },
     });
-    this.titleLow = new Label({
+    this.titleLow = new BitmapLabel({
       text: "Lo",
-      style: { fill: "#b2b2b2ff", fontSize: 40, fontFamily: "Arial" },
+      style: { tint: 0xb2b2b2, fontSize: 40, fontFamily: "coccm-bitmap-3-normal" },
     });
     this.cardsContainer.addChild(this.titleHigh, this.titleLow);
 
-    this.highDes = new Label({
+    this.highDes = new BitmapLabel({
       text: "Higher or equal",
-      style: { fill: "#b2b2b2ff", fontSize: 15, fontFamily: "Arial" },
+      style: { tint: 0xb2b2b2, fontSize: 15, fontFamily: "coccm-bitmap-3-normal" },
     });
-    this.lowDes = new Label({
+    this.lowDes = new BitmapLabel({
       text: "Lower or equal",
-      style: { fill: "#b2b2b2ff", fontSize: 15, fontFamily: "Arial" },
+      style: { tint: 0xb2b2b2, fontSize: 15, fontFamily: "coccm-bitmap-3-normal" },
     });
     this.cardsContainer.addChild(this.highDes, this.lowDes);
 
     // This is the "Skip" button in fancy, but user also wants "Bet/Cash Out".
-    this.fancySkipButton = new Button({ text: "Skip", width: 150, height: 70 });
+    this.fancySkipButton = new CustomButton({
+      text: "Skip",
+      fontSize: 28,
+      fontFamily: "coccm-bitmap-3-normal",
+      textColor: 0x4a4a4a
+    }, {
+      defaultView: "button.png",
+      nineSliceSprite: [38, 50, 38, 50],
+    });
+    this.fancySkipButton.width = 150;
+    this.fancySkipButton.height = 70;
     this.cardsContainer.addChild(this.fancySkipButton);
 
     // Bet Button (from Sidebar)
-    this.betButton = new Button({ text: "Bet", width: 150, height: 75 });
+    this.betButton = new CustomButton({
+      text: "Bet",
+      fontSize: 18,
+      fontFamily: "coccm-bitmap-3-normal",
+      textColor: 0x4a4a4a
+    }, {
+      defaultView: "button.png",
+      nineSliceSprite: [38, 50, 38, 50],
+    });
+    this.betButton.width = 150;
+    this.betButton.height = 75;
     this.fancyBoxContainer.addChild(this.betButton); // We'll position this dynamically
 
     // --- Create Subcomponents ---
@@ -119,39 +139,59 @@ export class MobileLayout extends Container {
     this.inputContainer.addChild(this.cardHistoryLayout);
 
     // --- Mobile Specifics: Money Label & Input ---
-    this.moneyLabel = new Label({
+    this.moneyLabel = new BitmapLabel({
       text: "Balance: $1000", // Example text, updated by logic
       style: {
-        fill: "gold",
+        tint: 0xFFD700, // Gold
         fontSize: 25,
-        fontFamily: "Arial",
-        fontWeight: "bold",
+        fontFamily: "coccm-bitmap-3-normal",
       },
     });
     this.inputContainer.addChild(this.moneyLabel); // Add to input container
 
-    this.inputBgSprite = Sprite.from("input.png"); // Reusing input asset
-    this.inputBox = new Input({
-      bg: this.inputBgSprite,
+    this.inputBox = new CustomInput({
+      bg: Sprite.from("input.png"),
       placeholder: this.inputDefaultValue.toString(),
-      textStyle: { fill: "white", fontSize: 75, fontFamily: "Arial", fontWeight: "bold" },
-      cleanOnFocus: true,
+      fontSize: 75,
+      fontFamily: "coccm-bitmap-3-normal",
       align: "center",
+      textColor: 0xFFFFFF,
+      padding: 0
     });
-    this.inputBox.value = this.inputDefaultValue;
+    this.inputBox.value = this.inputDefaultValue.toString(); // value is string accessor
     this.inputContainer.addChild(this.inputBox); // Add to input container
 
-    this.halfValueButton = new FancyButton({
-      defaultView: "icon-settings.png",
+    // Handle validation on blur (onEnter fires when input loses focus)
+    this.inputBox.onEnter.connect((val: string) => {
+      const num = parseFloat(val);
+
+      if (val === "" || isNaN(num)) {
+        // Reset to default if empty or invalid
+        const defaultVal = this.inputDefaultValue.toString();
+        this.inputBox.value = defaultVal;
+      } else {
+        // Optional: Format number (e.g. 0.20)
+        // this.inputBox.value = num.toString();
+      }
+    });
+
+    this.halfValueButton = new CustomButton({
       text: "x1/2",
-      style: { fontFamily: "Arial", fontWeight: "bold", align: "center" },
+      fontSize: 12,
+      fontFamily: "coccm-bitmap-3-normal",
+      textColor: 0x4a4a4a
+    }, {
+      defaultView: "icon-settings.png",
     });
     this.inputContainer.addChild(this.halfValueButton);
 
-    this.doubleValueButton = new FancyButton({
-      defaultView: "icon-settings.png",
+    this.doubleValueButton = new CustomButton({
       text: "x2",
-      style: { fontFamily: "Arial", fontWeight: "bold", align: "center" },
+      fontSize: 12,
+      fontFamily: "coccm-bitmap-3-normal",
+      textColor: 0x4a4a4a
+    }, {
+      defaultView: "icon-settings.png",
     });
     this.inputContainer.addChild(this.doubleValueButton);
 
@@ -167,17 +207,10 @@ export class MobileLayout extends Container {
       defaultView: "rounded-rectangle.png",
     });
     this.fancyBoxContainer.addChild(this.speedButton);
-
   }
 
   public resize(width: number, height: number, padding: number) {
     this.fancyBox.setSize(width, height);
-
-    // Stack Order:
-    // Top: Profit Layout (Fixed Header)
-    // Middle: Cards + Buttons (Flexible)
-    // Middle: History + Input (Flexible)
-    // Bottom: Bet Button (Fixed Footer)
 
     // --- 1. Profit Layout (Top Header) ---
     const profitWidth = width * 0.95;
@@ -290,17 +323,8 @@ export class MobileLayout extends Container {
     // --- 2. Input Box ---
     const inputW = innerWidth * 0.95;
 
-    // Resize background directly to avoid scaling the container (which stretches text)
-    this.inputBgSprite.width = inputW;
-    this.inputBgSprite.height = inputBoxHeight;
-    this.inputBox.scale.set(1); // Ensure scale is 1
-
-    // We might need to tell Input about the size if it doesn't auto-detect from bg
-    // But usually it respects BG size for visuals. 
-    // Force update layout by re-setting value
-    const val = this.inputBox.value;
-    this.inputBox.value = "";
-    this.inputBox.value = val;
+    // Resize CustomInput
+    this.inputBox.resize(inputW, inputBoxHeight);
 
     this.inputBox.x = (innerWidth - inputW) / 2;
     this.inputBox.y = currentY;
@@ -308,19 +332,19 @@ export class MobileLayout extends Container {
     //half button
     LayoutHelper.scaleToHeight(this.halfValueButton, this.inputBox.height);
 
-    LayoutHelper.setPositionX(this.halfValueButton, this.inputBox.x);
+    LayoutHelper.setPositionX(this.halfValueButton, this.inputBox.x + this.halfValueButton.width / 2);
     this.halfValueButton.y =
       this.inputBox.y +
-      this.inputBox.height / 2 -
-      this.halfValueButton.height / 2;
+      this.inputBox.height / 2;
 
     //double button
     LayoutHelper.scaleToHeight(this.doubleValueButton, this.inputBox.height);
     LayoutHelper.setPositionX(
       this.doubleValueButton,
-      this.inputBox.x + this.inputBox.width - this.doubleValueButton.width,
+      this.inputBox.x + this.inputBox.width - this.doubleValueButton.width / 2,
     );
     LayoutHelper.setPositionY(this.doubleValueButton, this.halfValueButton.y);
+
 
     currentY += this.inputBox.height + padding; // Spacing after input
 

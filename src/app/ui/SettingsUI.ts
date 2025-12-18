@@ -34,10 +34,10 @@ export class SettingsUI extends Container {
 
     // Title Text
     this.settingText = new BitmapText({
-      text: "Settingan\nMenu",
+      text: "Settingan",
       anchor: 0.5,
       style: {
-        fontSize: 16,
+        fontSize: 10,
         fontFamily: "coccm-bitmap-3-normal.fnt",
         align: "center",
       },

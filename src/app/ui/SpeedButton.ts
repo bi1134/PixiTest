@@ -1,27 +1,34 @@
-import { FancyButton } from "@pixi/ui";
 import { Ticker } from "pixi.js";
 import { gsap } from "gsap";
+import { CustomButton, CustomButtonOptions } from "./CustomButton";
+import { ButtonOptions } from "@pixi/ui";
 
-export interface SpeedButtonOptions {
-  defaultView?: string;
-  textStyle?: any;
+export interface SpeedButtonOptions extends ButtonOptions {
+  // Speed specific options if any
 }
 
-export class SpeedButton extends FancyButton {
+export class SpeedButton extends CustomButton {
   private speedIndex = 0;
   private speeds = [1, 2, 5, 10];
 
-  constructor(options?: SpeedButtonOptions) {
-    super({
-      defaultView: options?.defaultView ?? "rounded-rectangle.png",
+  constructor(options?: any) { // Type as any or custom options to fit existing calls
+    // User passes { defaultView: ... } which fits ButtonOptions
+
+    // CustomButton expects (opts?: CustomButtonOptions, options?: ButtonOptions)
+    // We want default text args.
+    const customOpts: CustomButtonOptions = {
       text: "Speed: 1x",
-      textStyle: options?.textStyle ?? {
-        fill: 0xffffff,
-        fontSize: 20,
-        fontWeight: "bold",
-      },
+      fontSize: 20,
+      fontFamily: "coccm-bitmap-3-normal",
+    };
+
+    const buttonOpts: ButtonOptions = {
+      defaultView: options?.defaultView ?? "rounded-rectangle.png",
       anchor: 0.5,
-    });
+      ...options // allow override
+    };
+
+    super(customOpts, buttonOpts);
 
     this.onPress.connect(this.cycleSpeed.bind(this));
   }
@@ -33,6 +40,9 @@ export class SpeedButton extends FancyButton {
     Ticker.shared.speed = speed;
     gsap.globalTimeline.timeScale(speed);
 
-    this.text = `Speed: ${speed}x`;
+    // CustomButton stores text in protected customText
+    if (this.customText) {
+      this.customText.text = `Speed: ${speed}x`;
+    }
   }
 }

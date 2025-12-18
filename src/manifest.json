@@ -958,6 +958,37 @@
         },
         {
           "alias": [
+            "main/fonts/coccm-bitmap-3-normal.fnt",
+            "coccm-bitmap-3-normal.fnt"
+          ],
+          "src": [
+            "main/fonts/coccm-bitmap-3-normal.fnt"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/fonts/coccm-bitmap-3-normal.png",
+            "coccm-bitmap-3-normal.png"
+          ],
+          "src": [
+            "main/fonts/coccm-bitmap-3-normal@0.5x.webp",
+            "main/fonts/coccm-bitmap-3-normal@0.5x.png",
+            "main/fonts/coccm-bitmap-3-normal.webp",
+            "main/fonts/coccm-bitmap-3-normal.png"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
             "main/history/crown_count.png",
             "crown_count.png"
           ],
