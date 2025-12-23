@@ -1,19 +1,24 @@
 import { FancyButton, Switcher } from "@pixi/ui";
 import { BitmapText, Container, Graphics, Sprite, Text } from "pixi.js";
-import { GlobalConfig } from "../../../config/GlobalConfig";
-import {
-  HistoryDetailApiResponse,
-  mockHistoryDetailResponse,
-} from "../../../api/models/HistoryDetailResponse";
-import {
-  formatFloatNumber,
-  formatIntNumber,
-} from "../../../utils/format-number";
-import { HistoryResponseData } from "../../../api/models/HistoryResponse";
-import { gameService } from "../../../api/services/GameService";
 import { buttonAnimation } from "../../ui/ButtonAnimations";
-import { GameStateManager } from "../../../manage_game_states/GameStateManager";
-import { GetErrorMessage } from "../../../api/GetErrorMessage";
+
+// --- Mock / Stub Types ---
+interface HistoryResponseData {
+  bet_id: string;
+  amount: number;
+  timestamp: string;
+  multiplier: number;
+  total_win: number;
+}
+
+interface HistoryDetailApiResponse {
+  data: any;
+}
+
+// --- Helper ---
+function formatNumber(num: number): string {
+  return num.toLocaleString('en-US');
+}
 
 export type ItemHisotyPopupOptions = {
   betAmount: number;
@@ -27,10 +32,14 @@ export class HisotryPopupItem extends Container {
   private readonly TILE_OFFSET = 15;
   private readonly FONT_SIZE = 17;
 
+  // Layout Constants
+  private itemWidth: number;
+  private readonly ITEM_HEIGHT = 80;
+
   private bg: Graphics;
 
   // Top ui
-  private bgItem: Sprite;
+  private bgItem: Container; // Changed from Sprite to Container to support Graphics fallback
   private betAmount: BitmapText;
   private dateTimeText: Text;
   private profitText: BitmapText;
@@ -51,12 +60,17 @@ export class HisotryPopupItem extends Container {
 
   public onItemVisibleChange?: (state: boolean) => void;
 
-  constructor() {
+  constructor(width: number = 600) {
     super();
+
+    this.itemWidth = width;
 
     this.sortableChildren = true;
 
-    this.bgItem = Sprite.from("bg-title.png");
+    // Use Graphics for background to ensure visibility/size
+    this.bgItem = new Graphics()
+      .roundRect(0, 0, this.itemWidth, this.ITEM_HEIGHT, 15)
+      .fill({ color: 0x2A2E37 }); // Dark grey bg
 
     this.betAmount = new BitmapText({
       text: "Taruhan: 2,000",
@@ -67,7 +81,7 @@ export class HisotryPopupItem extends Container {
         align: "left",
       },
     });
-    this.betAmount.position.set(this.OFFSET, this.bgItem.height * 0.3);
+    this.betAmount.position.set(this.OFFSET, this.ITEM_HEIGHT * 0.3);
 
     this.dateTimeText = new Text({
       text: "12/02/2025, 10:55",
@@ -82,7 +96,7 @@ export class HisotryPopupItem extends Container {
     });
     this.dateTimeText.position.set(
       this.OFFSET,
-      this.bgItem.height / 2 + this.betAmount.height / 2 + 5,
+      this.ITEM_HEIGHT / 2 + this.betAmount.height / 2 + 5,
     );
 
     this.profitText = new BitmapText({
@@ -108,15 +122,17 @@ export class HisotryPopupItem extends Container {
       },
     });
 
-    const sprite = Sprite.from("select_open.png");
+    const sprite = Sprite.from("expand-button.png");
     sprite.anchor = 0.5;
-    const collapseSprite = Sprite.from("select.png");
+    const collapseSprite = Sprite.from("expand-button.png");
     collapseSprite.scale.y = -1;
     collapseSprite.anchor = 0.5;
     this.expandSwitcher = new Switcher([sprite, collapseSprite]);
+
+    // Position switcher based on FIXED width
     this.expandSwitcher.position.set(
-      this.bgItem.width - this.expandSwitcher.width / 2 - this.OFFSET,
-      this.bgItem.height / 2,
+      this.itemWidth - this.expandSwitcher.width / 2 - this.OFFSET,
+      this.ITEM_HEIGHT / 2,
     );
     this.expandSwitcher.onChange.connect(
       this.onExpandSwitcherChange.bind(this),
@@ -183,13 +199,13 @@ export class HisotryPopupItem extends Container {
     this.textWrapper = new Container();
     this.textWrapper.addChild(this.idText, this.betId, this.copyIdButton);
     this.textWrapper.pivot.set(this.textWrapper.width / 2, 0);
-    this.textWrapper.position.set(this.bgItem.width / 2, this.OFFSET);
+    this.textWrapper.position.set(this.itemWidth / 2, this.OFFSET);
 
     this.board = new Container();
     this.initBoard();
 
     this.bg = new Graphics()
-      .roundRect(0, 0, this.bgItem.width, 570)
+      .roundRect(0, 0, this.itemWidth, 570)
       .fill({ color: "#535C6D" });
     this.bg.zIndex = -1;
 
@@ -207,11 +223,15 @@ export class HisotryPopupItem extends Container {
 
     this.innerWrapper = new Container();
     this.innerWrapper.addChild(this.textWrapper, this.board, this.loadingText);
+
+    // Center pivot based on the known content width
+    this.innerWrapper.pivot.set(this.itemWidth / 2, 0);
+
     this.innerWrapper.scale = 0.75;
 
     this.innerWrapper.position.set(
-      (this.bgItem.width - this.innerWrapper.width) / 2,
-      this.bgItem.height + 15,
+      this.itemWidth / 2,
+      this.ITEM_HEIGHT + 15,
     );
 
     this.addChild(
@@ -231,8 +251,14 @@ export class HisotryPopupItem extends Container {
   }
 
   private initBoard() {
-    for (let i = 0; i < GlobalConfig.TOTAL_ROWS; i++) {
-      for (let j = 0; j < GlobalConfig.TOTAL_COLUMNS; j++) {
+    // Hardcoded mock values instead of GlobalConfig
+    const TOTAL_ROWS = 5;
+    const TOTAL_COLUMNS = 6;
+
+    for (let i = 0; i < TOTAL_ROWS; i++) {
+      for (let j = 0; j < TOTAL_COLUMNS; j++) {
+        // Try/catch regarding sprite loading if assets missing? 
+        // Assuming assets exist, just config is missing.
         const sprite = Sprite.from("crown_not_selected.png");
 
         sprite.position.set(
@@ -245,7 +271,7 @@ export class HisotryPopupItem extends Container {
     }
 
     this.board.position.set(
-      (this.bgItem.width - this.board.width) / 2, // Center horizontally
+      (this.itemWidth - this.board.width) / 2, // Center horizontally
       this.betId.y + this.betId.height + this.OFFSET,
     );
   }
@@ -256,9 +282,7 @@ export class HisotryPopupItem extends Container {
 
     // Bet amount
     const betAmount = response.amount;
-    if (Number.isInteger(betAmount))
-      this.betAmount.text = `Taruhan: ${formatIntNumber(betAmount)}`;
-    else this.betAmount.text = `Taruhan: ${formatFloatNumber(betAmount)}`;
+    this.betAmount.text = `Taruhan: ${formatNumber(betAmount)}`;
 
     // Date time
     const dateTime = response.timestamp;
@@ -279,9 +303,8 @@ export class HisotryPopupItem extends Container {
     const sign = response.multiplier === 0 ? "-" : "";
     const profitNumber =
       response.multiplier === 0 ? response.amount : response.total_win;
-    if (Number.isInteger(profitNumber))
-      this.profitText.text = `${sign}Rp ${formatIntNumber(profitNumber)}`;
-    else this.profitText.text = `${sign}Rp ${formatFloatNumber(profitNumber)}`;
+
+    this.profitText.text = `${sign}Rp ${formatNumber(profitNumber)}`;
 
     // Check status to fill color
     if (response.multiplier !== 0) this.profitText.style.fill = "#5FFF44";
@@ -289,12 +312,10 @@ export class HisotryPopupItem extends Container {
 
     // Multiplier
     const muliplier = response.multiplier;
-    if (Number.isInteger(muliplier))
-      this.multiplier.text = `Mult.${formatIntNumber(muliplier)}x`;
-    else this.multiplier.text = `Mult.${formatFloatNumber(muliplier)}x`;
+    this.multiplier.text = `Mult.${formatNumber(muliplier)}x`;
 
-    // Set board data
-    this.setBoard(mockHistoryDetailResponse);
+    // Set board data - Mock or Skip
+    // this.setBoard(null); // Skipping for now as we don't have mock data
   }
 
   private setBoard(response: HistoryDetailApiResponse) {
@@ -335,26 +356,21 @@ export class HisotryPopupItem extends Container {
     this.onItemVisibleChange?.(state as boolean);
 
     if (state) {
-      // Send request to get detail
-      this.updateLoadingTextVisible(true);
+      // Mock Data: Bypass API request
+      this.updateLoadingTextVisible(false); // Hide loading immediately
 
+      // You can just call setBoard with mock data if you want the grid
+      // this.setBoard(mockHistoryDetailResponse); 
+
+      // Or just ensure the container is ready (black lines were added in init)
+
+      /*
+      // API CALL COMMENTED OUT
       GameStateManager.getInstance().freezeGame();
       gameService
         .postHistoryDetail(this.betId.text)
-        .then((response: HistoryDetailApiResponse) => {
-          GameStateManager.getInstance().unFreezeGame();
-
-          if (response.data === null) {
-            GetErrorMessage.showApiErrorPopup(response.error);
-            return;
-          }
-
-          this.setBoard(response);
-          this.updateLoadingTextVisible(false);
-        })
-        .catch((error: any) => {
-          GetErrorMessage.showUnExpectedError(error);
-        });
+        .then((response: HistoryDetailApiResponse) => { ... })
+      */
     }
   }
 

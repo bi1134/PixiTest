@@ -1,6 +1,6 @@
 import { FancyButton } from "@pixi/ui";
 import gsap from "gsap";
-import { BitmapText, Container, Sprite, Texture } from "pixi.js";
+import { BitmapText, Container, NineSliceSprite, Sprite, Texture } from "pixi.js";
 import { buttonAnimation } from "../../ui/ButtonAnimations";
 import { PopupItemWrapper } from "./PopupItemWrapper";
 import { TopHistoryUI } from "./TopHistoryUI";
@@ -9,7 +9,7 @@ import { engine } from "../../getEngine";
 export class PopupHistoryUI extends Container {
   private closeBtn: FancyButton;
   private title: BitmapText;
-  private bg: Sprite;
+  private bg: NineSliceSprite;
   /** The dark semi-transparent background covering current screen */
   private dimmer: Sprite;
   /** Container for the popup UI components */
@@ -43,7 +43,15 @@ export class PopupHistoryUI extends Container {
     this.panel = new Container();
     this.addChild(this.panel);
 
-    this.bg = Sprite.from("bg-history-popup.png");
+    this.bg = new NineSliceSprite({
+      texture: Texture.from("bg-history-popup.png"),
+      leftWidth: 60,
+      topHeight: 80,
+      rightWidth: 60,
+      bottomHeight: 36,
+    });
+    this.bg.width = 750;
+    this.bg.height = 1200;
 
     this.title = new BitmapText({
       text: "HISTORY",
@@ -68,8 +76,8 @@ export class PopupHistoryUI extends Container {
       this.onHistoryPopupClosed?.();
     });
     this.closeBtn.position.set(
-      this.bg.width - this.closeBtn.width / 2 - 10,
-      this.title.y,
+      this.bg.width - this.closeBtn.width / 2 - 5,
+      this.title.y + 10,
     );
 
     this.topHistoryUI = new TopHistoryUI();
@@ -79,12 +87,19 @@ export class PopupHistoryUI extends Container {
     );
     this.topHistoryUI.onDayOffsetChange = this.onDayOffsetChange.bind(this);
 
-    this.popupItemsWrapper = new PopupItemWrapper();
+    const bgW = this.bg.width > 100 ? this.bg.width : 750;
+    const bgH = this.bg.height > 100 ? this.bg.height : 1334;
+
+    const startY = this.topHistoryUI.y + this.topHistoryUI.height + 10;
+    const wrapperWidth = bgW - 50; // 25 px padding on each side
+    const wrapperHeight = bgH - startY - 40;
+
+    this.popupItemsWrapper = new PopupItemWrapper(wrapperWidth, wrapperHeight);
     this.popupItemsWrapper.onHistoryLoaded = this.onHistoryLoaded.bind(this);
 
     //#region Initial content
     this.popupItemsWrapper.position.set(
-      35,
+      (bgW - wrapperWidth) / 2,
       this.topHistoryUI.y + this.topHistoryUI.height + 10,
     );
     //#endregion
@@ -173,12 +188,22 @@ export class PopupHistoryUI extends Container {
   }
 
   public async show() {
+    const { width, height } = engine().renderer.screen;
+    // Calculate scale to fit 90% of screen width AND height, capped at 0.85
+    const contentWidth = this.bg.width || 750;
+    const contentHeight = this.bg.height || 1200;
+
+    const scaleX = (width * 0.9) / contentWidth;
+    const scaleY = (height * 0.9) / contentHeight;
+
+    const targetScale = Math.min(0.85, scaleX, scaleY);
+
     this.visible = true;
     this.updateLoadingTextVisible(true);
     this.popupItemsWrapper.initItems();
 
     this.dimmer.alpha = 0;
-    this.panel.scale.set(0.5);
+    this.panel.scale.set(targetScale * 0.5); // Start at half the target size
     this.panel.alpha = 0;
 
     // Dimmer fade in
@@ -196,9 +221,9 @@ export class PopupHistoryUI extends Container {
     });
 
     await gsap.to(this.panel.scale, {
-      x: 1,
-      y: 1,
-      duration: 0.3,
+      x: targetScale,
+      y: targetScale,
+      duration: 0.2,
       ease: "back.out",
     });
   }
@@ -209,7 +234,7 @@ export class PopupHistoryUI extends Container {
       x: 0.5,
       y: 0.5,
       duration: 0.2,
-      ease: "back.in",
+      ease: "back.in(1.7)",
     });
 
     gsap.to(this.panel, {
@@ -221,13 +246,12 @@ export class PopupHistoryUI extends Container {
     await gsap.to(this.dimmer, {
       alpha: 0,
       duration: 0.2,
-      onComplete: () => {
-        this.visible = false;
-        this.popupItemsWrapper.close();
-        this.topHistoryUI.reset();
-        this.updateLoadingTextVisible(false);
-        this.noHistoryContainer.visible = false;
-      },
     });
+
+    this.visible = false;
+    this.popupItemsWrapper.close();
+    this.topHistoryUI.reset();
+    this.updateLoadingTextVisible(false);
+    this.noHistoryContainer.visible = false;
   }
 }

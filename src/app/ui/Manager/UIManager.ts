@@ -2,14 +2,14 @@
 import { Container } from "pixi.js";
 import { engine } from "../../getEngine";
 import { ResultPopup } from "../../popups/ResultPopup";
-import { HistoryPopup } from "../../popups/HistoryPop";
+import { PopupHistoryUI } from "../../popups/History/PopupHistoryUI";
 import { GameRulePopup } from "../../popups/GameRulePopup";
 
 export class UIManager {
   private static _instance: UIManager;
 
   // Prevent external construction
-  private constructor() {}
+  private constructor() { }
 
   /** Access the singleton instance */
   public static get instance(): UIManager {
@@ -26,7 +26,7 @@ export class UIManager {
 
   /** Show the history popup */
   public showHistory() {
-    engine().navigation.presentPopup(HistoryPopup);
+    engine().navigation.presentPopup(PopupHistoryUI);
   }
 
   /** Show the game rule popup */

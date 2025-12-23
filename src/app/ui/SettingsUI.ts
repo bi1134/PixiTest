@@ -17,8 +17,6 @@ export class SettingsUI extends Container {
   private settingText: BitmapText;
   public bgSetting: Sprite;
 
-  public openGameRule?: () => void;
-  public openHistoryPopup?: () => void;
 
   constructor() {
     super();
@@ -89,8 +87,7 @@ export class SettingsUI extends Container {
     });
     this.questionMark.visible = false;
     this.questionMark.onChange.connect(() => {
-      this.openGameRule?.();
-      this.settingsSwitcher.switch(0);
+      UI.showGameRule();
     });
 
     this.addChild(

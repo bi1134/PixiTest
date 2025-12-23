@@ -79,7 +79,7 @@ export class NextScreenMobile extends Container {
 
   private SkipButton() {
     this.EvaluateGuess(GuessAction.Skip);
-    navigator.vibrate(100);
+    this.vibratePhone(100);
   }
 
   private HalfButton() {
@@ -142,7 +142,7 @@ export class NextScreenMobile extends Container {
       GameData.instance.addRoundResult(0, false, lostAmount);
       this.layout.gameHistory.addResult(0, false);
       this.layout.moneyLabel.text = `Balance: $${GameData.instance.totalMoney.toFixed(2)}`;
-
+      this.vibratePhone(200);
       this.EnterBettingState();
     }
     // Skip does nothing extra beyond setting card (already done)
@@ -379,5 +379,9 @@ export class NextScreenMobile extends Container {
   private enableButton(button: any) {
     button.interactive = true;
     button.alpha = 1;
+  }
+
+  private vibratePhone(power: number = 100) {
+    navigator.vibrate(power);
   }
 }

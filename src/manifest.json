@@ -1159,6 +1159,23 @@
         },
         {
           "alias": [
+            "main/history/popup/expand-button.png",
+            "expand-button.png"
+          ],
+          "src": [
+            "main/history/popup/expand-button@0.5x.webp",
+            "main/history/popup/expand-button@0.5x.png",
+            "main/history/popup/expand-button.webp",
+            "main/history/popup/expand-button.png"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
             "main/history/UI-bg-chart-lv-1.png",
             "UI-bg-chart-lv-1.png"
           ],

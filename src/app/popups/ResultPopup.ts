@@ -1,9 +1,9 @@
-import { BlurFilter, Container, Sprite, Texture, Graphics } from "pixi.js";
+import { Container, Sprite, Texture, Graphics } from "pixi.js";
 import { gsap } from "gsap/gsap-core"; // Using GSAP directly
 import { engine } from "../getEngine";
-import { Button } from "../ui/Button";
 import { Label } from "../ui/Label";
 import { RoundedBox } from "../ui/RoundedBox";
+import { FancyButton } from "@pixi/ui";
 
 /** Popup that shows up when gameplay is paused */
 export class ResultPopup extends Container {
@@ -18,6 +18,8 @@ export class ResultPopup extends Container {
 
   private resultLabel: Label;
   private resultBackground: Sprite | Graphics;
+
+  private invisButton: FancyButton;
 
   constructor() {
     super();
@@ -123,15 +125,24 @@ export class ResultPopup extends Container {
       this.resultBackground.x + this.resultBackground.width / 2;
     this.resultLabel.y =
       this.resultBackground.y + this.resultBackground.height / 2;
+
+    this.invisButton = new FancyButton({
+      defaultView: "rounded-rectangle.png",
+      anchor: 0.5,
+      width: this.resultBackground.width,
+      height: this.resultBackground.height,
+    });
+    this.invisButton.alpha = 0;
+    this.invisButton.width = width;
+    this.invisButton.height = height;
+    this.invisButton.x = width / 2;
+    this.invisButton.y = height / 2;
+    this.addChild(this.invisButton);
+    this.invisButton.onPress.connect(() => engine().navigation.dismissPopup());
   }
 
   public async show() {
-    const currentEngine = engine();
-    if (currentEngine.navigation.currentScreen) {
-      currentEngine.navigation.currentScreen.filters = [
-        new BlurFilter({ strength: 5 }),
-      ];
-    }
+
 
     // Initial State
     this.bg.alpha = 0;
@@ -161,10 +172,7 @@ export class ResultPopup extends Container {
 
   /** Dismiss the popup, animated */
   public async hide() {
-    const currentEngine = engine();
-    if (currentEngine.navigation.currentScreen) {
-      currentEngine.navigation.currentScreen.filters = [];
-    }
+
 
     // --- Panel "pop out" / shrink away ---
     await gsap.to(this.panel.scale, {

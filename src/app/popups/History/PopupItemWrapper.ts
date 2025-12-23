@@ -1,10 +1,6 @@
 import gsap from "gsap";
 import { Container, FederatedPointerEvent, Graphics } from "pixi.js";
-import { gameService } from "../../../api/services/GameService";
 import { HisotryPopupItem } from "./HistoryPopupItem";
-import { GameStateManager } from "../../../manage_game_states/GameStateManager";
-import { GetErrorMessage } from "../../../api/GetErrorMessage";
-import { HistoryApiResponse } from "../../../api/models/HistoryResponse";
 
 export class PopupItemWrapper extends Container {
   private readonly ITEM_OFFSET = 5;
@@ -25,13 +21,17 @@ export class PopupItemWrapper extends Container {
   private isLoading = false;
   private currentDayOffset = 0;
 
+  private listWidth = 600;
+
   public onHistoryLoaded?: (hasHistory: boolean) => void;
 
-  constructor() {
+  constructor(validWidth: number, validHeight: number) {
     super();
 
+    this.listWidth = validWidth;
+
     this.maskHistory = new Graphics()
-      .rect(0, 0, 654, 1100)
+      .rect(0, 0, 1000, validHeight)
       .fill({ color: "black", alpha: 0.5 });
     this.addChild(this.maskHistory);
     this.hitArea = this.maskHistory.getBounds().rectangle;
@@ -91,32 +91,30 @@ export class PopupItemWrapper extends Container {
     await this.loadPage(this.currentPage, this.currentDayOffset);
   }
 
-  private async loadPage(page: number, dayOffset: number) {
+  private async loadPage(page: number, _dayOffset: number) {
     if (this.isLoading) return;
 
     this.isLoading = true;
-    GameStateManager.getInstance().freezeGame();
 
     try {
-      const response: HistoryApiResponse = await gameService.postHistory(
-        page,
-        dayOffset,
-      );
-      GameStateManager.getInstance().unFreezeGame();
+      // Mock Response Structure
+      const mockDataLength = 20;
+      const mockData = Array(mockDataLength).fill(null).map((_, idx) => ({
+        bet_id: "preview_id_" + idx,
+        amount: (idx + 1) * 1000,
+        timestamp: new Date().toISOString(),
+        multiplier: idx % 2 === 0 ? 2.5 : 0,
+        total_win: idx % 2 === 0 ? (idx + 1) * 2500 : 0,
+        status: idx % 2 === 0 ? 1 : 0
+      }));
 
-      if (response.data === null) {
-        GetErrorMessage.showApiErrorPopup(response.error);
-        this.isLoading = false;
-        return;
-      }
-
-      // Update pagination info
-      this.currentPage = response.current_page;
-      this.totalPages = response.total_page;
+      // Update pagination info (Mock)
+      this.currentPage = page;
+      this.totalPages = 1; // Single page for preview
 
       // Only trigger callback on first load
       if (page === 1) {
-        this.onHistoryLoaded?.(response.data.length !== 0);
+        this.onHistoryLoaded?.(true);
       }
 
       // Get the current total height before adding new items
@@ -127,9 +125,9 @@ export class PopupItemWrapper extends Container {
       }
 
       // Add new items
-      for (let i = 0; i < response.data.length; i++) {
-        const historyPopupItem = new HisotryPopupItem();
-        historyPopupItem.setHistoryDetailData(response.data[i]);
+      for (let i = 0; i < mockData.length; i++) {
+        const historyPopupItem = new HisotryPopupItem(this.listWidth);
+        historyPopupItem.setHistoryDetailData(mockData[i]);
 
         historyPopupItem.y =
           startY + i * (this.ITEM_OFFSET + historyPopupItem.height);
@@ -143,8 +141,7 @@ export class PopupItemWrapper extends Container {
       // Calculate scroll bounds
       this.updateScrollBounds();
     } catch (error: any) {
-      GameStateManager.getInstance().unFreezeGame();
-      GetErrorMessage.showUnExpectedError(error);
+      console.error("Error loading mock history page:", error);
     } finally {
       this.isLoading = false;
     }
