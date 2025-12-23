@@ -307,14 +307,12 @@ export class MobileLayout extends Container {
 
     // --- Input Container (History Box) ---
 
-    const historyStartY = height / 2 + padding * 13;
     const containerW = width * 0.9;
     const innerWidth = containerW;
 
     // --- 1. History List ---
     let currentY = padding * 2; // Top padding
     const inputBoxHeight = 155;
-    const historyHeight = inputBoxHeight * 1.5;
 
     this.cardHistoryLayout.resize(this.currentCard.width / 2, this.currentCard.height * cardScale / 1.1);
     this.cardHistoryLayout.x = (innerWidth - innerWidth * 0.95) / 2;
@@ -322,7 +320,7 @@ export class MobileLayout extends Container {
     this.cardHistoryLayout.pushBackPadding = 100;
 
 
-    currentY += historyHeight + padding; // Spacing after history
+    currentY += padding; // Spacing after history
 
     // --- 2. Input Box ---
     const inputW = innerWidth * 0.95;
@@ -367,10 +365,6 @@ export class MobileLayout extends Container {
       .rect(0, 0, containerW, currentY)
       .fill({ color: 0x000000, alpha: 0.3 });
 
-    // Position the whole container
-    this.inputContainer.x = (width - containerW) / 2;
-    this.inputContainer.y = historyStartY;
-
     // Ensure visibility
     this.moneyLabel.visible = true;
     this.inputBox.visible = true;
@@ -382,6 +376,11 @@ export class MobileLayout extends Container {
     // Resize history container properly to avoid scaling distortion
     this.gameHistory.resize(width, 70);
 
+    // Position the whole container
+    const historyStartY = this.betButton.y - this.betButton.height / 2 - currentY - padding;
+
+    this.inputContainer.x = (width - containerW) / 2;
+    this.inputContainer.y = historyStartY;
     // --- Settings UI & Speed Button ---
     // Settings UI
     LayoutHelper.scaleToHeight(this.settingsUI, this.betButton.height);
