@@ -9,36 +9,59 @@ import { GuessAction } from "../types/GameTypes";
  * Uses `@pixi/ui` List for stable layout management and robust animation handling
  * to prevent race conditions during rapid updates ("speed runs").
  */
+export type CardHistoryDirection = 'ltr' | 'rtl' | 'ttb' | 'btt';
+
+export interface CardHistoryLayoutOptions {
+  type?: 'horizontal' | 'vertical'; // default horizontal
+  direction?: CardHistoryDirection; // default depends on type. Horizontal: ltr. Vertical: ttb/btt
+}
+
 export class CardHistoryLayout extends Container {
   private cardsHistoryBackground!: Graphics;
   private cardsHistoryMask!: Graphics;
   public list!: List;
   public listYOffset: number = 0;
+  public listXOffset: number = 0;
+  public pushBackPadding: number = 0; // Padding from bottom when scrolling up (overflow)
+
+  private options: CardHistoryLayoutOptions;
 
   private currentListScrollAnim: any = null; // Track full list scroll animation
 
   // We intentionally don't keep a separate array if List handles children,
   // but the user's logic might rely on access. We can access list.children.
 
-  constructor() {
+  constructor(options: CardHistoryLayoutOptions = {}) {
     super();
+    this.options = {
+      type: 'horizontal',
+      direction: 'ltr',
+      ...options
+    };
+    // Default vertical direction to btt (bottom-to-top) if not specified but type is vertical? 
+    // Actually standard List is 'vertical' -> TTB. 
+    // If user wants BTT, they might say direction: 'btt'.
+
     this.createLayout();
   }
 
   private createLayout() {
+    const listWidth = this.options.type === 'vertical' ? 150 : 300;
+    const listHeight = this.options.type === 'vertical' ? 300 : 150;
+
     // --- background box ---
     this.cardsHistoryBackground = new Graphics()
-      .rect(0, 0, 300, 150)
+      .rect(0, 0, listWidth, listHeight) // Default size based on orientation
       .fill("#3c3c3cff");
     this.addChild(this.cardsHistoryBackground);
 
     // --- create mask for the visible region ---
     this.cardsHistoryMask = new Graphics()
       .rect(
-        this.cardsHistoryBackground.x,
-        this.cardsHistoryBackground.y,
-        this.cardsHistoryBackground.width,
-        this.cardsHistoryBackground.height,
+        0,
+        0,
+        listWidth,
+        listHeight,
       )
       .fill(0xffffff); // fill color doesn't matter, mask only uses alpha
     this.addChild(this.cardsHistoryMask);
@@ -47,8 +70,8 @@ export class CardHistoryLayout extends Container {
 
     // --- Create List ---
     this.list = new List({
-      type: "horizontal",
-      elementsMargin: 0, // We'll handle spacing via item size or margin if needed
+      type: this.options.type ?? "horizontal",
+      elementsMargin: 0,
     });
 
     this.addChild(this.list);
@@ -61,34 +84,24 @@ export class CardHistoryLayout extends Container {
     padding: number = 8,
     gapMultipler: number = 1,
     _scrollMutiplier: number = 5,
+    itemScale?: number
   ) {
     // 1. Create New Item
     const item = new CardHistoryItem(value, suit, action);
 
+
     // 2. Resize ensures scale is correct for dimensions
-    item.ResizeToFit(this.cardsHistoryBackground.height, padding);
+    if (itemScale !== undefined) {
+      item.setBaseScale(itemScale);
+    }
     const finalScale = item.scale.x;
     const itemWidth = item.getLocalBounds().width * finalScale;
+    const itemHeight = item.getLocalBounds().height * finalScale; // Use bounds for animation offset
 
     // Set margin for the list
-    // PixiUI List doesn't seemingly support per-item margin easily in constructor unless uniform elementsMargin is used.
-    // But we can just rely on the layout.
-    // If we want "gap", we can set it on the List.
     this.list.elementsMargin = padding / gapMultipler;
 
     // 3. Add to List
-    // The user wants new items to appear.
-    // Previously: "Push from right to left". Newest was at "TargetX".
-    // If we use a horizontal list, items are added Left to Right usually.
-    // If we want Right to Left (History), we typically prepend?
-    // Or we append and scroll?
-    // Let's assume standard appending for now, but usually history shows [Old] [New] ->
-    // Or [New] [Old] <- ?
-    // Based on previous code: `targetX` increased as list grew.
-    // So it was: [Item 1] [Item 2] [Item 3].
-    // Then if it overflowed, everything shifted LEFT.
-    // So the "View" is a window over the end of the list.
-
     this.list.addChild(item); // Adds to end
 
     // 4. Trigger Item Entry Animations
@@ -113,27 +126,27 @@ export class CardHistoryLayout extends Container {
     item.trackAnimation(animScale as any);
 
     // "Fake Position" Slide In
-    // Slides the inner visuals from an offset (width + 20px) to 0.
-    // This creates a "slide in" feel without fighting the List's layout positioning.
-    const slideOffset = itemWidth + 20;
-    item.animateEntry(slideOffset, 0.3);
+    let slideOffset = 0;
+    if (this.options.type === 'vertical') {
+      // Slide in from bottom
+      slideOffset = itemHeight + 20;
+      item.animateEntry(slideOffset, 0.3);
+    } else {
+      slideOffset = itemWidth + 20;
+      item.animateEntry(slideOffset, 0.3);
+    }
 
-    // 5. Build Scroll / Overflow logic ("Push Back")
-    this.list.y =
-      this.cardsHistoryBackground.height / 2 - item.heightScaled / 2 + this.listYOffset; // Approximate centering
+    // 5. Build Scroll / Overflow logic ("Push Back" / "Push Up")
 
     // Calculate needed scroll position to keep the new item visible.
-    // We use requestAnimationFrame to ensure we read the List's width AFTER PixiUI has updated the layout.
+    // We use requestAnimationFrame to ensure we read the List's dimensions AFTER PixiUI has updated the layout.
     requestAnimationFrame(() => {
       if (this.destroyed) return;
 
       const listWidth = this.list.width;
+      const listHeight = this.list.height;
       const visibleWidth = this.cardsHistoryBackground.width;
-      const desiredX = visibleWidth - listWidth - padding;
-
-      // If list is smaller than visible container, stick to left padding.
-      // If larger, align right (equivalent to "scrolling" to the end).
-      const finalX = Math.min(padding, desiredX);
+      const visibleHeight = this.cardsHistoryBackground.height;
 
       // Stop previous scroll animation if any to prevent fighting
       if (this.currentListScrollAnim) {
@@ -141,12 +154,44 @@ export class CardHistoryLayout extends Container {
         this.currentListScrollAnim = null;
       }
 
-      // Smoothly animate the List container to the new position
-      this.currentListScrollAnim = gsap.to(this.list, {
-        x: finalX,
-        duration: 0.3,
-        ease: "back.out",
-      });
+      if (this.options.type === 'vertical') {
+        // Vertical Logic
+        let finalY = padding;
+
+        // Check for Overflow
+        if (listHeight + padding * 2 <= visibleHeight) {
+          finalY = padding; // Align Top
+        } else {
+          // Align Bottom / Scroll Up
+          finalY = visibleHeight - listHeight - this.pushBackPadding;
+        }
+
+        this.currentListScrollAnim = gsap.to(this.list, {
+          y: finalY + this.listYOffset,
+          duration: 0.3,
+          ease: "back.out",
+        });
+
+        // Center X logic for vertical list
+        // Use itemWidth instead of list.width because list.width might fluctuate due to entry animations (sliding in from X).
+        this.list.x = visibleWidth / 2 - itemWidth / 2 + this.listXOffset;
+
+      } else {
+        // Horizontal Logic (unchanged mostly)
+        // Use itemHeight (target height) instead of item.heightScaled (current animating height) to prevent jumping
+        this.list.y =
+          visibleHeight / 2 - itemHeight / 2 + this.listYOffset; // Approximate centering
+
+        const desiredX = visibleWidth - listWidth - padding;
+        // Use direction options if strictly needed, but assuming RTL push behavior for horizontal
+        const finalX = Math.min(padding, desiredX);
+
+        this.currentListScrollAnim = gsap.to(this.list, {
+          x: finalX + this.listXOffset,
+          duration: 0.3,
+          ease: "back.out",
+        });
+      }
     });
   }
 
@@ -162,7 +207,8 @@ export class CardHistoryLayout extends Container {
 
     // Remove from display list immediately to prevent weird state
     this.list.removeChildren();
-    this.list.x = 0; // Reset scroll
+    this.list.x = 0 + this.listXOffset; // Reset scroll with offset
+    this.list.y = 0 + this.listYOffset; // Reset scroll with offset
 
     // Safely destroy children
     for (const child of children) {
@@ -172,22 +218,51 @@ export class CardHistoryLayout extends Container {
     }
   }
 
+  public setSize(width: number, height: number) {
+    this.resize(width, height);
+  }
+
   public resize(width: number, height: number, _padding?: number) {
+    const padding = _padding ?? 0;
+
     // --- Resize and position background ---
-    this.cardsHistoryBackground.setSize(width, height);
+    // Use clear+rect to ensure correct resizing without weird scaling artifacts
+    this.cardsHistoryBackground.clear().rect(0, 0, width, height).fill("#3c3c3cff");
 
     // --- Update mask to match background ---
     this.cardsHistoryMask
       .clear()
       .rect(
-        this.cardsHistoryBackground.x,
-        this.cardsHistoryBackground.y,
-        this.cardsHistoryBackground.width,
-        this.cardsHistoryBackground.height,
+        0,
+        0,
+        width,
+        height,
       )
       .fill(0xffffff);
+    // Explicitly update hitArea or mask logic if needed, but Graphics mask works by geometry.
 
-    // Keep list vertically centered roughly
-    this.list.y = height / 2 - 30 + this.listYOffset; // Approx
+    if (this.options.type === 'vertical') {
+      // For vertical:
+      // 1. Center X
+      this.list.x = width / 2 - this.list.width / 2 + this.listXOffset;
+
+      // 2. Align Vertical
+      let finalY = padding; // Default top alignment
+
+      const contentHeight = this.list.height; // approximate content height
+
+      // If content fits within visible height, align top.
+      // If content exceeds visible height, align bottom to match "push up" behavior.
+      if (contentHeight + padding * 2 <= height) {
+        finalY = padding; // Start from top
+      } else {
+        // Overflow: Scroll to bottom (show newest items at bottom)
+        // y = maxY = height - listHeight - padding
+        finalY = height - contentHeight - this.pushBackPadding;
+      }
+
+      this.list.y = finalY + this.listYOffset;
+    } else {
+    }
   }
 }

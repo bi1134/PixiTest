@@ -32,7 +32,6 @@ export class NextScreenMobile extends Container {
     this.EnterBettingState();
 
     this.resize(width, height);
-
     // Sync initial UI
     this.layout.moneyLabel.text = `Balance: $${GameData.instance.totalMoney.toFixed(2)}`;
 
@@ -80,6 +79,7 @@ export class NextScreenMobile extends Container {
 
   private SkipButton() {
     this.EvaluateGuess(GuessAction.Skip);
+    navigator.vibrate(100);
   }
 
   private HalfButton() {
@@ -153,7 +153,9 @@ export class NextScreenMobile extends Container {
       this.layout.currentCard.suit,
       action,
       8,
-      4,
+      0.5,
+      1,
+      1
     );
     this.updateButtonLabels();
 
@@ -187,6 +189,12 @@ export class NextScreenMobile extends Container {
     if (this.layout.currentCard.parent !== this.layout.cardsContainer) {
       this.layout.cardsContainer.addChild(this.layout.currentCard);
     }
+
+    // Ensure fancySkipButton is on top
+    this.layout.cardsContainer.setChildIndex(
+      this.layout.fancySkipButton,
+      this.layout.cardsContainer.children.length - 1
+    );
 
     // --- randomize the starting card (rank + suit) ---
     this.layout.currentCard.RandomizeValue();
@@ -290,8 +298,6 @@ export class NextScreenMobile extends Container {
       this.background = new Graphics();
       this.addChildAt(this.background, 0); // Add at bottom
 
-      //offset change for the card fit within the box
-      this.layout.cardHistoryLayout.listYOffset = -20;
     }
 
     // 1. Calculate safe area scale

@@ -1,5 +1,5 @@
 import { BitmapText, Container, Graphics, Sprite } from "pixi.js";
-import { BitmapLabel } from "../ui/BitmapLabel";
+
 import { GuessAction } from "../screens/next/types/GameTypes";
 import { gsap } from "gsap";
 
@@ -71,6 +71,8 @@ export class CardHistoryItem extends Container {
       },
     });
     this.innerContainer.addChild(this.multiplierTextLabel);
+
+    this.updateLayout(4);
   }
 
   //guess enum to icon texture name
@@ -96,8 +98,7 @@ export class CardHistoryItem extends Container {
     }
   }
 
-  /** Resize this item so it fits the history background height minus padding */
-  public ResizeToFit(maxHeight: number, padding: number) {
+  public updateLayout(padding: number = 4) {
     // --- Layout internal parts relative to this item’s origin ---
     this.multiplierBackground.width = this.cardSprite.width;
     this.multiplierBackground.height = this.cardSprite.height * 0.2;
@@ -115,24 +116,21 @@ export class CardHistoryItem extends Container {
       padding / 2;
     this.multiplierTextLabel.y =
       this.multiplierBackground.y + this.multiplierBackground.height / 2;
-
-    // --- Scale whole thing to fit background height ---
-    const totalHeight =
-      this.cardSprite.height + this.multiplierBackground.height + padding * 2;
-    const scale = (maxHeight - padding) / totalHeight;
-    this.scale.set(scale);
   }
 
-  // --- expose scaled width & height ---
   public get widthScaled(): number {
-    return this.cardSprite.width * this.cardSprite.scale.x;
+    return this.cardSprite.width * this.scale.x;
   }
 
   public get heightScaled(): number {
     return (
-      this.cardSprite.height * this.cardSprite.scale.y +
-      this.multiplierBackground.height
+      (this.cardSprite.height + this.multiplierBackground.height + 20) * this.scale.y
+      // Approximation of total visual height including multiplier and padding
     );
+  }
+
+  public setBaseScale(scale: number) {
+    this.scale.set(scale);
   }
 
   // Track active animations so we can stop them on destroy

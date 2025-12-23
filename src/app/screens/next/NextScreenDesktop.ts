@@ -254,7 +254,6 @@ export class NextScreenDesktop extends Container {
         // fancy layout needs to be positioned
         this.fancy.x = sidebarWidth;
         this.fancy.resize(width - sidebarWidth, height, padding);
-        this.fancy.cardHistoryLayout.listYOffset = -25;
 
         this.backButton.x = 100;
         this.backButton.y = height - 50;

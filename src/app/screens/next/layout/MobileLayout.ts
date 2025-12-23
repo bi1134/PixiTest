@@ -1,5 +1,5 @@
 import { FancyButton } from "@pixi/ui";
-import { Container, Graphics, setPositions, Sprite } from "pixi.js";
+import { Container, Graphics, Sprite } from "pixi.js";
 import { BitmapLabel } from "../../../ui/BitmapLabel";
 import { Card } from "../../../ui/Card";
 import { LayoutHelper } from "../../../utils/LayoutHelper";
@@ -38,8 +38,8 @@ export class MobileLayout extends Container {
   public inputDefaultValue: number = 0.02;
   public betButton!: CustomButton;
 
-  public halfValueButton: CustomButton;
-  public doubleValueButton: CustomButton;
+  public halfValueButton!: CustomButton;
+  public doubleValueButton!: CustomButton;
 
   public settingsUI!: SettingsUI;
   public speedButton!: SpeedButton;
@@ -66,7 +66,7 @@ export class MobileLayout extends Container {
     this.cardsContainer.addChild(this.backCard);
 
     this.cardPlaceHolder = Sprite.from("opened-card-area.png");
-    this.cardsContainer.addChild(this.cardPlaceHolder);
+    //this.cardsContainer.addChild(this.cardPlaceHolder);
 
     // --- create the buttons ---
     this.upButton = new FancyButton({ defaultView: "high.png" });
@@ -134,9 +134,12 @@ export class MobileLayout extends Container {
     this.inputContainerBg = new Graphics(); // Size set in resize
     this.inputContainer.addChild(this.inputContainerBg);
 
-    this.cardHistoryLayout = new CardHistoryLayout();
+    this.cardHistoryLayout = new CardHistoryLayout({
+      type: 'vertical',
+      direction: 'btt'
+    });
     // Add to inputContainer instead of fancyBoxContainer
-    this.inputContainer.addChild(this.cardHistoryLayout);
+    this.cardsContainer.addChild(this.cardHistoryLayout);
 
     // --- Mobile Specifics: Money Label & Input ---
     this.moneyLabel = new BitmapLabel({
@@ -232,17 +235,11 @@ export class MobileLayout extends Container {
     const footerY = height - this.betButton.height / 2 - padding * 6;
     this.betButton.y = footerY;
 
-    // Skip Button (Left)
-    if (this.fancySkipButton.width !== footerBtnWidth)
-      LayoutHelper.scaleToWidth(this.fancySkipButton, footerBtnWidth, false);
-    this.fancySkipButton.x = this.betButton.x;
-    this.fancySkipButton.y = footerY - this.betButton.height / 1.5;
-
     // --- Available Space (Main Game Area) ---
     // Back Card
     LayoutHelper.setPositionX(
       this.backCard,
-      (width - this.backCard.width) / 2 + padding * 13,
+      (width - this.backCard.width) / 2 - padding * 3,
     );
     LayoutHelper.setPositionX(
       this.cardPlaceHolder,
@@ -255,11 +252,19 @@ export class MobileLayout extends Container {
     this.cardPlaceHolder.scale.set(cardScale);
     this.currentCard.setBaseScale(cardScale);
     this.backCard.y =
-      (this.backCard.height * this.backCard.scale.y) / 2 - padding * 25;
+      (this.backCard.height * this.backCard.scale.y) / 2 - padding * 30;
     this.cardPlaceHolder.y = this.backCard.y;
 
     this.currentCard.x = this.backCard.x + this.backCard.width / 2;
     this.currentCard.y = this.backCard.y + this.backCard.height / 2;
+
+    // Skip Button (Left)
+    if (this.fancySkipButton.width !== footerBtnWidth)
+      LayoutHelper.scaleToWidth(this.fancySkipButton, footerBtnWidth, false);
+    this.fancySkipButton.x = this.backCard.x + this.backCard.width / 2;
+    this.fancySkipButton.y = this.backCard.y + this.backCard.height;
+    // Ensure skip button is always on top
+    this.cardsContainer.addChild(this.fancySkipButton);
 
     // Hi/Lo Buttons
 
@@ -269,18 +274,15 @@ export class MobileLayout extends Container {
     this.downButton.scale.set(buttonScale);
 
     const btnY =
-      this.backCard.y +
-      (this.backCard.height * this.backCard.scale.y) / 2 -
-      padding * 15;
-    this.upButton.y = btnY;
-    this.downButton.y = btnY;
+      this.backCard.y + this.backCard.height / 2 - this.upButton.height / 2;
+    this.upButton.y = btnY - this.upButton.height / 2 - padding;
+    this.downButton.y = btnY + this.downButton.height / 2 + padding;
 
-    this.upButton.x =
-      this.cardPlaceHolder.x +
-      this.cardPlaceHolder.width / 2 -
-      this.upButton.width / 2;
-    this.downButton.x =
-      this.backCard.x + this.backCard.width / 2 - this.downButton.width / 2;
+    const btnX =
+      this.backCard.x + this.backCard.width / 2 + this.upButton.width;
+
+    this.upButton.x = btnX;
+    this.downButton.x = btnX;
 
     this.highDes.x = this.upButton.x + this.upButton.width / 2;
     this.lowDes.x = this.downButton.x + this.downButton.width / 2;
@@ -305,7 +307,7 @@ export class MobileLayout extends Container {
 
     // --- Input Container (History Box) ---
 
-    const historyStartY = this.upButton.y + this.upButton.height + padding * 2;
+    const historyStartY = height / 2 + padding * 13;
     const containerW = width * 0.9;
     const innerWidth = containerW;
 
@@ -314,9 +316,11 @@ export class MobileLayout extends Container {
     const inputBoxHeight = 155;
     const historyHeight = inputBoxHeight * 1.5;
 
-    this.cardHistoryLayout.resize(innerWidth * 0.95, historyHeight);
+    this.cardHistoryLayout.resize(this.currentCard.width / 2, this.currentCard.height * cardScale / 1.1);
     this.cardHistoryLayout.x = (innerWidth - innerWidth * 0.95) / 2;
-    this.cardHistoryLayout.y = currentY;
+    this.cardHistoryLayout.y = this.currentCard.y - this.currentCard.height / 2 - padding * 7; //match on the side of the card
+    this.cardHistoryLayout.pushBackPadding = 100;
+
 
     currentY += historyHeight + padding; // Spacing after history
 
