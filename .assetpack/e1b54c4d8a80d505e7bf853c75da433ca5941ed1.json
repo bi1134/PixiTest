@@ -6968,6 +6968,111 @@
             },
             "transformData": {}
         },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/expand-button.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1766487830678,
+                "duration": 361.44799999985844,
+                "success": true
+            },
+            "hash": "NQUN"
+        },
+        ".assetpack/mipmap/main{m}/history/popup/expand-button.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/expand-button.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/expand-button.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/expand-button.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/expand-button.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/expand-button.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/expand-button.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/expand-button.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/expand-button.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/expand-button.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/mipmap/main{m}/history/popup/expand-button@0.5x.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/expand-button.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/expand-button@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/expand-button@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/expand-button@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/expand-button@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/history/popup/expand-button@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/history/popup/expand-button@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/history/popup/expand-button@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/history/popup/expand-button@0.5x.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
         "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/next-button-off.png": {
             "isFolder": false,
             "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup",
@@ -7172,111 +7277,6 @@
         "E:/PixiJS/PixiTest/public/assets/main/history/popup/next-button-on@0.5x.webp": {
             "isFolder": false,
             "transformParent": ".assetpack/compress/main{m}/history/popup/next-button-on@0.5x.webp",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/expand-button.png": {
-            "isFolder": false,
-            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {},
-            "stats": {
-                "date": 1766487830678,
-                "duration": 361.44799999985844,
-                "success": true
-            },
-            "hash": "NQUN"
-        },
-        ".assetpack/mipmap/main{m}/history/popup/expand-button.png": {
-            "isFolder": false,
-            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/expand-button.png",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        ".assetpack/compress/main{m}/history/popup/expand-button.png": {
-            "isFolder": false,
-            "transformParent": ".assetpack/mipmap/main{m}/history/popup/expand-button.png",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        "E:/PixiJS/PixiTest/public/assets/main/history/popup/expand-button.png": {
-            "isFolder": false,
-            "transformParent": ".assetpack/compress/main{m}/history/popup/expand-button.png",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        ".assetpack/compress/main{m}/history/popup/expand-button.webp": {
-            "isFolder": false,
-            "transformParent": ".assetpack/mipmap/main{m}/history/popup/expand-button.png",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        "E:/PixiJS/PixiTest/public/assets/main/history/popup/expand-button.webp": {
-            "isFolder": false,
-            "transformParent": ".assetpack/compress/main{m}/history/popup/expand-button.webp",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        ".assetpack/mipmap/main{m}/history/popup/expand-button@0.5x.png": {
-            "isFolder": false,
-            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/history/popup/expand-button.png",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        ".assetpack/compress/main{m}/history/popup/expand-button@0.5x.png": {
-            "isFolder": false,
-            "transformParent": ".assetpack/mipmap/main{m}/history/popup/expand-button@0.5x.png",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        "E:/PixiJS/PixiTest/public/assets/main/history/popup/expand-button@0.5x.png": {
-            "isFolder": false,
-            "transformParent": ".assetpack/compress/main{m}/history/popup/expand-button@0.5x.png",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        ".assetpack/compress/main{m}/history/popup/expand-button@0.5x.webp": {
-            "isFolder": false,
-            "transformParent": ".assetpack/mipmap/main{m}/history/popup/expand-button@0.5x.png",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        "E:/PixiJS/PixiTest/public/assets/main/history/popup/expand-button@0.5x.webp": {
-            "isFolder": false,
-            "transformParent": ".assetpack/compress/main{m}/history/popup/expand-button@0.5x.webp",
             "metaData": {},
             "inheritedMetaData": {
                 "m": true

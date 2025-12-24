@@ -53,6 +53,12 @@ export class NextScreenMobile extends Container {
       if (this.betButtonIsCashOut()) {
         this.CashOut();
       } else {
+        const currentBet = parseFloat(this.layout.inputBox.value);
+        if (currentBet > GameData.instance.totalMoney) {
+          this.vibratePhone(100);
+          return;
+        }
+
         this.EnterNonBettingState();
       }
     });
@@ -85,29 +91,66 @@ export class NextScreenMobile extends Container {
   private HalfButton() {
     const currentValue = parseFloat(this.layout.inputBox.value);
     if (currentValue <= this.layout.inputDefaultValue) {
-      this.layout.inputBox.value = "0";
+      this.layout.inputBox.value = this.layout.inputDefaultValue.toString();
     } else {
-      this.layout.inputBox.value = (currentValue / 2).toString();
+      const half = currentValue / 2;
+      this.layout.inputBox.value = parseFloat(half.toFixed(2)).toString();
     }
   }
 
   private DoubleButton() {
-    const currentValue = parseFloat(this.layout.inputBox.value);
-    this.layout.inputBox.value = (currentValue * 2).toString();
+    let currentValue = parseFloat(this.layout.inputBox.value);
+
+    currentValue *= 2;
+
+    const maxMoney = GameData.instance.totalMoney;
+    if (currentValue > maxMoney) {
+      currentValue = maxMoney;
+    }
+
+    this.layout.inputBox.value = parseFloat(currentValue.toFixed(2)).toString();
   }
 
   // Helper to update UI labels based on current card
   private updateButtonLabels() {
     const rank = this.layout.currentCard.rank;
-    console.log(`[UpdateLabels] Rank: ${rank}`);
+    const ranks = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+    const rankIndex = ranks.indexOf(rank);
+
+    console.log(`[UpdateLabels] Rank: ${rank}, Index: ${rankIndex}`);
 
     const labels = NextGameLogic.getLabelData(rank);
 
-    this.layout.titleHigh.text = labels.highTitle;
     this.layout.highDes.text = labels.highDesc;
-
-    this.layout.titleLow.text = labels.lowTitle;
     this.layout.lowDes.text = labels.lowDesc;
+
+    // Calculate Percentages
+    let highProb = 0;
+    let lowProb = 0;
+    const total = 13;
+
+    if (rank === "A") {
+      // High Button -> Strict Higher (> A)
+      highProb = (total - 1) / total;
+      // Low Button -> Equal (== A)
+      lowProb = 1 / total;
+    } else if (rank === "K") {
+      // High Button -> Equal (== K)
+      highProb = 1 / total;
+      // Low Button -> Strict Lower (< K)
+      lowProb = (total - 1) / total;
+    } else {
+      // High Button -> Higher or Equal (>= Rank)
+      // Ranks >= current: (total - rankIndex)
+      highProb = (total - rankIndex) / total;
+
+      // Low Button -> Lower or Equal (<= Rank)
+      // Ranks <= current: (rankIndex + 1)
+      lowProb = (rankIndex + 1) / total;
+    }
+
+    this.layout.titleHigh.text = `${(highProb * 100).toFixed(1)}%`;
+    this.layout.titleLow.text = `${(lowProb * 100).toFixed(1)}%`;
   }
 
   //#region guessing logic
@@ -138,7 +181,9 @@ export class NextScreenMobile extends Container {
       this.layout.betButton.text = "Cash Out";
     } else if (result === GuessResult.Lose) {
       // Loss Logic
-      const lostAmount = parseFloat(this.layout.inputBox.value) || 0.02;
+      // Loss Logic
+      const rawVal = parseFloat(this.layout.inputBox.value);
+      const lostAmount = isNaN(rawVal) ? 0.02 : rawVal;
       GameData.instance.addRoundResult(0, false, lostAmount);
       this.layout.gameHistory.addResult(0, false);
       this.layout.moneyLabel.text = `Balance: $${GameData.instance.totalMoney.toFixed(2)}`;
@@ -155,7 +200,7 @@ export class NextScreenMobile extends Container {
       8,
       0.5,
       1,
-      1
+      1.5
     );
     this.updateButtonLabels();
 
@@ -206,6 +251,8 @@ export class NextScreenMobile extends Container {
       GuessAction.Start,
       8,
       4,
+      1,
+      1.5
     );
 
     //input and buttons
@@ -247,7 +294,8 @@ export class NextScreenMobile extends Container {
 
   private CashOut() {
     const multiplier = 6.5; // example
-    const base = parseFloat(this.layout.inputBox.value) || 0.02;
+    const rawVal = parseFloat(this.layout.inputBox.value);
+    const base = isNaN(rawVal) ? 0.02 : rawVal;
 
     UI.showResult(multiplier, base);
 
@@ -256,7 +304,7 @@ export class NextScreenMobile extends Container {
       this.layout.currentCard.parent.removeChild(this.layout.currentCard);
     }
 
-    const betAmount = parseFloat(this.layout.inputBox.value) || 0.02;
+    const betAmount = isNaN(rawVal) ? 0.02 : rawVal;
     GameData.instance.addRoundResult(multiplier, true, betAmount);
     this.layout.gameHistory.addResult(multiplier, true);
     this.layout.moneyLabel.text = `Balance: $${GameData.instance.totalMoney.toFixed(2)}`;
@@ -265,16 +313,22 @@ export class NextScreenMobile extends Container {
   }
 
   private ValidateInput() {
-    const val = parseFloat(this.layout.inputBox.value);
+    let val = parseFloat(this.layout.inputBox.value);
 
     // reset invalid or below-zero values
-    if (isNaN(val) || val <= 0) {
+    if (isNaN(val) || val < 0) {
       this.layout.inputBox.value = "0.02";
       return;
     }
 
-    // optionally clamp decimals
-    this.layout.inputBox.value = val.toFixed(2);
+    // Cap at total money
+    const maxMoney = GameData.instance.totalMoney;
+    if (val > maxMoney) {
+      val = maxMoney;
+    }
+
+    // Format: Remove unnecessary decimals (e.g. 3.00 -> 3) but keep up to 2 decimals
+    this.layout.inputBox.value = parseFloat(val.toFixed(2)).toString();
   }
 
   public prepare() { }

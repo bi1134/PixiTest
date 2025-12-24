@@ -87,11 +87,11 @@ export class MobileLayout extends Container {
 
     this.highDes = new BitmapLabel({
       text: "Higher or equal",
-      style: { tint: 0xb2b2b2, fontSize: 15, fontFamily: "coccm-bitmap-3-normal" },
+      style: { fill: "#d3c7c7ff", fontSize: 23, fontFamily: "coccm-bitmap-3-normal", },
     });
     this.lowDes = new BitmapLabel({
       text: "Lower or equal",
-      style: { tint: 0xb2b2b2, fontSize: 15, fontFamily: "coccm-bitmap-3-normal" },
+      style: { fill: "#c9bfbfff", fontSize: 23, fontFamily: "coccm-bitmap-3-normal" },
     });
     this.cardsContainer.addChild(this.highDes, this.lowDes);
 
@@ -135,8 +135,8 @@ export class MobileLayout extends Container {
     this.inputContainer.addChild(this.inputContainerBg);
 
     this.cardHistoryLayout = new CardHistoryLayout({
-      type: 'vertical',
-      direction: 'btt'
+      type: 'horizontal',
+      direction: 'ltr'
     });
     // Add to inputContainer instead of fancyBoxContainer
     this.cardsContainer.addChild(this.cardHistoryLayout);
@@ -239,7 +239,7 @@ export class MobileLayout extends Container {
     // Back Card
     LayoutHelper.setPositionX(
       this.backCard,
-      (width - this.backCard.width) / 2 - padding * 3,
+      (width - this.backCard.width) / 2 - padding * 10,
     );
     LayoutHelper.setPositionX(
       this.cardPlaceHolder,
@@ -268,7 +268,7 @@ export class MobileLayout extends Container {
 
     // Hi/Lo Buttons
 
-    const buttonScale = 1;
+    const buttonScale = 1.5;
 
     this.upButton.scale.set(buttonScale);
     this.downButton.scale.set(buttonScale);
@@ -279,7 +279,7 @@ export class MobileLayout extends Container {
     this.downButton.y = btnY + this.downButton.height / 2 + padding;
 
     const btnX =
-      this.backCard.x + this.backCard.width / 2 + this.upButton.width;
+      this.backCard.x + (this.backCard.width + this.upButton.width) / 2 + padding * 5;
 
     this.upButton.x = btnX;
     this.downButton.x = btnX;
@@ -287,8 +287,8 @@ export class MobileLayout extends Container {
     this.highDes.x = this.upButton.x + this.upButton.width / 2;
     this.lowDes.x = this.downButton.x + this.downButton.width / 2;
 
-    this.highDes.y = this.upButton.y;
-    this.lowDes.y = this.downButton.y;
+    this.highDes.y = this.upButton.y + this.upButton.height - padding * 1.5;
+    this.lowDes.y = this.downButton.y + padding * 1.5;
 
     // Titles
     LayoutHelper.setPositionX(
@@ -296,14 +296,14 @@ export class MobileLayout extends Container {
       this.upButton.x + this.upButton.width / 2,
     );
     this.titleHigh.y =
-      this.upButton.y + this.upButton.height / 2 + this.titleHigh.height / 4;
+      this.upButton.y + this.upButton.height / 2 + this.titleHigh.height;
 
     LayoutHelper.setPositionX(
       this.titleLow,
       this.downButton.x + this.downButton.width / 2,
     );
     this.titleLow.y =
-      this.downButton.y + this.downButton.height / 2 + this.titleLow.height / 4;
+      this.downButton.y + this.downButton.height / 2 - this.titleLow.height;
 
     // --- Input Container (History Box) ---
 
@@ -314,11 +314,10 @@ export class MobileLayout extends Container {
     let currentY = padding * 2; // Top padding
     const inputBoxHeight = 155;
 
-    this.cardHistoryLayout.resize(this.currentCard.width / 2, this.currentCard.height * cardScale / 1.1);
-    this.cardHistoryLayout.x = (innerWidth - innerWidth * 0.95) / 2;
-    this.cardHistoryLayout.y = this.currentCard.y - this.currentCard.height / 2 - padding * 7; //match on the side of the card
-    this.cardHistoryLayout.pushBackPadding = 100;
-
+    this.cardHistoryLayout.resize(width - padding * 5, this.currentCard.height);
+    this.cardHistoryLayout.x = (width - this.cardHistoryLayout.width) / 2;
+    this.cardHistoryLayout.y = this.backCard.y + this.backCard.height + this.cardHistoryLayout.height / 2;
+    this.cardHistoryLayout.pushBackPadding = -padding * 3;
 
     currentY += padding; // Spacing after history
 

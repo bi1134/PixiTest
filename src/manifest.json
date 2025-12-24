@@ -1125,6 +1125,23 @@
         },
         {
           "alias": [
+            "main/history/popup/expand-button.png",
+            "expand-button.png"
+          ],
+          "src": [
+            "main/history/popup/expand-button@0.5x.webp",
+            "main/history/popup/expand-button@0.5x.png",
+            "main/history/popup/expand-button.webp",
+            "main/history/popup/expand-button.png"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
             "main/history/popup/next-button-off.png",
             "next-button-off.png"
           ],
@@ -1150,23 +1167,6 @@
             "main/history/popup/next-button-on@0.5x.png",
             "main/history/popup/next-button-on.webp",
             "main/history/popup/next-button-on.png"
-          ],
-          "data": {
-            "tags": {
-              "m": true
-            }
-          }
-        },
-        {
-          "alias": [
-            "main/history/popup/expand-button.png",
-            "expand-button.png"
-          ],
-          "src": [
-            "main/history/popup/expand-button@0.5x.webp",
-            "main/history/popup/expand-button@0.5x.png",
-            "main/history/popup/expand-button.webp",
-            "main/history/popup/expand-button.png"
           ],
           "data": {
             "tags": {

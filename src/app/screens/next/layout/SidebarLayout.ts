@@ -60,7 +60,7 @@ export class SidebarLayout extends Container {
     this.higherButton = new CustomButton({
       text: "Higher or Equal \n 111%",
       fontSize: 20,
-      textColor: 0x4a4a4a, // Dark grey for button text
+      textColor: 0xffffff, // White text
     }, {
       defaultView: "button.png",
       nineSliceSprite: [38, 50, 38, 50],
@@ -71,7 +71,7 @@ export class SidebarLayout extends Container {
     this.lowerButton = new CustomButton({
       text: "Lower or Equal \n 111%",
       fontSize: 20,
-      textColor: 0x4a4a4a,
+      textColor: 0xffffff,
     }, {
       defaultView: "button.png",
       nineSliceSprite: [38, 50, 38, 50],
@@ -87,7 +87,7 @@ export class SidebarLayout extends Container {
     this.skipButton = new CustomButton({
       text: "Skip >>",
       fontSize: 20,
-      textColor: 0x4a4a4a,
+      textColor: 0xffffff,
     }, {
       defaultView: "button.png",
       nineSliceSprite: [38, 50, 38, 50],
@@ -98,7 +98,7 @@ export class SidebarLayout extends Container {
     this.betButton = new CustomButton({
       text: "Bet",
       fontSize: 28,
-      textColor: 0x4a4a4a,
+      textColor: 0xffffff,
     }, {
       defaultView: "button.png",
       nineSliceSprite: [38, 50, 38, 50],

@@ -65,7 +65,7 @@ export class CardHistoryItem extends Container {
       text: "1.5x",
       anchor: 0.5,
       style: {
-        fontSize: 10,
+        fontSize: 15,
         fontFamily: "coccm-bitmap-3-normal.fnt",
         align: "center",
       },
@@ -112,8 +112,7 @@ export class CardHistoryItem extends Container {
 
     this.multiplierTextLabel.x =
       this.multiplierBackground.x +
-      this.multiplierTextLabel.width / 2 +
-      padding / 2;
+      this.multiplierBackground.width / 2;
     this.multiplierTextLabel.y =
       this.multiplierBackground.y + this.multiplierBackground.height / 2;
   }

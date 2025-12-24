@@ -182,7 +182,7 @@ export class CardHistoryLayout extends Container {
         this.list.y =
           visibleHeight / 2 - itemHeight / 2 + this.listYOffset; // Approximate centering
 
-        const desiredX = visibleWidth - listWidth - padding;
+        const desiredX = visibleWidth - listWidth - this.pushBackPadding;
         // Use direction options if strictly needed, but assuming RTL push behavior for horizontal
         const finalX = Math.min(padding, desiredX);
 
@@ -263,6 +263,22 @@ export class CardHistoryLayout extends Container {
 
       this.list.y = finalY + this.listYOffset;
     } else {
+      // Horizontal Logic
+      // 1. Center Y
+      this.list.y = height / 2 - this.list.height / 2 + this.listYOffset;
+
+      // 2. Align Horizontal
+      let finalX = padding;
+
+      const contentWidth = this.list.width;
+
+      if (contentWidth + padding * 2 <= width) {
+        finalX = padding;
+      } else {
+        finalX = width - contentWidth - this.pushBackPadding;
+      }
+
+      this.list.x = finalX + this.listXOffset;
     }
   }
 }
