@@ -92,7 +92,7 @@ export class CustomInput extends Container {
             // In MobileLayout we had specific logic:
             // this.inputBox.on('pointertap', () => { this.inputBitmapLabel.text = ""; });
             // We'll replicate that.
-            this.displayText.text = "";
+            this.displayText.text = "RP ";
         });
 
         // Initial sync
@@ -100,7 +100,7 @@ export class CustomInput extends Container {
     }
 
     private updateText() {
-        this.displayText.text = this.input.value;
+        this.displayText.text = "RP " + this.input.value;
     }
 
     public resize(width: number, height: number) {

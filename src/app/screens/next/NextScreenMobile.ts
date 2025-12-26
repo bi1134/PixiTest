@@ -1,4 +1,4 @@
-import { Container, Graphics, Sprite } from "pixi.js";
+import { Container, Graphics, Sprite, Texture } from "pixi.js";
 import { engine } from "../../getEngine";
 import { MobileLayout } from "./layout/MobileLayout"; // Updated import
 import { BetButton } from "../../ui/BetButton";
@@ -120,6 +120,22 @@ export class NextScreenMobile extends Container {
     this.layout.highDes.text = labels.highDesc;
     this.layout.lowDes.text = labels.lowDesc;
 
+    // Update Icons based on action
+    const highAction = NextGameLogic.getHighAction(rank);
+    const lowAction = NextGameLogic.getLowAction(rank);
+
+    if (highAction === GuessAction.Equal) {
+      this.layout.highIcon.texture = Texture.from("icon-equal.png");
+    } else {
+      this.layout.highIcon.texture = Texture.from("Icon-Arrow-high.png");
+    }
+
+    if (lowAction === GuessAction.Equal) {
+      this.layout.lowIcon.texture = Texture.from("icon-equal.png");
+    } else {
+      this.layout.lowIcon.texture = Texture.from("Icon-Arrow-low.png");
+    }
+
     // Calculate Percentages
     let highProb = 0;
     let lowProb = 0;
@@ -194,9 +210,9 @@ export class NextScreenMobile extends Container {
       this.layout.currentCard.suit,
       action,
       0,
-      -30,
+      -18.5,
       1,
-      0.45
+      0.4
     );
     this.updateButtonLabels();
 
@@ -248,7 +264,7 @@ export class NextScreenMobile extends Container {
       20,
       10,
       1,
-      0.45
+      0.4
     );
 
     //input and buttons

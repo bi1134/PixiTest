@@ -174,7 +174,7 @@ export class MobileLayout extends Container {
     this.inputBox = new CustomInput({
       bg: Sprite.from("Bet_volume.png"),
       placeholder: this.inputDefaultValue.toString(),
-      fontSize: 55,
+      fontSize: 33,
       fontFamily: "coccm-bitmap-3-normal",
       align: "center",
       textColor: 0xFFFFFF,
@@ -357,12 +357,12 @@ export class MobileLayout extends Container {
     const innerWidth = containerW;
 
     // --- 1. History List ---
-    const inputBoxHeight = 155;
+    const inputBoxHeight = 135;
 
-    this.cardHistoryLayout.resize(width - padding * 18, this.currentCard.height * 0.5);
+    this.cardHistoryLayout.resize(width - padding * 18.25, this.currentCard.height * 0.5);
     this.cardHistoryLayout.x = this.currentCard.x - this.cardHistoryLayout.width / 2 + padding * 4;
     this.cardHistoryLayout.y = this.backCard.y + this.backCard.height + padding * 3;
-    this.cardHistoryLayout.pushBackPadding = 40;
+    this.cardHistoryLayout.pushBackPadding = 30;
 
     // --- 2. Input Box ---
     const inputW = innerWidth * 0.55;

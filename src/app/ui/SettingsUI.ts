@@ -115,7 +115,7 @@ export class SettingsUI extends Container {
     LayoutHelper.centerX(this.bgSetting, this.settingsSwitcher.width, 0, false);
     LayoutHelper.setPositionY(
       this.bgSetting,
-      this.settingsSwitcher.y - this.bgSetting.height / 2 - padding,
+      this.settingsSwitcher.y - this.bgSetting.height / 2 - padding * 18,
     );
 
     const backgroundCenter = this.bgSetting.x;
@@ -127,11 +127,11 @@ export class SettingsUI extends Container {
     LayoutHelper.setPositionY(this.audio, this.bgSetting.y - padding);
     LayoutHelper.setPositionY(
       this.historyIcon,
-      this.audio.y - this.audio.height - padding,
+      this.audio.y - this.audio.height * 2 - padding,
     );
     LayoutHelper.setPositionY(
       this.questionMark,
-      this.audio.y + this.audio.height + padding,
+      this.audio.y + this.audio.height * 2 + padding,
     );
 
     LayoutHelper.setPositionX(
@@ -166,7 +166,7 @@ export class SettingsUI extends Container {
       gsap.to(this.bgSetting, {
         duration: 0.1,
         ease: "back.out",
-        scale: 1,
+        scale: 2,
         onStart: () => {
           this.bgSetting.visible = true;
         },
@@ -175,7 +175,7 @@ export class SettingsUI extends Container {
       gsap.to(this.audio, {
         duration: 0.1,
         ease: "back.out",
-        scale: 1,
+        scale: 2,
         onStart: () => {
           this.audio.visible = true;
         },
@@ -183,7 +183,7 @@ export class SettingsUI extends Container {
       gsap.to(this.historyIcon, {
         duration: 0.1,
         ease: "back.out",
-        scale: 1,
+        scale: 2,
         onStart: () => {
           this.historyIcon.visible = true;
         },
@@ -191,7 +191,7 @@ export class SettingsUI extends Container {
       gsap.to(this.questionMark, {
         duration: 0.1,
         ease: "back.out",
-        scale: 1,
+        scale: 2,
         onStart: () => {
           this.questionMark.visible = true;
         },

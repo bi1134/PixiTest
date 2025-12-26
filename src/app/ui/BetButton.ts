@@ -39,7 +39,7 @@ export class BetButton extends Container {
             text: "Bet",
             style: {
                 fontFamily: "coccm-bitmap-3-normal",
-                fontSize: 64,
+                fontSize: 60,
                 align: "center"
             }
         });
