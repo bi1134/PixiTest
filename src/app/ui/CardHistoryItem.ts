@@ -8,7 +8,7 @@ export class CardHistoryItem extends Container {
   private cardSprite!: Sprite;
   private actionSprite!: Sprite;
   private multiplierTextLabel!: BitmapText;
-  private multiplierBackground!: Graphics;
+  private multiplierBackground!: Sprite;
 
   private _rank!: string;
   private _suit!: string;
@@ -46,7 +46,7 @@ export class CardHistoryItem extends Container {
     this._action = action;
 
     // --- card sprite ---
-    const textureName = `${this._suit}-card-${this._rank.toLowerCase()}.jpg`;
+    const textureName = `${this._suit}-card-${this._rank.toLowerCase()}.png`;
     this.cardSprite = Sprite.from(`${textureName}`);
     this.innerContainer.addChild(this.cardSprite);
 
@@ -56,16 +56,14 @@ export class CardHistoryItem extends Container {
     this.innerContainer.addChild(this.actionSprite);
 
     // --- multiplier background (below card) ---
-    this.multiplierBackground = new Graphics()
-      .rect(0, 0, this.cardSprite.width, 25)
-      .fill("#653838ff");
+    this.multiplierBackground = Sprite.from("Bar-result.png");
     this.innerContainer.addChild(this.multiplierBackground);
 
     this.multiplierTextLabel = new BitmapText({
       text: "1.5x",
       anchor: 0.5,
       style: {
-        fontSize: 15,
+        fontSize: 45,
         fontFamily: "coccm-bitmap-3-normal.fnt",
         align: "center",
       },
@@ -79,18 +77,20 @@ export class CardHistoryItem extends Container {
   private ActionToIcon(action: GuessAction): string {
     switch (action) {
       case GuessAction.Higher:
+        return "icon-higher.png";
       case GuessAction.HigherOrEqual:
-        return "higher-icon.jpg";
+        return "icon-higherEqual.png";
 
       case GuessAction.Lower:
+        return "icon-lower.png";
       case GuessAction.LowerOrEqual:
-        return "lower-icon.jpg";
+        return "icon-lowerEqual.png";
 
       case GuessAction.Equal:
-        return "skip-icon.jpg"; // Placeholder for specific Equal icon
+        return "icon-equal.png";
 
       case GuessAction.Skip:
-        return "skip-icon.jpg";
+        return "icon-skip.png";
       case GuessAction.Start:
         return "transparent.png";
       default:
@@ -106,7 +106,8 @@ export class CardHistoryItem extends Container {
       this.cardSprite.width / 2 - this.multiplierBackground.width / 2;
     this.multiplierBackground.y = this.cardSprite.height + padding;
 
-    this.actionSprite.x = this.cardSprite.x - this.actionSprite.width / 1.33;
+    this.actionSprite.scale.set(1.75);
+    this.actionSprite.x = this.cardSprite.x - this.actionSprite.width / 1.5;
     this.actionSprite.y =
       this.cardSprite.height / 2 - this.actionSprite.height / 2;
 

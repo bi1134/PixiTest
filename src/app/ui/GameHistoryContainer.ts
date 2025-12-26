@@ -46,8 +46,8 @@ export class GameHistoryContainer extends Container {
 
     const padding = 10;
     // Calculate item width to fit ~5-6 items
-    const itemWidth = this.background.width / 4;
-    const itemHeight = this.background.height * 0.8;
+    const itemWidth = this.background.width / 5;
+    const itemHeight = this.background.height * 0.7;
 
     item.resize(itemWidth, itemHeight);
 
@@ -85,7 +85,7 @@ export class GameHistoryContainer extends Container {
 
     // 2. Position New Item
     // It enters at: Width - Padding - ItemWidth/2
-    const entryX = this.background.width - padding - itemWidth / 2;
+    const entryX = this.background.width - padding - itemWidth / 3;
 
     item.targetX = entryX;
 

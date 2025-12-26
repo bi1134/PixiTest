@@ -1,5 +1,5 @@
 import { Switcher } from "@pixi/ui";
-import { BitmapText, Container } from "pixi.js";
+import { Container } from "pixi.js";
 
 export type CustomSettingsOptions = {
   views?: Array<Container | string>;
@@ -10,6 +10,7 @@ export enum CustomSwitcherType {
   HISTORY = "HISTORY",
   SOUND = "SOUND",
   HELP = "BANTUAN",
+  SPEED = "SPEED",
 }
 
 export class CustomSettingSwitcher extends Switcher {

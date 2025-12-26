@@ -11,6 +11,7 @@ import { UI } from "./Manager/UIManager";
 
 export class SettingsUI extends Container {
   private settingsSwitcher: Switcher;
+  private settingsIcon: Sprite;
   private questionMark: CustomSettingSwitcher;
   private historyIcon: CustomSettingSwitcher;
   private audio: CustomSettingSwitcher;
@@ -32,28 +33,33 @@ export class SettingsUI extends Container {
 
     // Title Text
     this.settingText = new BitmapText({
-      text: "Settingan",
+      text: "Setting \n Menu",
       anchor: 0.5,
       style: {
-        fontSize: 10,
+        fontSize: 35,
         fontFamily: "coccm-bitmap-3-normal.fnt",
         align: "center",
       },
     });
-    this.settingText.position.set(
-      this.bgSetting.width / 2,
-      this.bgSetting.y + this.bgSetting.height + 10,
-    );
 
     // Main switcher button
     this.settingsSwitcher = new Switcher([
-      "settings_icon_open.png",
-      "settings_icon_close.png",
+      "Button-0-2.png",
+      "Button-0-0.png",
     ]);
     this.settingsSwitcher.onChange.connect((state) => {
       this.updateVisibleUI(state);
     });
 
+    this.settingsIcon = Sprite.from("icon-setting.png");
+    this.settingsIcon.anchor.set(0.5);
+    this.settingsIcon.scale.set(1.1);
+    this.settingsIcon.position.set(
+      this.settingsSwitcher.x + this.settingsSwitcher.width / 2,
+      this.settingsSwitcher.y + this.settingsSwitcher.height / 2 - 15,
+    );
+
+    this.settingsSwitcher.addChild(this.settingsIcon);
     // History Icon
     this.historyIcon = new CustomSettingSwitcher({
       views: ["history.png", "history.png"],
@@ -134,7 +140,7 @@ export class SettingsUI extends Container {
     );
     LayoutHelper.setPositionY(
       this.settingText,
-      this.settingsSwitcher.y + this.settingsSwitcher.height + padding,
+      this.settingsSwitcher.y + this.settingsSwitcher.height + this.settingText.height / 2,
     );
   }
 

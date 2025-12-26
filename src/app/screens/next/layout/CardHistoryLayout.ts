@@ -1,4 +1,4 @@
-import { Container, Graphics } from "pixi.js";
+import { Container, Graphics, NineSliceSprite, Texture } from "pixi.js";
 import { gsap } from "gsap";
 import { List } from "@pixi/ui";
 import { CardHistoryItem } from "../../../ui/CardHistoryItem";
@@ -16,13 +16,65 @@ export interface CardHistoryLayoutOptions {
   direction?: CardHistoryDirection; // default depends on type. Horizontal: ltr. Vertical: ttb/btt
 }
 
+class GapContainer extends Container {
+  constructor(
+    public leftPad: number,
+    public rightPad: number,
+    public type: 'horizontal' | 'vertical'
+  ) {
+    super();
+  }
+
+  public addItem(item: Container) {
+    this.addChild(item);
+    if (this.type === 'horizontal') {
+      item.x = this.leftPad;
+    } else {
+      item.y = this.leftPad;
+    }
+  }
+
+  // Override logical width/height to include padding
+  public override get width(): number {
+    if (this.type === 'horizontal') {
+      const childSize = this.children.length > 0 ? this.children[0].width : 0;
+      // Note: children[0].width is scale-adjusted.
+      // But wait! If we just modified item.x, does child.width change? No.
+      // However, we want the TOTAL layout span.
+      // If we use super.width, it calculates bounds.
+      // If child is at x=10, width=100. Bounds = 110.
+      // We want 10 (left) + 100 (child) + right.
+      // So super.width (110) + rightPad.
+      // IF leftPad is negative (-10). Child at -10. Bounds: minX=-10, maxX=90. Width=100.
+      // We want -10 + 100 + rightPad = 90 + rightPad.
+      // super.width (100) - 10 ??? No.
+      // Actually simply: leftPad + childSize + rightPad works for both?
+      // 10 + 100 + 10 = 120.
+      // -10 + 100 + 10 = 100.
+      // Let's use explicit calculation.
+      return this.leftPad + childSize + this.rightPad;
+    }
+    return super.width;
+  }
+
+  public override get height(): number {
+    if (this.type === 'vertical') {
+      const childSize = this.children.length > 0 ? this.children[0].height : 0;
+      return this.leftPad + childSize + this.rightPad;
+    }
+    return super.height;
+  }
+}
+
 export class CardHistoryLayout extends Container {
-  private cardsHistoryBackground!: Graphics;
+  private cardsHistoryBackground!: NineSliceSprite;
   private cardsHistoryMask!: Graphics;
   public list!: List;
   public listYOffset: number = 0;
   public listXOffset: number = 0;
   public pushBackPadding: number = 0; // Padding from bottom when scrolling up (overflow)
+  public listStartPadding: number = 0; // Fixed start padding for the list
+
 
   private options: CardHistoryLayoutOptions;
 
@@ -50,9 +102,15 @@ export class CardHistoryLayout extends Container {
     const listHeight = this.options.type === 'vertical' ? 300 : 150;
 
     // --- background box ---
-    this.cardsHistoryBackground = new Graphics()
-      .rect(0, 0, listWidth, listHeight) // Default size based on orientation
-      .fill("#3c3c3cff");
+    this.cardsHistoryBackground = new NineSliceSprite({
+      texture: Texture.from("Bar-history.png"),
+      leftWidth: 35,
+      topHeight: 35,
+      rightWidth: 35,
+      bottomHeight: 35,
+    });
+    this.cardsHistoryBackground.width = listWidth;
+    this.cardsHistoryBackground.height = listHeight;
     this.addChild(this.cardsHistoryBackground);
 
     // --- create mask for the visible region ---
@@ -81,8 +139,8 @@ export class CardHistoryLayout extends Container {
     value: string,
     suit: string,
     action: GuessAction,
-    padding: number = 8,
-    gapMultipler: number = 1,
+    leftPad: number = 0,
+    rightPad: number = 0,
     _scrollMutiplier: number = 5,
     itemScale?: number
   ) {
@@ -90,19 +148,18 @@ export class CardHistoryLayout extends Container {
     const item = new CardHistoryItem(value, suit, action);
 
 
-    // 2. Resize ensures scale is correct for dimensions
-    if (itemScale !== undefined) {
-      item.setBaseScale(itemScale);
-    }
-    const finalScale = item.scale.x;
+    const finalScale = itemScale ?? 1;
+    item.setBaseScale(finalScale);
+
     const itemWidth = item.getLocalBounds().width * finalScale;
     const itemHeight = item.getLocalBounds().height * finalScale; // Use bounds for animation offset
 
-    // Set margin for the list
-    this.list.elementsMargin = padding / gapMultipler;
+    // Use GapContainer wrapper to handle per-item spacing
+    const wrapper = new GapContainer(leftPad, rightPad, this.options.type ?? 'horizontal');
+    wrapper.addItem(item);
 
     // 3. Add to List
-    this.list.addChild(item); // Adds to end
+    this.list.addChild(wrapper); // Adds to end
 
     // 4. Trigger Item Entry Animations
     // "Pop In"
@@ -132,7 +189,7 @@ export class CardHistoryLayout extends Container {
       slideOffset = itemHeight + 20;
       item.animateEntry(slideOffset, 0.3);
     } else {
-      slideOffset = itemWidth + 20;
+      slideOffset = itemWidth * 2;
       item.animateEntry(slideOffset, 0.3);
     }
 
@@ -156,11 +213,11 @@ export class CardHistoryLayout extends Container {
 
       if (this.options.type === 'vertical') {
         // Vertical Logic
-        let finalY = padding;
+        let finalY = this.listStartPadding;
 
         // Check for Overflow
-        if (listHeight + padding * 2 <= visibleHeight) {
-          finalY = padding; // Align Top
+        if (listHeight + this.listStartPadding * 2 <= visibleHeight) {
+          finalY = this.listStartPadding; // Align Top
         } else {
           // Align Bottom / Scroll Up
           finalY = visibleHeight - listHeight - this.pushBackPadding;
@@ -184,7 +241,7 @@ export class CardHistoryLayout extends Container {
 
         const desiredX = visibleWidth - listWidth - this.pushBackPadding;
         // Use direction options if strictly needed, but assuming RTL push behavior for horizontal
-        const finalX = Math.min(padding, desiredX);
+        const finalX = Math.min(this.listStartPadding, desiredX);
 
         this.currentListScrollAnim = gsap.to(this.list, {
           x: finalX + this.listXOffset,
@@ -224,10 +281,11 @@ export class CardHistoryLayout extends Container {
 
   public resize(width: number, height: number, _padding?: number) {
     const padding = _padding ?? 0;
+    this.listStartPadding = padding;
 
     // --- Resize and position background ---
-    // Use clear+rect to ensure correct resizing without weird scaling artifacts
-    this.cardsHistoryBackground.clear().rect(0, 0, width, height).fill("#3c3c3cff");
+    this.cardsHistoryBackground.width = width;
+    this.cardsHistoryBackground.height = height;
 
     // --- Update mask to match background ---
     this.cardsHistoryMask

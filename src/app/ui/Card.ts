@@ -5,6 +5,7 @@ import {
   Texture,
   Ticker,
   Rectangle,
+  Graphics,
 } from "pixi.js";
 import { gsap } from "gsap";
 
@@ -18,6 +19,7 @@ export enum AnimationState {
 export class Card extends Container {
   private spineCard: Spine;
   private mesh: PerspectiveMesh;
+  private shadow: Graphics;
 
   private _rank: string = "A";
   private _suit: CardSuit = "spade";
@@ -43,7 +45,7 @@ export class Card extends Container {
   private angleY = 0;
   private targetX = 0;
   private targetY = 0;
-  private readonly maxAngle = 8;
+  private readonly maxAngle = 10;
   private readonly perspective = 400;
 
   private hovering = false;
@@ -63,7 +65,8 @@ export class Card extends Container {
     this.spineCard.state.setAnimation(0, AnimationState.OpenIdle, true);
     //this.addChild(this.spineCard);
 
-    const texture = Texture.from("main/cards/spade-card-a.jpg");
+    const texture = Texture.from("main/cards/spade-card-a.png");
+    this.shadow = new Graphics();
     this.mesh = new PerspectiveMesh({
       texture,
       width: texture.width,
@@ -76,6 +79,16 @@ export class Card extends Container {
     // Center mesh visually
     this.mesh.x = -this.baseWidth / 2;
     this.mesh.y = -this.baseHeight / 2;
+
+    this.shadow.rect(
+      -this.baseWidth / 2,
+      -this.baseHeight / 2,
+      this.baseWidth,
+      this.baseHeight,
+    );
+    this.shadow.fill({ color: 0x000000, alpha: 0.2 });
+
+    this.addChild(this.shadow);
     this.addChild(this.mesh);
 
     //make the card "hitbox" bigger
@@ -89,6 +102,7 @@ export class Card extends Container {
     // ensure mesh is hidden initially
     //this.mesh.visible = false;
     this.mesh.visible = true;
+    this.shadow.visible = this.mesh.visible;
 
     // initial texture update (to match default A spade)
     this.UpdateTexture();
@@ -123,7 +137,7 @@ export class Card extends Container {
 
   private UpdateTexture(): void {
     // build texture file name
-    const textureName = `${this._suit}-card-${this._rank.toLowerCase()}.jpg`;
+    const textureName = `${this._suit}-card-${this._rank.toLowerCase()}.png`;
     this.mesh.texture = Texture.from(textureName);
 
     // match mesh size with texture
@@ -131,6 +145,15 @@ export class Card extends Container {
     this.baseHeight = this.mesh.texture.height;
     this.mesh.x = -this.baseWidth / 2;
     this.mesh.y = -this.baseHeight / 2;
+
+    this.shadow.clear();
+    this.shadow.rect(
+      -this.baseWidth / 2,
+      -this.baseHeight / 2,
+      this.baseWidth,
+      this.baseHeight,
+    );
+    this.shadow.fill({ color: 0x000000, alpha: 0.2 });
 
     // spine skin name convention
     // e.g. "spade-a", "heart-10", "diamond-k"
@@ -164,6 +187,7 @@ export class Card extends Container {
     // swap visible targets
     this.spineCard.visible = false;
     this.mesh.visible = true;
+    this.shadow.visible = true;
 
     // play hover animations
     this.playTiltSequence();
@@ -178,6 +202,7 @@ export class Card extends Container {
 
     // swap back
     this.mesh.visible = true;
+    this.shadow.visible = true;
     //this.mesh.visible = false;
     this.spineCard.visible = true;
   }
@@ -209,12 +234,12 @@ export class Card extends Container {
         let z = 0;
 
         // Rotate Y
-        const xY = cosY * x + sinY * z;
-        z = -sinY * x + cosY * z;
+        const xY = cosY * x - sinY * z;
+        z = sinY * x + cosY * z;
 
         // Rotate X
-        const yX = cosX * y - sinX * z;
-        z = sinX * y + cosX * z;
+        const yX = cosX * y + sinX * z;
+        z = -sinX * y + cosX * z;
 
         const scale = this.perspective / (this.perspective - z);
         out.x = xY * scale + this.baseWidth / 2;

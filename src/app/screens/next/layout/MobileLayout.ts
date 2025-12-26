@@ -8,8 +8,11 @@ import { CardHistoryLayout } from "./CardHistoryLayout";
 import { GameHistoryContainer } from "../../../ui/GameHistoryContainer";
 import { SettingsUI } from "../../../ui/SettingsUI";
 import { SpeedButton } from "../../../ui/SpeedButton";
+import { BetButton } from "../../../ui/BetButton";
 import { CustomButton } from "../../../ui/CustomButton";
 import { CustomInput } from "../../../ui/CustomInput";
+import { NextMultiplierBoard } from "../../../ui/NextMultiplierBoard";
+import { KnightCharacter } from "../../../ui/KnightCharacter";
 
 
 export class MobileLayout extends Container {
@@ -32,17 +35,26 @@ export class MobileLayout extends Container {
 
   // Mobile specific additions (from Sidebar)
   public inputContainer!: Container;
-  public inputContainerBg!: Graphics;
   public moneyLabel!: BitmapLabel;
   public inputBox!: CustomInput;
   public inputDefaultValue: number = 0.02;
-  public betButton!: CustomButton;
+  public betButton!: BetButton;
 
   public halfValueButton!: CustomButton;
   public doubleValueButton!: CustomButton;
 
   public settingsUI!: SettingsUI;
   public speedButton!: SpeedButton;
+  public background!: Sprite;
+
+  public BarMid!: Sprite;
+
+  public multiplierBoard: NextMultiplierBoard;
+  public knightCharacter: KnightCharacter;
+
+  public coinIcon!: Sprite;
+  public highIcon!: Sprite;
+  public lowIcon!: Sprite;
 
   constructor(width: number, height: number) {
     super();
@@ -53,8 +65,13 @@ export class MobileLayout extends Container {
     this.fancyBoxContainer = new Container();
     this.addChild(this.fancyBoxContainer);
 
-    this.fancyBox = new Graphics().rect(0, 0, width, height).fill("#5252daff");
-    this.fancyBoxContainer.addChild(this.fancyBox);
+    this.background = Sprite.from("BG.png");
+    this.background.anchor.set(0.5);
+    this.fancyBoxContainer.addChild(this.background);
+    // this.fancyBox = new Graphics().rect(0, 0, width, height).fill("#5252daff");
+    // this.fancyBoxContainer.addChild(this.fancyBox);
+    this.multiplierBoard = new NextMultiplierBoard();
+    this.fancyBoxContainer.addChild(this.multiplierBoard);
 
     this.cardsContainer = new Container();
     this.fancyBoxContainer.addChild(this.cardsContainer);
@@ -62,15 +79,15 @@ export class MobileLayout extends Container {
     // --- create the card ---
     this.currentCard = new Card();
 
-    this.backCard = Sprite.from("card-back.jpg");
+    this.backCard = Sprite.from("card-back.png");
     this.cardsContainer.addChild(this.backCard);
 
     this.cardPlaceHolder = Sprite.from("opened-card-area.png");
     //this.cardsContainer.addChild(this.cardPlaceHolder);
 
     // --- create the buttons ---
-    this.upButton = new FancyButton({ defaultView: "high.png" });
-    this.downButton = new FancyButton({ defaultView: "low.png" });
+    this.upButton = new FancyButton({ defaultView: "Button-high.png" });
+    this.downButton = new FancyButton({ defaultView: "Button-low.png" });
 
     this.cardsContainer.addChild(this.upButton, this.downButton);
 
@@ -102,37 +119,49 @@ export class MobileLayout extends Container {
       fontFamily: "coccm-bitmap-3-normal",
       textColor: 0x4a4a4a
     }, {
-      defaultView: "button.png",
-      nineSliceSprite: [38, 50, 38, 50],
+      defaultView: "Button-2-0.png",
     });
-    this.fancySkipButton.width = 150;
-    this.fancySkipButton.height = 70;
     this.cardsContainer.addChild(this.fancySkipButton);
 
-    // Bet Button (from Sidebar)
-    this.betButton = new CustomButton({
-      text: "Bet",
-      fontSize: 18,
-      fontFamily: "coccm-bitmap-3-normal",
-      textColor: 0x4a4a4a
-    }, {
-      defaultView: "button.png",
-      nineSliceSprite: [38, 50, 38, 50],
+    this.BarMid = Sprite.from("Bar-mid.png");
+    this.fancyBoxContainer.addChild(this.BarMid);
+
+    // --- icons for title ---
+    this.highIcon = Sprite.from("Icon-Arrow-high.png");
+    this.lowIcon = Sprite.from("Icon-Arrow-low.png");
+    this.cardsContainer.addChild(this.highIcon, this.lowIcon);
+
+    // --- Mobile Specifics: Money Label & Input ---
+    this.coinIcon = Sprite.from("Icon-coin.png");
+    this.BarMid.addChild(this.coinIcon);
+
+    this.moneyLabel = new BitmapLabel({
+      text: "$1000", // Example text, updated by logic
+      style: {
+        fill: "#f7c049", // Gold
+        fontSize: 25,
+        fontFamily: "coccm-bitmap-3-normal",
+      },
     });
-    this.betButton.width = 150;
-    this.betButton.height = 75;
+    this.BarMid.addChild(this.moneyLabel); // Add to input container
+
+    // Bet Button (from Sidebar)
+    this.betButton = new BetButton();
     this.fancyBoxContainer.addChild(this.betButton); // We'll position this dynamically
 
     // --- Create Subcomponents ---
     this.profitLayout = new ProfitLayout();
     this.fancyBoxContainer.addChild(this.profitLayout);
 
+    this.knightCharacter = new KnightCharacter();
+    this.fancyBoxContainer.addChild(this.knightCharacter);
+
+
+
     // --- Input Container (History Box) ---
     this.inputContainer = new Container();
     this.fancyBoxContainer.addChild(this.inputContainer);
 
-    this.inputContainerBg = new Graphics(); // Size set in resize
-    this.inputContainer.addChild(this.inputContainerBg);
 
     this.cardHistoryLayout = new CardHistoryLayout({
       type: 'horizontal',
@@ -141,21 +170,11 @@ export class MobileLayout extends Container {
     // Add to inputContainer instead of fancyBoxContainer
     this.cardsContainer.addChild(this.cardHistoryLayout);
 
-    // --- Mobile Specifics: Money Label & Input ---
-    this.moneyLabel = new BitmapLabel({
-      text: "Balance: $1000", // Example text, updated by logic
-      style: {
-        tint: 0xFFD700, // Gold
-        fontSize: 25,
-        fontFamily: "coccm-bitmap-3-normal",
-      },
-    });
-    this.inputContainer.addChild(this.moneyLabel); // Add to input container
 
     this.inputBox = new CustomInput({
-      bg: Sprite.from("input.png"),
+      bg: Sprite.from("Bet_volume.png"),
       placeholder: this.inputDefaultValue.toString(),
-      fontSize: 75,
+      fontSize: 55,
       fontFamily: "coccm-bitmap-3-normal",
       align: "center",
       textColor: 0xFFFFFF,
@@ -179,22 +198,22 @@ export class MobileLayout extends Container {
     });
 
     this.halfValueButton = new CustomButton({
-      text: "x1/2",
-      fontSize: 12,
+      text: "1/2",
+      fontSize: 42,
       fontFamily: "coccm-bitmap-3-normal",
       textColor: 0x4a4a4a
     }, {
-      defaultView: "icon-settings.png",
+      defaultView: "Button-2-1.png",
     });
     this.inputContainer.addChild(this.halfValueButton);
 
     this.doubleValueButton = new CustomButton({
       text: "x2",
-      fontSize: 12,
+      fontSize: 42,
       fontFamily: "coccm-bitmap-3-normal",
       textColor: 0x4a4a4a
     }, {
-      defaultView: "icon-settings.png",
+      defaultView: "Button-2-2.png",
     });
     this.inputContainer.addChild(this.doubleValueButton);
 
@@ -206,14 +225,25 @@ export class MobileLayout extends Container {
     this.fancyBoxContainer.addChild(this.settingsUI);
 
     // Speed Button
-    this.speedButton = new SpeedButton({
-      defaultView: "rounded-rectangle.png",
-    });
+    this.speedButton = new SpeedButton();
     this.fancyBoxContainer.addChild(this.speedButton);
   }
 
   public resize(width: number, height: number, padding: number) {
-    this.fancyBox.setSize(width, height);
+    // Resize background to cover
+    if (this.background) {
+      this.background.x = width / 2;
+      this.background.y = height / 2;
+
+      const scaleX = width / this.background.width;
+      const scaleY = height / this.background.height;
+      const scale = Math.max(scaleX, scaleY);
+      this.background.width = width;
+      this.background.height = height;
+    }
+    this.multiplierBoard.scale.set(0.75);
+    this.multiplierBoard.x = width / 2;
+    this.multiplierBoard.y = padding * 15.5;
 
     // --- 1. Profit Layout (Top Header) ---
     const profitWidth = width * 0.95;
@@ -225,16 +255,19 @@ export class MobileLayout extends Container {
     // --- Footer Buttons (Skip & Bet) ---
 
     // Sizing: Share width
-    const footerBtnWidth = (width - padding * 3) / 2;
+    const footerBtnWidth = (width - padding * 15) / 2;
 
     // Bet Button (Right)
     if (this.betButton.width !== footerBtnWidth)
       LayoutHelper.scaleToWidth(this.betButton, footerBtnWidth, true);
 
-    this.betButton.x = width - footerBtnWidth - padding;
-    const footerY = height - this.betButton.height / 2 - padding * 6;
+    this.betButton.x = width / 2;
+    const footerY = height - this.betButton.height / 2 - padding * 15;
     this.betButton.y = footerY;
 
+    LayoutHelper.scaleToWidth(this.BarMid, this.betButton.width - padding * 1.5, true);
+    this.BarMid.x = this.betButton.x - this.BarMid.width / 2;
+    this.BarMid.y = this.betButton.y + (this.betButton.height - this.BarMid.height) / 2;
     // --- Available Space (Main Game Area) ---
     // Back Card
     LayoutHelper.setPositionX(
@@ -246,29 +279,28 @@ export class MobileLayout extends Container {
       (width - this.cardPlaceHolder.width) / 2 - padding * 13,
     );
 
-    const cardScale = 3.5;
+    const cardScale = 1.35;
 
-    this.backCard.scale.set(cardScale);
+    this.backCard.scale.set(0.75);
     this.cardPlaceHolder.scale.set(cardScale);
     this.currentCard.setBaseScale(cardScale);
     this.backCard.y =
-      (this.backCard.height * this.backCard.scale.y) / 2 - padding * 30;
+      (this.backCard.height * this.backCard.scale.y) / 2 + padding * 15;
     this.cardPlaceHolder.y = this.backCard.y;
 
-    this.currentCard.x = this.backCard.x + this.backCard.width / 2;
-    this.currentCard.y = this.backCard.y + this.backCard.height / 2;
+    this.currentCard.x = this.backCard.x + this.backCard.width / 2 - padding;
+    this.currentCard.y = this.backCard.y + this.backCard.height / 2 - padding;
 
     // Skip Button (Left)
-    if (this.fancySkipButton.width !== footerBtnWidth)
-      LayoutHelper.scaleToWidth(this.fancySkipButton, footerBtnWidth, false);
-    this.fancySkipButton.x = this.backCard.x + this.backCard.width / 2;
-    this.fancySkipButton.y = this.backCard.y + this.backCard.height;
+    LayoutHelper.scaleToWidth(this.fancySkipButton, this.currentCard.width / 2, false);
+    this.fancySkipButton.x = this.currentCard.x;
+    this.fancySkipButton.y = this.currentCard.y + this.currentCard.height / 2;
     // Ensure skip button is always on top
     this.cardsContainer.addChild(this.fancySkipButton);
 
     // Hi/Lo Buttons
 
-    const buttonScale = 1.5;
+    const buttonScale = 0.75;
 
     this.upButton.scale.set(buttonScale);
     this.downButton.scale.set(buttonScale);
@@ -296,14 +328,28 @@ export class MobileLayout extends Container {
       this.upButton.x + this.upButton.width / 2,
     );
     this.titleHigh.y =
-      this.upButton.y + this.upButton.height / 2 + this.titleHigh.height;
+      this.upButton.y + this.upButton.height / 2 + this.titleHigh.height / 2;
+
+    // High Icon
+    this.highIcon.scale.set(1); // Adjust scale if needed
+    this.highIcon.anchor.set(1, 0.5);
+    this.highIcon.x = this.titleHigh.x - this.titleHigh.width / 2;
+    this.highIcon.y = this.titleHigh.y - this.titleHigh.height / 2 + this.highDes.height / 2;
+
 
     LayoutHelper.setPositionX(
       this.titleLow,
       this.downButton.x + this.downButton.width / 2,
     );
     this.titleLow.y =
-      this.downButton.y + this.downButton.height / 2 - this.titleLow.height;
+      this.downButton.y + this.downButton.height / 2;
+
+    // Low Icon
+    this.lowIcon.scale.set(1);
+    this.lowIcon.anchor.set(1, 0.5);
+    this.lowIcon.x = this.titleLow.x - this.titleLow.width / 2;
+    this.lowIcon.y = this.titleLow.y;
+
 
     // --- Input Container (History Box) ---
 
@@ -311,24 +357,20 @@ export class MobileLayout extends Container {
     const innerWidth = containerW;
 
     // --- 1. History List ---
-    let currentY = padding * 2; // Top padding
     const inputBoxHeight = 155;
 
-    this.cardHistoryLayout.resize(width - padding * 5, this.currentCard.height);
-    this.cardHistoryLayout.x = (width - this.cardHistoryLayout.width) / 2;
-    this.cardHistoryLayout.y = this.backCard.y + this.backCard.height + this.cardHistoryLayout.height / 2;
-    this.cardHistoryLayout.pushBackPadding = -padding * 3;
-
-    currentY += padding; // Spacing after history
+    this.cardHistoryLayout.resize(width - padding * 18, this.currentCard.height * 0.5);
+    this.cardHistoryLayout.x = this.currentCard.x - this.cardHistoryLayout.width / 2 + padding * 4;
+    this.cardHistoryLayout.y = this.backCard.y + this.backCard.height + padding * 3;
+    this.cardHistoryLayout.pushBackPadding = 40;
 
     // --- 2. Input Box ---
-    const inputW = innerWidth * 0.95;
+    const inputW = innerWidth * 0.55;
 
     // Resize CustomInput
     this.inputBox.resize(inputW, inputBoxHeight);
 
     this.inputBox.x = (innerWidth - inputW) / 2;
-    this.inputBox.y = currentY;
 
     //half button
     LayoutHelper.scaleToHeight(this.halfValueButton, this.inputBox.height);
@@ -347,58 +389,66 @@ export class MobileLayout extends Container {
     LayoutHelper.setPositionY(this.doubleValueButton, this.halfValueButton.y);
 
 
-    currentY += this.inputBox.height + padding; // Spacing after input
 
-    // --- 3. Money Label ---
+    // --- 3. Money Label & Icon ---
     // Calculate position relative to container (0,0)
+    // Group them: Icon - Gap - Label
+    const gap = 10;
+    const totalW = this.coinIcon.width + this.moneyLabel.width;
 
-    LayoutHelper.setPositionX(this.moneyLabel, innerWidth / 2);
-    this.moneyLabel.y = currentY + padding;
+    this.coinIcon.anchor.set(0, 0.5);
+    this.coinIcon.y = this.BarMid.height / 2 + this.coinIcon.height - padding / 3;
 
-    currentY += this.moneyLabel.height + padding; // Spacing after label (Bottom padding)
+    // Start X to center the group
+    const startX = (this.BarMid.width - totalW) / 2;
+    this.coinIcon.x = startX;
+
+    this.moneyLabel.anchor.set(0, 0.5);
+    this.moneyLabel.x = this.coinIcon.x + this.coinIcon.width + gap;
+    this.moneyLabel.y = this.coinIcon.y; // Match Y since anchor is 0.5
 
     // --- 4. Background ---
     // Resize background to fit the total calculated content height
-    this.inputContainerBg
-      .clear()
-      .rect(0, 0, containerW, currentY)
-      .fill({ color: 0x000000, alpha: 0.3 });
-
-    // Ensure visibility
     this.moneyLabel.visible = true;
     this.inputBox.visible = true;
     this.cardHistoryLayout.visible = true;
 
-    this.gameHistory.y = height - this.gameHistory.height;
+    this.gameHistory.y = height - this.gameHistory.height - 200;
     this.gameHistory.x = 0;
 
     // Resize history container properly to avoid scaling distortion
     this.gameHistory.resize(width, 70);
 
     // Position the whole container
-    const historyStartY = this.betButton.y - this.betButton.height / 2 - currentY - padding;
+    const historyStartY = this.betButton.y - this.betButton.height - this.inputContainer.height / 2;
 
     this.inputContainer.x = (width - containerW) / 2;
     this.inputContainer.y = historyStartY;
+
+    this.knightCharacter.scale.set(0.75);
+    this.knightCharacter.x = width / 2;
+    this.knightCharacter.y = this.inputContainer.y + this.inputContainer.height / 2 - padding;
     // --- Settings UI & Speed Button ---
     // Settings UI
-    LayoutHelper.scaleToHeight(this.settingsUI, this.betButton.height);
-    LayoutHelper.setPositionX(this.settingsUI, width - this.settingsUI.width); // Align right with padding
+    LayoutHelper.scaleToHeight(this.settingsUI, this.betButton.height * 1.15);
+    LayoutHelper.setPositionX(this.settingsUI, this.betButton.x + this.betButton.width / 2 + padding); // Align right with padding
     LayoutHelper.setPositionY(
       this.settingsUI,
-      this.betButton.y - this.settingsUI.height / 2
+      this.betButton.y - this.betButton.height / 2
     );
 
     // Speed Button
-    this.speedButton.width = this.settingsUI.width * 0.75;
-    this.speedButton.height = this.settingsUI.height * 0.75;
+    LayoutHelper.scaleToHeight(this.speedButton, this.betButton.height);
     LayoutHelper.setPositionX(
       this.speedButton,
-      this.betButton.x - this.speedButton.width * 2,
+      this.betButton.x - this.betButton.width / 2 - this.speedButton.width,
     );
     LayoutHelper.setPositionY(
       this.speedButton,
-      this.settingsUI.y + this.settingsUI.height / 2,
+      this.betButton.y - this.betButton.height / 2,
     );
+
+    // Ensure betButton is on top of everything to prevent overlap issues
+    this.fancyBoxContainer.setChildIndex(this.betButton, this.fancyBoxContainer.children.length - 1);
   }
 }
