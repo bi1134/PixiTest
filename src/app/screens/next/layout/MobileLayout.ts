@@ -394,7 +394,7 @@ export class MobileLayout extends Container {
     // Calculate position relative to container (0,0)
     // Group them: Icon - Gap - Label
     const gap = 10;
-    const totalW = this.coinIcon.width + this.moneyLabel.width;
+    const totalW = this.coinIcon.width + this.moneyLabel.width - padding * 3;
 
     this.coinIcon.anchor.set(0, 0.5);
     this.coinIcon.y = this.BarMid.height / 2 + this.coinIcon.height - padding / 3;
