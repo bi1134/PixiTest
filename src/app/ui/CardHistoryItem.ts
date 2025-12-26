@@ -26,7 +26,7 @@ export class CardHistoryItem extends Container {
 
   // public targetX: number = 0; // Removed: Handled by PixiUI List
 
-  constructor(rank: string, suit: string, action: GuessAction) {
+  constructor(rank: string, suit: string, action: GuessAction, multiplier?: number) {
     super();
 
     // Create inner container for local animations (like "fake position" slide-in)
@@ -34,10 +34,10 @@ export class CardHistoryItem extends Container {
     this.innerContainer = new Container();
     this.addChild(this.innerContainer);
 
-    this.Setup(rank, suit, action);
+    this.Setup(rank, suit, action, multiplier);
   }
 
-  private Setup(rank: string, suit: string, action: GuessAction) {
+  private Setup(rank: string, suit: string, action: GuessAction, multiplier?: number) {
     // Clear previous if reusing
     this.innerContainer.removeChildren();
 
@@ -59,8 +59,15 @@ export class CardHistoryItem extends Container {
     this.multiplierBackground = Sprite.from("Bar-result.png");
     this.innerContainer.addChild(this.multiplierBackground);
 
+    let labelText = "";
+    if (action === GuessAction.Start) {
+      labelText = "Start";
+    } else if (multiplier !== undefined) {
+      labelText = `${multiplier}x`;
+    }
+
     this.multiplierTextLabel = new BitmapText({
-      text: "1.5x",
+      text: labelText,
       anchor: 0.5,
       style: {
         fontSize: 45,

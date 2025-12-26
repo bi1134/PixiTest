@@ -17,6 +17,9 @@ export interface CardHistoryLayoutOptions {
 }
 
 class GapContainer extends Container {
+  private _contentWidth: number = 0;
+  private _contentHeight: number = 0;
+
   constructor(
     public leftPad: number,
     public rightPad: number,
@@ -25,8 +28,13 @@ class GapContainer extends Container {
     super();
   }
 
-  public addItem(item: Container) {
+  public addItem(item: Container, fixedWidth?: number, fixedHeight?: number) {
     this.addChild(item);
+
+    // Store fixed dimensions if provided, otherwise fallback (which might be unstable during anim)
+    this._contentWidth = fixedWidth ?? item.width;
+    this._contentHeight = fixedHeight ?? item.height;
+
     if (this.type === 'horizontal') {
       item.x = this.leftPad;
     } else {
@@ -34,33 +42,17 @@ class GapContainer extends Container {
     }
   }
 
-  // Override logical width/height to include padding
+  // Override logical width/height to include padding and use STABLE content size
   public override get width(): number {
     if (this.type === 'horizontal') {
-      const childSize = this.children.length > 0 ? this.children[0].width : 0;
-      // Note: children[0].width is scale-adjusted.
-      // But wait! If we just modified item.x, does child.width change? No.
-      // However, we want the TOTAL layout span.
-      // If we use super.width, it calculates bounds.
-      // If child is at x=10, width=100. Bounds = 110.
-      // We want 10 (left) + 100 (child) + right.
-      // So super.width (110) + rightPad.
-      // IF leftPad is negative (-10). Child at -10. Bounds: minX=-10, maxX=90. Width=100.
-      // We want -10 + 100 + rightPad = 90 + rightPad.
-      // super.width (100) - 10 ??? No.
-      // Actually simply: leftPad + childSize + rightPad works for both?
-      // 10 + 100 + 10 = 120.
-      // -10 + 100 + 10 = 100.
-      // Let's use explicit calculation.
-      return this.leftPad + childSize + this.rightPad;
+      return this.leftPad + this._contentWidth + this.rightPad;
     }
     return super.width;
   }
 
   public override get height(): number {
     if (this.type === 'vertical') {
-      const childSize = this.children.length > 0 ? this.children[0].height : 0;
-      return this.leftPad + childSize + this.rightPad;
+      return this.leftPad + this._contentHeight + this.rightPad;
     }
     return super.height;
   }
@@ -124,13 +116,16 @@ export class CardHistoryLayout extends Container {
       .fill(0xffffff); // fill color doesn't matter, mask only uses alpha
     this.addChild(this.cardsHistoryMask);
 
-    this.mask = this.cardsHistoryMask;
+    // Apply mask ONLY to the list, so background remains visible
+    // this.mask = this.cardsHistoryMask; 
 
     // --- Create List ---
     this.list = new List({
       type: this.options.type ?? "horizontal",
       elementsMargin: 0,
     });
+
+    this.list.mask = this.cardsHistoryMask;
 
     this.addChild(this.list);
   }
@@ -142,10 +137,11 @@ export class CardHistoryLayout extends Container {
     leftPad: number = 0,
     rightPad: number = 0,
     _scrollMutiplier: number = 5,
-    itemScale?: number
+    itemScale?: number,
+    multiplier?: number
   ) {
     // 1. Create New Item
-    const item = new CardHistoryItem(value, suit, action);
+    const item = new CardHistoryItem(value, suit, action, multiplier);
 
 
     const finalScale = itemScale ?? 1;
@@ -156,7 +152,7 @@ export class CardHistoryLayout extends Container {
 
     // Use GapContainer wrapper to handle per-item spacing
     const wrapper = new GapContainer(leftPad, rightPad, this.options.type ?? 'horizontal');
-    wrapper.addItem(item);
+    wrapper.addItem(item, itemWidth, itemHeight);
 
     // 3. Add to List
     this.list.addChild(wrapper); // Adds to end
@@ -200,8 +196,28 @@ export class CardHistoryLayout extends Container {
     requestAnimationFrame(() => {
       if (this.destroyed) return;
 
-      const listWidth = this.list.width;
-      const listHeight = this.list.height;
+      // FIX: Do NOT use this.list.width/height directly. 
+      // Pixi Container bounds are based on visual children (which are scaling from 0.5).
+      // We need the TARGET layout size. Since we know List positions children sequentially,
+      // we can find the extent by looking at the last child's position + its stable width.
+      let listWidth = 0;
+      let listHeight = 0;
+
+      if (this.list.children.length > 0) {
+        const lastChild = this.list.children[this.list.children.length - 1];
+        // Accessing .width/.height on GapContainer uses our overridden stable getter
+        if (this.options.type === 'vertical') {
+          listHeight = lastChild.y + lastChild.height;
+          listWidth = this.list.width; // Fallback for cross-axis
+        } else {
+          listWidth = lastChild.x + lastChild.width;
+          listHeight = this.list.height; // Fallback for cross-axis
+        }
+      } else {
+        listWidth = this.list.width;
+        listHeight = this.list.height;
+      }
+
       const visibleWidth = this.cardsHistoryBackground.width;
       const visibleHeight = this.cardsHistoryBackground.height;
 
@@ -288,12 +304,16 @@ export class CardHistoryLayout extends Container {
     this.cardsHistoryBackground.height = height;
 
     // --- Update mask to match background ---
+    // We add a small left padding to the MASK to cleanly clip any overflowing items on the left
+    // This resolves the "partial 6th card" issue by hiding it earlier.
+    const maskLeftPadding = 20;
+
     this.cardsHistoryMask
       .clear()
       .rect(
+        maskLeftPadding,
         0,
-        0,
-        width,
+        width - maskLeftPadding,
         height,
       )
       .fill(0xffffff);

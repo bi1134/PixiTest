@@ -3,7 +3,6 @@ import { Container, Graphics, Sprite } from "pixi.js";
 import { BitmapLabel } from "../../../ui/BitmapLabel";
 import { Card } from "../../../ui/Card";
 import { LayoutHelper } from "../../../utils/LayoutHelper";
-import { ProfitLayout } from "./ProfitLayout";
 import { CardHistoryLayout } from "./CardHistoryLayout";
 import { GameHistoryContainer } from "../../../ui/GameHistoryContainer";
 import { SettingsUI } from "../../../ui/SettingsUI";
@@ -29,13 +28,13 @@ export class MobileLayout extends Container {
   public highDes!: BitmapLabel;
   public lowDes!: BitmapLabel;
   public fancySkipButton!: CustomButton;
-  public profitLayout!: ProfitLayout;
   public cardHistoryLayout!: CardHistoryLayout;
   public gameHistory!: GameHistoryContainer;
 
   // Mobile specific additions (from Sidebar)
   public inputContainer!: Container;
   public moneyLabel!: BitmapLabel;
+  public moneyContainer!: Container;
   public inputBox!: CustomInput;
   public inputDefaultValue: number = 0.02;
   public betButton!: BetButton;
@@ -55,6 +54,8 @@ export class MobileLayout extends Container {
   public coinIcon!: Sprite;
   public highIcon!: Sprite;
   public lowIcon!: Sprite;
+
+  private lastPadding: number = 0;
 
   constructor(width: number, height: number) {
     super();
@@ -104,11 +105,11 @@ export class MobileLayout extends Container {
 
     this.highDes = new BitmapLabel({
       text: "Higher or equal",
-      style: { fill: "#d3c7c7ff", fontSize: 23, fontFamily: "coccm-bitmap-3-normal", },
+      style: { fill: "#fafafaff", fontSize: 23, fontFamily: "coccm-bitmap-3-normal", },
     });
     this.lowDes = new BitmapLabel({
       text: "Lower or equal",
-      style: { fill: "#c9bfbfff", fontSize: 23, fontFamily: "coccm-bitmap-3-normal" },
+      style: { fill: "#ffffffff", fontSize: 23, fontFamily: "coccm-bitmap-3-normal" },
     });
     this.cardsContainer.addChild(this.highDes, this.lowDes);
 
@@ -150,9 +151,6 @@ export class MobileLayout extends Container {
     this.fancyBoxContainer.addChild(this.betButton); // We'll position this dynamically
 
     // --- Create Subcomponents ---
-    this.profitLayout = new ProfitLayout();
-    this.fancyBoxContainer.addChild(this.profitLayout);
-
     this.knightCharacter = new KnightCharacter();
     this.fancyBoxContainer.addChild(this.knightCharacter);
 
@@ -230,6 +228,7 @@ export class MobileLayout extends Container {
   }
 
   public resize(width: number, height: number, padding: number) {
+    this.lastPadding = padding;
     // Resize background to cover
     if (this.background) {
       this.background.x = width / 2;
@@ -244,15 +243,6 @@ export class MobileLayout extends Container {
     this.multiplierBoard.scale.set(0.75);
     this.multiplierBoard.x = width / 2;
     this.multiplierBoard.y = padding * 15.5;
-
-    // --- 1. Profit Layout (Top Header) ---
-    const profitWidth = width * 0.95;
-    const profitHeight = 100;
-    this.profitLayout.resize(profitWidth, profitHeight, 10);
-    this.profitLayout.x = (width - profitWidth) / 2;
-    this.profitLayout.y = 0 + padding * 2;
-
-    // --- Footer Buttons (Skip & Bet) ---
 
     // Sizing: Share width
     const footerBtnWidth = (width - padding * 15) / 2;
@@ -319,8 +309,8 @@ export class MobileLayout extends Container {
     this.highDes.x = this.upButton.x + this.upButton.width / 2;
     this.lowDes.x = this.downButton.x + this.downButton.width / 2;
 
-    this.highDes.y = this.upButton.y + this.upButton.height - padding * 1.5;
-    this.lowDes.y = this.downButton.y + padding * 1.5;
+    this.highDes.y = this.upButton.y + this.upButton.height / 2 + padding * 1.5;
+    this.lowDes.y = this.downButton.y + this.downButton.height / 2 + padding * 1;
 
     // Titles
     LayoutHelper.setPositionX(
@@ -328,13 +318,13 @@ export class MobileLayout extends Container {
       this.upButton.x + this.upButton.width / 2,
     );
     this.titleHigh.y =
-      this.upButton.y + this.upButton.height / 2 + this.titleHigh.height / 2;
+      this.upButton.y + this.upButton.height / 2 - this.titleHigh.height + padding;
 
     // High Icon
-    this.highIcon.scale.set(1); // Adjust scale if needed
+    this.highIcon.scale.set(0.75); // Adjust scale if needed
     this.highIcon.anchor.set(1, 0.5);
-    this.highIcon.x = this.titleHigh.x - this.titleHigh.width / 2;
-    this.highIcon.y = this.titleHigh.y - this.titleHigh.height / 2 + this.highDes.height / 2;
+    this.highIcon.x = this.titleHigh.x - padding * 4.5;
+    this.highIcon.y = this.titleHigh.y;
 
 
     LayoutHelper.setPositionX(
@@ -342,12 +332,12 @@ export class MobileLayout extends Container {
       this.downButton.x + this.downButton.width / 2,
     );
     this.titleLow.y =
-      this.downButton.y + this.downButton.height / 2;
+      this.downButton.y + this.downButton.height / 2 - this.titleLow.height + padding / 3;
 
     // Low Icon
-    this.lowIcon.scale.set(1);
+    this.lowIcon.scale.set(0.75);
     this.lowIcon.anchor.set(1, 0.5);
-    this.lowIcon.x = this.titleLow.x - this.titleLow.width / 2;
+    this.lowIcon.x = this.titleLow.x - padding * 4.5;
     this.lowIcon.y = this.titleLow.y;
 
 
@@ -359,11 +349,10 @@ export class MobileLayout extends Container {
     // --- 1. History List ---
     const inputBoxHeight = 135;
 
-    this.cardHistoryLayout.resize(width - padding * 18.25, this.currentCard.height * 0.5);
+    this.cardHistoryLayout.resize(width - padding * 18.25, this.currentCard.height * 0.45);
     this.cardHistoryLayout.x = this.currentCard.x - this.cardHistoryLayout.width / 2 + padding * 4;
     this.cardHistoryLayout.y = this.backCard.y + this.backCard.height + padding * 3;
-    this.cardHistoryLayout.pushBackPadding = 30;
-
+    this.cardHistoryLayout.pushBackPadding = 8;
     // --- 2. Input Box ---
     const inputW = innerWidth * 0.55;
 
@@ -393,19 +382,43 @@ export class MobileLayout extends Container {
     // --- 3. Money Label & Icon ---
     // Calculate position relative to container (0,0)
     // Group them: Icon - Gap - Label
-    const gap = 10;
-    const totalW = this.coinIcon.width + this.moneyLabel.width - padding * 3;
 
+    // We already have them added to BarMid (which is a Sprite acting as container here)
+    // But wrapping them makes centering easier as value changes length.
+    // However, since BarMid is a Sprite, let's just use a virtual calculation or a container if prefered.
+    // User explicitly asked for a container approach or "constantly in the middle".
+
+    // Let's create a temporary container concept or just specific math. 
+    // Actually, creating a persistent container is cleaner.
+
+    if (!this.moneyContainer) {
+      this.moneyContainer = new Container();
+      this.BarMid.addChild(this.moneyContainer);
+      // Move children to this container
+      this.moneyContainer.addChild(this.coinIcon, this.moneyLabel);
+    }
+
+    // Reset positions inside local container
     this.coinIcon.anchor.set(0, 0.5);
-    this.coinIcon.y = this.BarMid.height / 2 + this.coinIcon.height - padding / 3;
-
-    // Start X to center the group
-    const startX = (this.BarMid.width - totalW) / 2;
-    this.coinIcon.x = startX;
+    this.coinIcon.x = 0;
+    this.coinIcon.y = 0; // vertical center relative to container
 
     this.moneyLabel.anchor.set(0, 0.5);
-    this.moneyLabel.x = this.coinIcon.x + this.coinIcon.width + gap;
-    this.moneyLabel.y = this.coinIcon.y; // Match Y since anchor is 0.5
+    this.moneyLabel.x = this.coinIcon.width + 10; // Gap 10
+    this.moneyLabel.y = 0;
+
+    // Start X to center the group
+    // BarMid anchor is default (0,0) usually unless set otherwise. Let's check where it is created.
+    // In createLayout: BarMid = Sprite.from("Bar-mid.png");
+    // In resize: LayoutHelper.scaleToWidth(this.BarMid...); this.BarMid.x = ...
+
+    // Center the moneyContainer within BarMid
+    // Local coords of BarMid: (0,0) is top-left of the sprite texture usually? 
+    // Wait, if BarMid is a Sprite, its children are relative to it.
+
+    this.moneyContainer.x = (this.BarMid.width - this.moneyContainer.width) / 2 + padding * 2;
+    this.moneyContainer.y = this.BarMid.height / 2 + this.moneyContainer.height - padding * 0.25; // Vertically center
+
 
     // --- 4. Background ---
     // Resize background to fit the total calculated content height
@@ -450,5 +463,22 @@ export class MobileLayout extends Container {
 
     // Ensure betButton is on top of everything to prevent overlap issues
     this.fancyBoxContainer.setChildIndex(this.betButton, this.fancyBoxContainer.children.length - 1);
+  }
+
+  public updateMoney(value?: string) {
+    if (value !== undefined) {
+      this.moneyLabel.text = value;
+    }
+
+    // Ensure container exists (should be created in resize/create, but safe guard)
+    if (!this.moneyContainer) return;
+
+    // Recalculate inner positions (in case label width changed)
+    this.coinIcon.x = 0;
+    this.moneyLabel.x = this.coinIcon.width + 10;
+
+    // Recalculate container center position using stored padding
+    this.moneyContainer.x = (this.BarMid.width - this.moneyContainer.width) / 2 + this.lastPadding * 2;
+    this.moneyContainer.y = this.BarMid.height / 2 + this.moneyContainer.height - this.lastPadding * 0.25;
   }
 }

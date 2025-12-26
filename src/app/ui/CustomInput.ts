@@ -8,6 +8,7 @@ export class CustomInput extends Container {
     public displayText: BitmapLabel;
 
     private _value: string = "";
+    private _clearOnNextTouch: boolean = true;
 
     public get value(): string {
         return this.input.value;
@@ -54,7 +55,7 @@ export class CustomInput extends Container {
             },
             align: options.align || "center",
             padding: options.padding || 0,
-            cleanOnFocus: true,
+            cleanOnFocus: false, // Disable auto-clean to fix mobile focus issues
         });
 
         // Ensure input container itself doesn't have scale issues
@@ -79,20 +80,18 @@ export class CustomInput extends Container {
             this.updateText();
         });
 
-        // Handle "cleanOnFocus" visual for the bitmap label
-        // Input doesn't emit 'focus' directly publicly easily, but 'pointertap' is close enough for start of editing
-        this.input.on("pointertap", () => {
-            // If cleanOnFocus is true, Input clears its value. We should clear our label too.
-            // Input clears 'value' on focus? 
-            // @pixi/ui Input cleanOnFocus clears text when focused *if* it matches placeholder? 
-            // Actually `cleanOnFocus` usually clears the text if it's the default/placeholder? 
-            // Let's just sync. If Input clears value, onChange should fire?
-            // Usually onChange fires when text changes.
+        this.input.onEnter.connect(() => {
+            this._clearOnNextTouch = true;
+        });
 
-            // In MobileLayout we had specific logic:
-            // this.inputBox.on('pointertap', () => { this.inputBitmapLabel.text = ""; });
-            // We'll replicate that.
-            this.displayText.text = "RP ";
+        // Handle "cleanOnFocus" visual for the bitmap label
+        this.input.on("pointertap", () => {
+            // Manual Clear on First Touch
+            if (this._clearOnNextTouch) {
+                this.input.value = "";
+                this.displayText.text = "RP ";
+                this._clearOnNextTouch = false;
+            }
         });
 
         // Initial sync

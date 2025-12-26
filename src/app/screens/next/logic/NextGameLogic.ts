@@ -96,4 +96,46 @@ export class NextGameLogic {
         return GuessResult.Lose;
     }
   }
+
+  // Calculate probability of winning (0-100) for a given rank and action
+  public static getWinProbability(rank: string, action: GuessAction): number {
+    const ranks = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+    const rankIndex = ranks.indexOf(rank);
+    const total = 13;
+    let prob = 0;
+
+    if (rank === "A") {
+      if (action === GuessAction.Higher || action === GuessAction.HigherOrEqual) {
+        // High Button -> Strict Higher (> A) for A
+        // Note: Logic says "Higher" button returns "Higher" action for A?
+        // in getHighAction("A") -> returns Higher.
+        prob = (total - 1) / total;
+      } else {
+        // Low Button -> Equal (== A)
+        prob = 1 / total;
+      }
+    } else if (rank === "K") {
+      if (action === GuessAction.Higher || action === GuessAction.HigherOrEqual || action === GuessAction.Equal) {
+        // High Button -> Equal (== K)
+        // getHighAction("K") -> Equal
+        prob = 1 / total;
+      } else {
+        // Low Button -> Strict Lower (< K)
+        prob = (total - 1) / total;
+      }
+    } else {
+      // Mid cards
+      if (action === GuessAction.Higher || action === GuessAction.HigherOrEqual) {
+        // Higher or Equal (>= Rank)
+        // Ranks >= current: (total - rankIndex)
+        prob = (total - rankIndex) / total;
+      } else {
+        // Lower or Equal (<= Rank)
+        // Ranks <= current: (rankIndex + 1)
+        prob = (rankIndex + 1) / total;
+      }
+    }
+
+    return prob * 100;
+  }
 }

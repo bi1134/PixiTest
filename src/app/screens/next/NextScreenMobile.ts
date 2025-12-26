@@ -6,19 +6,24 @@ import { GameState, GuessAction, GuessResult } from "./types/GameTypes";
 import { UI } from "../../ui/Manager/UIManager";
 import { NextGameLogic } from "./logic/NextGameLogic";
 import { GameData } from "../../data/GameData";
+import { MultiplierManager } from "./logic/MultiplierManager";
 
 export class NextScreenMobile extends Container {
   public static assetBundles = ["main"];
 
   public layout!: MobileLayout; // Renamed for clarity
+  private multiplierManager: MultiplierManager;
 
   private currentState: GameState = GameState.NonBetting;
 
   // New container for safe area content
   private safeArea!: Container;
 
+  private firstLoad: boolean = true;
+
   constructor() {
     super();
+    this.multiplierManager = new MultiplierManager();
 
     const { width, height } = engine().renderer.screen;
 
@@ -33,7 +38,7 @@ export class NextScreenMobile extends Container {
 
     this.resize(width, height);
     // Sync initial UI
-    this.layout.moneyLabel.text = `${GameData.instance.totalMoney.toFixed(2)}`;
+    this.layout.updateMoney(`${GameData.instance.totalMoney.toFixed(2)}`);
 
   }
 
@@ -117,12 +122,30 @@ export class NextScreenMobile extends Container {
 
     const labels = NextGameLogic.getLabelData(rank);
 
-    this.layout.highDes.text = labels.highDesc;
-    this.layout.lowDes.text = labels.lowDesc;
-
-    // Update Icons based on action
+    // Update Icons based on action (needed for payout calculation)
     const highAction = NextGameLogic.getHighAction(rank);
     const lowAction = NextGameLogic.getLowAction(rank);
+
+    // Logic: Show Description on First Load, then switch to Payouts forever once game starts
+    if (this.firstLoad) {
+      this.layout.highDes.text = labels.highDesc;
+      this.layout.lowDes.text = labels.lowDesc;
+    } else {
+      // Show Payouts (Rp XXX)
+      const currentBet = parseFloat(this.layout.inputBox.value);
+      const validBet = isNaN(currentBet) ? 0.02 : currentBet;
+
+      // Calculate Potential Multipliers
+      const highNextMult = this.multiplierManager.getNextMultiplier(rank, highAction);
+      const lowNextMult = this.multiplierManager.getNextMultiplier(rank, lowAction);
+
+      // Calculate Potential Payouts
+      const highPayout = validBet * highNextMult;
+      const lowPayout = validBet * lowNextMult;
+
+      this.layout.highDes.text = `Rp ${highPayout.toFixed(2)}`;
+      this.layout.lowDes.text = `Rp ${lowPayout.toFixed(2)}`;
+    }
 
     if (highAction === GuessAction.Equal) {
       this.layout.highIcon.texture = Texture.from("icon-equal.png");
@@ -163,6 +186,13 @@ export class NextScreenMobile extends Container {
 
     this.layout.titleHigh.text = `${(highProb * 100).toFixed(1)}%`;
     this.layout.titleLow.text = `${(lowProb * 100).toFixed(1)}%`;
+
+    // Update Next Multiplier Board (Prediction)
+    // User requested: "solid current multiplier + additional value ... no need the 100 - percentage"
+    // confirming "fake value" of roughly +0.5.
+    const fakeIncrement = 0.5;
+    const nextVal = this.multiplierManager.currentMultiplier + fakeIncrement;
+    this.layout.multiplierBoard.setMultiplier(parseFloat(nextVal.toFixed(2)));
   }
 
   //#region guessing logic
@@ -189,6 +219,8 @@ export class NextScreenMobile extends Container {
     // Handle Result
     if (result === GuessResult.Win) {
       // Win Logic
+      this.multiplierManager.applyWin(prevRank, action); // Apply win using PREVIOUS rank and CHOSEN action
+
       this.enableButton(this.layout.betButton);
       this.layout.betButton.text = "Cash Out";
     } else if (result === GuessResult.Lose) {
@@ -198,26 +230,34 @@ export class NextScreenMobile extends Container {
       const lostAmount = isNaN(rawVal) ? 0.02 : rawVal;
       GameData.instance.addRoundResult(0, false, lostAmount);
       this.layout.gameHistory.addResult(0, false);
-      this.layout.moneyLabel.text = `${GameData.instance.totalMoney.toFixed(2)}`;
+
+      // Update Money and Recenter
+      this.layout.updateMoney(`${GameData.instance.totalMoney.toFixed(2)}`);
+
       this.vibratePhone(200);
       this.EnterBettingState();
     }
     // Skip does nothing extra beyond setting card (already done)
 
+    // Update Multiplier Board
+    this.layout.multiplierBoard.setMultiplier(this.multiplierManager.currentMultiplier);
+
     // --- Add the NEW current card (after pressing button) to history ---
+    // We pass the CURRENT multiplier (state after guess)
     this.layout.cardHistoryLayout.addCardToHistory(
       this.layout.currentCard.rank,
       this.layout.currentCard.suit,
       action,
       0,
-      -18.5,
+      -18,
       1,
-      0.4
+      0.4,
+      this.multiplierManager.currentMultiplier // Pass multiplier
     );
     this.updateButtonLabels();
 
     console.log(
-      `Prev: ${prevRank}, Next: ${nextRank}, Guess: ${action}, Result: ${result}`,
+      `Prev: ${prevRank}, Next: ${nextRank}, Guess: ${action}, Result: ${result}, Multiplier: ${this.multiplierManager.currentMultiplier}`,
     );
   }
 
@@ -254,6 +294,9 @@ export class NextScreenMobile extends Container {
     );
 
     // --- randomize the starting card (rank + suit) ---
+    this.multiplierManager.reset();
+    this.layout.multiplierBoard.setMultiplier(this.multiplierManager.currentMultiplier); // Init board
+
     this.layout.currentCard.RandomizeValue();
     this.updateButtonLabels();
 
@@ -262,25 +305,24 @@ export class NextScreenMobile extends Container {
       this.layout.currentCard.suit,
       GuessAction.Start,
       20,
-      10,
+      8,
       1,
-      0.4
+      0.4,
+      this.multiplierManager.currentMultiplier
     );
 
     //input and buttons
     this.layout.inputBox.interactive = false;
-    this.layout.inputBox.alpha = 0.75;
-    //input and buttons
-    this.layout.inputBox.interactive = false;
-    this.layout.inputBox.alpha = 0.75;
     this.layout.betButton.setBettingState(false); // Non-Betting -> 1-0, Cash Out
+    this.layout.halfValueButton.interactive = false;
+    this.layout.doubleValueButton.interactive = false;
     this.disableButton(this.layout.betButton); // Cannot cash out immediately on start
-    this.disableButton(this.layout.halfValueButton);
-    this.disableButton(this.layout.doubleValueButton);
 
     this.enableButton(this.layout.upButton);
     this.enableButton(this.layout.downButton);
-    this.enableButton(this.layout.fancySkipButton);
+    this.layout.fancySkipButton.interactive = true;
+
+    this.firstLoad = false; // Game has started, switching to Payout mode permanently
 
     console.log("Entered Non Betting State");
   }
@@ -290,18 +332,14 @@ export class NextScreenMobile extends Container {
 
     // Enable input again for new round
     this.layout.inputBox.interactive = true;
-    this.layout.inputBox.alpha = 1;
-    // Enable input again for new round
-    this.layout.inputBox.interactive = true;
-    this.layout.inputBox.alpha = 1;
     this.layout.betButton.setBettingState(true); // Betting -> 1-1, Bet
     this.enableButton(this.layout.betButton);
-    this.enableButton(this.layout.halfValueButton);
-    this.enableButton(this.layout.doubleValueButton);
+    this.layout.halfValueButton.interactive = true;
+    this.layout.doubleValueButton.interactive = true;
 
     this.disableButton(this.layout.upButton);
     this.disableButton(this.layout.downButton);
-    this.disableButton(this.layout.fancySkipButton);
+    this.layout.fancySkipButton.interactive = false;
 
     this.updateButtonLabels();
 
@@ -311,7 +349,7 @@ export class NextScreenMobile extends Container {
   //#endregion
 
   private CashOut() {
-    const multiplier = 6.5; // example
+    const multiplier = this.multiplierManager.currentMultiplier;
     const rawVal = parseFloat(this.layout.inputBox.value);
     const base = isNaN(rawVal) ? 0.02 : rawVal;
 
@@ -325,7 +363,9 @@ export class NextScreenMobile extends Container {
     const betAmount = isNaN(rawVal) ? 0.02 : rawVal;
     GameData.instance.addRoundResult(multiplier, true, betAmount);
     this.layout.gameHistory.addResult(multiplier, true);
-    this.layout.moneyLabel.text = `${GameData.instance.totalMoney.toFixed(2)}`;
+
+    // Update Money and Recenter
+    this.layout.updateMoney(`${GameData.instance.totalMoney.toFixed(2)}`);
 
     this.EnterBettingState();
   }
