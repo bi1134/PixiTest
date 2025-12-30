@@ -239,22 +239,32 @@ export class MobileLayout extends Container {
     this.bottomContainer.addChild(this.speedButton);
   }
 
-  public resize(width: number, height: number, padding: number) {
+  public resize(width: number, height: number, padding: number, verticalMargin: number = 0) {
     // Resize background to cover
     if (this.background) {
       this.background.x = width / 2;
       this.background.y = height / 2;
 
-      this.background.width = width;
-      this.background.height = height;
+      // Scale to cover (maintain aspect ratio)
+      const scale = Math.max(width / this.background.texture.width, height / this.background.texture.height);
+      this.background.scale.set(scale);
     }
 
     // --- Container Positioning ---
-    // Top and Middle start at 0 (or we could shift middle)
-    this.topContainer.position.set(0, 0);
+    // Background Bounds (relative to Top-Left of container which is 0,0)
+    // background is centered at width/2, height/2
+    const bgHalfH = (this.background.height * this.background.scale.y) / 2; // scale is already applied to propery? No, width/height accessors normally account for scale but let's be safe using explicit calculation or just bounds.
+    // Actually PIXI width/height includes scale.
+    const bgTop = this.background ? this.background.y - this.background.height / 2 : 0;
+    const bgBottom = this.background ? this.background.y + this.background.height / 2 : height;
+
+    // Top Container: Stick to top (-margin), clamped by bgTop
+    this.topContainer.position.set(0, Math.max(-verticalMargin, bgTop));
+
     this.middleContainer.position.set(0, -padding * 10);
-    // Bottom container is anchored at the bottom
-    this.bottomContainer.position.set(0, height);
+
+    // Bottom Container: Stick to bottom (height + margin), clamped by bgBottom
+    this.bottomContainer.position.set(0, Math.min(height + verticalMargin, bgBottom));
 
     this.multiplierBoard.scale.set(0.75);
     this.multiplierBoard.x = width / 2;
@@ -373,8 +383,10 @@ export class MobileLayout extends Container {
     // --- 2. Input Box ---
 
     // Resize CustomInput
-    this.inputBox.resize(innerWidth * 0.35, 135);
+    this.inputBox.scale.set(0.75);
     this.inputBox.x = this.betButton.x - this.inputBox.width / 2;
+    this.inputBox.displayText.x = this.inputBox.x + padding * 2;
+    this.inputBox.displayText.y = this.inputBox.y + this.inputBox.height / 2 + padding;
 
     //half button
     LayoutHelper.scaleToHeight(this.halfValueButton, this.inputBox.height);
@@ -424,7 +436,7 @@ export class MobileLayout extends Container {
 
     this.knightCharacter.scale.set(0.75);
     this.knightCharacter.x = width / 2;
-    this.knightCharacter.y = (this.inputContainer.y + height) + this.inputContainer.height / 2 - padding - height;
+    this.knightCharacter.y = (this.inputContainer.y + height) + this.inputContainer.height / 2 - padding * 2 - height;
     // --- Settings UI & Speed Button ---
     // Settings UI
     LayoutHelper.scaleToHeight(this.settingsUI, this.betButton.height * 1.15);

@@ -424,7 +424,12 @@ export class NextScreenMobile extends Container {
 
     // Resize Internal Components to Fixed Reference Resolution
     const padding = SAFE_WIDTH * 0.02; // 2% of fixed width
-    this.layout.resize(SAFE_WIDTH, SAFE_HEIGHT, padding);
+
+    // Calculate how much space is above/below the safe area (in logical pixels)
+    // safeArea is centered, so top gap == bottom gap.
+    const verticalMargin = this.safeArea.y / scale;
+
+    this.layout.resize(SAFE_WIDTH, SAFE_HEIGHT, padding, verticalMargin);
   }
 
   public async show(): Promise<void> {
