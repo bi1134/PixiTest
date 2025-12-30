@@ -6,8 +6,8 @@
             "inheritedMetaData": {},
             "transformData": {},
             "stats": {
-                "date": 1766746754103,
-                "duration": 0.887899998575449,
+                "date": 1767066021567,
+                "duration": 2.006800000090152,
                 "success": true
             }
         },
@@ -20,8 +20,8 @@
             "inheritedMetaData": {},
             "transformData": {},
             "stats": {
-                "date": 1766746754103,
-                "duration": 0.8621999993920326,
+                "date": 1767066021568,
+                "duration": 1.952999999979511,
                 "success": true
             }
         },
@@ -8339,8 +8339,8 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1766746754103,
-                "duration": 1718.4555000029504,
+                "date": 1767066021568,
+                "duration": 1840.1862000001129,
                 "success": true
             }
         },
@@ -8408,7 +8408,7 @@
                 "tps": true
             },
             "transformData": {},
-            "hash": "dZvhNA"
+            "hash": "zxdpdw"
         },
         "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}/blank-icon.jpg": {
             "isFolder": false,
@@ -9061,8 +9061,8 @@
             "inheritedMetaData": {},
             "transformData": {},
             "stats": {
-                "date": 1766730420032,
-                "duration": 18.08960000053048,
+                "date": 1767066021569,
+                "duration": 0.6892000001389533,
                 "success": true
             }
         },
@@ -9375,6 +9375,111 @@
         "E:/PixiJS/PixiTest/public/assets/preload/bg-setting@0.5x.webp": {
             "isFolder": false,
             "transformParent": ".assetpack/compress/preload{m}/bg-setting@0.5x.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/raw-assets/preload{m}/blur_background.jpg": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/preload{m}",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1767066021569,
+                "duration": 286.39259999990463,
+                "success": true
+            },
+            "hash": "cU5iUg"
+        },
+        ".assetpack/mipmap/preload{m}/blur_background.jpg": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/preload{m}/blur_background.jpg",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/preload{m}/blur_background.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/preload{m}/blur_background.jpg",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/preload/blur_background.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/preload{m}/blur_background.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/preload{m}/blur_background.jpg": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/preload{m}/blur_background.jpg",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/preload/blur_background.jpg": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/preload{m}/blur_background.jpg",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/mipmap/preload{m}/blur_background@0.5x.jpg": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/preload{m}/blur_background.jpg",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/preload{m}/blur_background@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/preload{m}/blur_background@0.5x.jpg",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/preload/blur_background@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/preload{m}/blur_background@0.5x.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/preload{m}/blur_background@0.5x.jpg": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/preload{m}/blur_background@0.5x.jpg",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/preload/blur_background@0.5x.jpg": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/preload{m}/blur_background@0.5x.jpg",
             "metaData": {},
             "inheritedMetaData": {
                 "m": true

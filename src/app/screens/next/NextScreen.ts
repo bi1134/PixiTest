@@ -1,6 +1,6 @@
 import { Container } from "pixi.js";
 import { engine } from "../../getEngine";
-import { NextScreenDesktop } from "./NextScreenDesktop";
+
 import { NextScreenMobile } from "./NextScreenMobile";
 
 /**
@@ -20,46 +20,19 @@ export class NextScreen extends Container {
    * then redirects to the appropriate screen.
    */
   private async detectAndRedirect(): Promise<void> {
-    const isMobile = this.isMobileDevice();
-
-    if (isMobile) {
-      engine().resizeOptions = {
-        minWidth: 100, // Small enough to allow full resize
-        minHeight: 100,
-        letterbox: false, // Allow full screen
-      };
-    } else {
-      engine().resizeOptions = {
-        minWidth: 1920,
-        minHeight: 1080,
-        letterbox: true,
-      };
-    }
+    // Always treat as "mobile" app logic-wise (responsive single view)
+    // But allow desktop capabilities (min dimensions)
+    engine().resizeOptions = {
+      minWidth: 200,
+      minHeight: 200,
+      letterbox: false, // We handle letterboxing/centering manually in NextScreenMobile
+    };
 
     // Force an immediate resize to apply the new options
     engine().resize();
 
-    console.log(
-      `[NextScreen] Redirecting to ${isMobile ? "Mobile" : "Desktop"} version...`,
-    );
+    console.log(`[NextScreen] Loading Mobile View (Unified)...`);
 
-    // Redirect based on the detected platform
-    if (isMobile) {
-      await engine().navigation.showScreen(NextScreenMobile);
-    } else {
-      await engine().navigation.showScreen(NextScreenDesktop);
-    }
-  }
-
-  /**
-   * Simple device check — you can improve this using user-agent or orientation later.
-   */
-  private isMobileDevice(): boolean {
-    // Option 1: viewport-based check
-    if (window.innerWidth < 768) return true;
-
-    // Option 2: user agent fallback (optional)
-    const ua = navigator.userAgent || navigator.vendor;
-    return /android|iPad|iPhone|iPod/i.test(ua);
+    await engine().navigation.showScreen(NextScreenMobile);
   }
 }

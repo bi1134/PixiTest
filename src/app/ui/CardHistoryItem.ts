@@ -114,9 +114,9 @@ export class CardHistoryItem extends Container {
     this.multiplierBackground.y = this.cardSprite.height + padding;
 
     this.actionSprite.scale.set(1.75);
-    this.actionSprite.x = this.cardSprite.x - this.actionSprite.width / 1.5;
+    this.actionSprite.x = this.cardSprite.x - this.actionSprite.width / 1.75;
     this.actionSprite.y =
-      this.cardSprite.height / 2 - this.actionSprite.height / 2;
+      this.cardSprite.height / 2 - this.actionSprite.height / 3;
 
     this.multiplierTextLabel.x =
       this.multiplierBackground.x +

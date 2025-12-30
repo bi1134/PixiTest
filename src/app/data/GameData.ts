@@ -12,7 +12,7 @@ export class GameData {
   public currentBet: number = 0.02;
   public history: GameRoundResult[] = [];
 
-  private constructor() {}
+  private constructor() { }
 
   public static get instance(): GameData {
     if (!GameData._instance) {
@@ -34,7 +34,8 @@ export class GameData {
     if (isWin) {
       this.totalMoney += amount * multiplier;
     } else {
-      this.totalMoney -= amount;
+      // Money already deducted on bet start
+      // this.totalMoney -= amount;
     }
   }
 }

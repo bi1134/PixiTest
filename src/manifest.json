@@ -1445,6 +1445,23 @@
         },
         {
           "alias": [
+            "preload/blur_background.jpg",
+            "blur_background.jpg"
+          ],
+          "src": [
+            "preload/blur_background@0.5x.webp",
+            "preload/blur_background@0.5x.jpg",
+            "preload/blur_background.webp",
+            "preload/blur_background.jpg"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
             "preload/Button-high.png",
             "Button-high.png"
           ],

@@ -22,7 +22,7 @@ export class KnightCharacter extends Container {
         // Assuming they share a ground line at y=0
         this.table.y = 0;
 
-        this.knight.x = this.width - this.knight.width / 2;
+        this.knight.x = this.table.x + (this.table.width - this.knight.width) / 2;
         this.knight.y = 0;
         this.addChild(this.table);
 
@@ -62,8 +62,9 @@ export class KnightCharacter extends Container {
         // Bubble anchor is (0.5, 1), so (0, -height/2) is center
         this.dialogContainer.addChild(this.dialogText);
 
-        this.dialogContainer.x = this.knight.x - this.knight.width / 2;
-        this.dialogContainer.y = this.knight.y - this.knight.height / 2;
+        const padding = 10;
+        this.dialogContainer.x = this.knight.x - this.knight.width / 2 - padding * 30;
+        this.dialogContainer.y = this.knight.y - this.knight.height / 2 + padding * 10;
 
         // Initial hidden state or default text
         this.say("Press Bet to Start");

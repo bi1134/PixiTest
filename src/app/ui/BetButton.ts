@@ -44,35 +44,8 @@ export class BetButton extends Container {
             }
         });
         this.textLabel.anchor.set(0.5);
-        // Position relative to the background size
-        // Assuming both sprites are same size usage
-        // We use bgDisabled just for reference, they should be same size
-        // If bgDisabled isn't loaded yet, it might be 1x1.
-        // But usually pixi handles this update.
         this.textLabel.position.set(0, 0); // Initially at 0,0, wait, need center.
 
-        // We can center on frame updates or assume a size.
-        // Or if the sprite loads, it updates.
-        // Let's rely on standard alignment if possible or center manually if we know size.
-        // Button-1-0 is roughly 300x150?
-        // Let's hook into texture update? No, that's overkill.
-        // Just set it to center of the sprite container.
-        // Wait, if sprites are 0,0, text at 0,0 is top-left.
-        // We need it at width/2, height/2.
-        // Let's trust that layout happens.
-
-        // Actually, if we just center it in the container and the container takes size of children...
-        // We might need to reposition label after load.
-        // Or just use a fixed center if we know it.
-        // For now, let's defer to the fact that previous code did switcher.width/2.
-        // I will use a reasonable center or try to read sprite width.
-        // Since we removed hardcoded bounds, we rely on sprite.
-
-        // Use a dirty hack: Check periodically or use 'onload'?
-        // No, let's just center it relative to what we expect.
-        // The previous code used switcher.width.
-
-        // Let's add the label and assume it centers? No.
         this.addChild(this.textLabel);
 
         // Let's center based on estimated size or just wait.
@@ -92,7 +65,23 @@ export class BetButton extends Container {
         // Update Text Logic:
         // Betting -> "Bet"
         // NonBetting -> "Cash Out"
-        this.textLabel.text = isBetting ? "Bet" : "Cash Out";
+        if (isBetting) {
+            this.textLabel.text = "Bet";
+            this.textLabel.style = {
+                fontFamily: "coccm-bitmap-3-normal",
+                fontSize: 80,
+                align: "center",
+                fill: "#FFFFFF"
+            };
+        } else {
+            this.textLabel.text = "Cash Out";
+            this.textLabel.style = {
+                fontFamily: "coccm-bitmap-3-normal",
+                fontSize: 55,
+                align: "center",
+                fill: "#FFFFFF"
+            };
+        }
     }
 
     public setEnabled(enabled: boolean) {

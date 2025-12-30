@@ -20,7 +20,7 @@ export class GameHistoryItem extends Container {
       anchor: 0.5,
     });
     this.textLabel = new BitmapLabel({
-      text: `${data.multiplier}x`,
+      text: `x${data.multiplier}`,
       style: { fill: "#e9e9e9ff", fontSize: 25, fontFamily: "coccm-bitmap-3-normal" },
     });
 

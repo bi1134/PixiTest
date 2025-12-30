@@ -1,4 +1,4 @@
-import { Container, Graphics, Sprite, Texture } from "pixi.js";
+import { Container, Texture } from "pixi.js";
 import { engine } from "../../getEngine";
 import { MobileLayout } from "./layout/MobileLayout"; // Updated import
 import { BetButton } from "../../ui/BetButton";
@@ -55,10 +55,16 @@ export class NextScreenMobile extends Container {
         this.CashOut();
       } else {
         const currentBet = parseFloat(this.layout.inputBox.value);
-        if (currentBet > GameData.instance.totalMoney) {
+        const maxMoney = parseFloat(GameData.instance.totalMoney.toFixed(2));
+
+        if (currentBet > maxMoney) {
           this.vibratePhone(100);
           return;
         }
+
+        // Deduct money immediately (Scenario A)
+        GameData.instance.totalMoney -= currentBet;
+        this.layout.updateMoney(`${GameData.instance.totalMoney.toFixed(2)}`);
 
         this.EnterNonBettingState();
       }
@@ -249,7 +255,7 @@ export class NextScreenMobile extends Container {
       this.layout.currentCard.suit,
       action,
       0,
-      -18,
+      -15,
       1,
       0.4,
       this.multiplierManager.currentMultiplier // Pass multiplier
@@ -304,8 +310,8 @@ export class NextScreenMobile extends Container {
       this.layout.currentCard.rank,
       this.layout.currentCard.suit,
       GuessAction.Start,
-      20,
-      8,
+      15,
+      5,
       1,
       0.4,
       this.multiplierManager.currentMultiplier
@@ -402,56 +408,23 @@ export class NextScreenMobile extends Container {
       this.safeArea.addChild(this.layout);
     }
 
-    // 1. Calculate safe area scale
-    const targetAspect = 9 / 16;
-    const currentAspect = width / height;
+    // Fixed Safe Area Dimensions
+    const SAFE_WIDTH = 1075;
+    const SAFE_HEIGHT = 1920;
 
-    let scale = 1;
-    let safeWidth = 1080;
-    let safeHeight = 1920;
+    // Calculate scale to fit (Contain)
+    const scale = Math.min(width / SAFE_WIDTH, height / SAFE_HEIGHT);
 
-    // If screen is wider than target (e.g. Fold Open, Desktop-like mobile view)
-    // We want to force 9:16 safe area in the middle
-    if (currentAspect > targetAspect) {
-      scale = height / 1920; // Fit Height
-      safeWidth = 1080 * scale;
-      safeHeight = 1920 * scale;
-
-      this.safeArea.x = (width - safeWidth) / 2;
-      this.safeArea.y = (height - safeHeight) / 2; // Should be 0 effectively
-    } else {
-      // If screen is taller than target (e.g. Sony Xperia, Modern standard phones)
-      // We want to FILL the height, not letterbox top/bottom.
-      // So we match width, and let height range expand.
-      scale = width / 1080; // Fit Width
-
-      // Re-calculate logical height to match screen aspect
-      const contentHeight = height / scale;
-
-      safeWidth = 1080 * scale;
-      safeHeight = contentHeight * scale; // = height
-
-      this.safeArea.x = 0;
-      this.safeArea.y = 0;
-
-      // Update logical height passed to layout
-      // effectively > 1920
-      this.layout.resize(1080, contentHeight, 1080 * 0.02);
-
-      this.safeArea.scale.set(scale);
-      return; // Early return as we handled layout resize above
-    }
-
-    // 2. Apply Scale (For Wide Case)
+    // Apply scale
     this.safeArea.scale.set(scale);
 
-    // 3. Center Safe Area (For Wide Case)
-    // already set x/y above
+    // Center Safe Area
+    this.safeArea.x = (width - SAFE_WIDTH * scale) / 2;
+    this.safeArea.y = (height - SAFE_HEIGHT * scale) / 2;
 
-    // 4. Resize Internal Components to Fixed Reference Resolution (1080x1920)
-    const padding = 1080 * 0.02; // 2% of fixed width
-    this.layout.resize(1080, 1920, padding);
-
+    // Resize Internal Components to Fixed Reference Resolution
+    const padding = SAFE_WIDTH * 0.02; // 2% of fixed width
+    this.layout.resize(SAFE_WIDTH, SAFE_HEIGHT, padding);
   }
 
   public async show(): Promise<void> {

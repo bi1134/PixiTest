@@ -47,27 +47,27 @@ export class GameHistoryContainer extends Container {
     const padding = 10;
     // Calculate item width to fit ~5-6 items
     const itemWidth = this.background.width / 5;
-    const itemHeight = this.background.height * 0.7;
+    const itemHeight = this.background.height;
 
     item.resize(itemWidth, itemHeight);
 
-    // Start position (Offscreen Right)
-    item.x = this.background.width + itemWidth;
+    // Start position (Offscreen Left)
+    item.x = -itemWidth;
     item.y = this.background.height / 2;
 
-    // Add at index 2 (after Background and Mask) so it appears behind previous items
-    this.addChildAt(item, 2);
+    // Add to the top of the display list (highest z-index)
+    this.addChild(item);
     this.historyItems.push(item);
 
     // Overlap: Negative gap
     const gap = -itemWidth * 0.15; // 15% overlap
     const shiftAmount = itemWidth + gap;
 
-    // 1. Shift existing items Left
+    // 1. Shift existing items Right
     for (const historyItem of this.historyItems) {
       if (historyItem === item) continue; // Skip new one for now
 
-      historyItem.targetX -= shiftAmount;
+      historyItem.targetX += shiftAmount;
       // Use GSAP for speed control reference
       gsap.to(historyItem, {
         x: historyItem.targetX,
@@ -75,22 +75,23 @@ export class GameHistoryContainer extends Container {
         ease: "back.out",
       });
 
-      // Cull items that go offscreen left
-      if (historyItem.targetX < -itemWidth) {
-        // cleanup if needed
-        if (historyItem.targetX < -500) {
-        }
+      // Cull items that go offscreen Right
+      if (historyItem.targetX > this.background.width + itemWidth) {
+        // cleanup can happen here if we wanted to remove them from array/display
+        // For now just letting them drift off
       }
     }
 
     // 2. Position New Item
-    // It enters at: Width - Padding - ItemWidth/2
-    const entryX = this.background.width - padding - itemWidth / 3;
+    // It enters at: Padding
+    // We aim for the left side with some padding.
+    // If we want symmetrical look to previous right-side entry:
+    const entryX = padding + itemWidth / 3;
 
     item.targetX = entryX;
 
     // Initial setup for animation
-    item.x = this.background.width + 100; // Start offscreen right
+    item.x = -itemWidth; // Start offscreen Left
     item.alpha = 0;
 
     // Animate In - GSAP
