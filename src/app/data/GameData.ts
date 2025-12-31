@@ -1,8 +1,17 @@
+import { GameState, GuessAction } from "../screens/next/types/GameTypes";
+
 export interface GameRoundResult {
   multiplier: number;
   isWin: boolean;
   timestamp: number;
   amount: number;
+}
+
+export interface CardHistoryData {
+  rank: string;
+  suit: number;
+  action: GuessAction;
+  multiplier: number;
 }
 
 export class GameData {
@@ -12,6 +21,10 @@ export class GameData {
   public currentBet: number = 0.02;
   public history: GameRoundResult[] = [];
 
+  // New State Management
+  public currentState: GameState = GameState.NonBetting;
+  public cardHistory: CardHistoryData[] = [];
+
   private constructor() { }
 
   public static get instance(): GameData {
@@ -19,6 +32,15 @@ export class GameData {
       GameData._instance = new GameData();
     }
     return GameData._instance;
+  }
+
+  public resetGameSession() {
+    this.currentState = GameState.NonBetting;
+    this.cardHistory = [];
+  }
+
+  public addCardHistory(rank: string, suit: number, action: GuessAction, multiplier: number) {
+    this.cardHistory.push({ rank, suit, action, multiplier });
   }
 
   public addRoundResult(multiplier: number, isWin: boolean, amount: number) {

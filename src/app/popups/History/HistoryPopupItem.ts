@@ -1,6 +1,13 @@
-import { FancyButton, Switcher } from "@pixi/ui";
-import { BitmapText, Container, Graphics, Sprite, Text } from "pixi.js";
+import { FancyButton, Switcher, ScrollBox } from "@pixi/ui";
+import { BitmapText, Container, Graphics, Sprite } from "pixi.js";
 import { buttonAnimation } from "../../ui/ButtonAnimations";
+import { CardHistoryItem } from "../../ui/CardHistoryItem";
+import { GameService } from "../../api/services/GameService"; // Import Service
+import { GuessAction } from "../../screens/next/types/GameTypes";
+
+// --- Constants ---
+const CARD_SCALE = 0.3; // Reduced scale as requested
+const CARD_GAP = -10;    // Adjusted gap
 
 // --- Mock / Stub Types ---
 interface HistoryResponseData {
@@ -41,9 +48,9 @@ export class HisotryPopupItem extends Container {
   // Top ui
   private bgItem: Container; // Changed from Sprite to Container to support Graphics fallback
   private betAmount: BitmapText;
-  private dateTimeText: Text;
+  private dateTimeText: BitmapText;
   private profitText: BitmapText;
-  private multiplier: Text;
+  private multiplier: BitmapText;
   private expandSwitcher: Switcher;
 
   // Inner UI
@@ -54,7 +61,7 @@ export class HisotryPopupItem extends Container {
   private idText: BitmapText;
   private copyIdButton: FancyButton;
   private betId: BitmapText;
-  private board: Container;
+  private board: ScrollBox;
 
   private loadingText: BitmapText;
 
@@ -83,13 +90,12 @@ export class HisotryPopupItem extends Container {
     });
     this.betAmount.position.set(this.OFFSET, this.ITEM_HEIGHT * 0.3);
 
-    this.dateTimeText = new Text({
+    this.dateTimeText = new BitmapText({
       text: "12/02/2025, 10:55",
       anchor: { x: 0, y: 0.5 },
       style: {
-        fontFamily: "Supercell-magic-webfont",
+        fontFamily: "coccm-bitmap-3-normal.fnt",
         fontSize: this.FONT_SIZE,
-        fontWeight: "bold",
         fill: "#76859F",
         align: "left",
       },
@@ -110,13 +116,12 @@ export class HisotryPopupItem extends Container {
       },
     });
 
-    this.multiplier = new Text({
+    this.multiplier = new BitmapText({
       text: "Mult.1,000.00x",
       anchor: { x: 1, y: 0.5 }, // Right align
       style: {
-        fontFamily: "Supercell-magic-webfont",
         fontSize: this.FONT_SIZE,
-        fontWeight: "bold",
+        fontFamily: "coccm-bitmap-3-normal.fnt",
         fill: "#76859F",
         align: "right",
       },
@@ -201,7 +206,14 @@ export class HisotryPopupItem extends Container {
     this.textWrapper.pivot.set(this.textWrapper.width / 2, 0);
     this.textWrapper.position.set(this.itemWidth / 2, this.OFFSET);
 
-    this.board = new Container();
+    this.board = new ScrollBox({
+      type: 'horizontal',
+      width: this.itemWidth - this.OFFSET * 2,
+      height: 150, // Approx height for cards
+      elementsMargin: CARD_GAP,
+      padding: 20,
+      background: 0x000000,
+    });
     this.initBoard();
 
     this.bg = new Graphics()
@@ -251,28 +263,18 @@ export class HisotryPopupItem extends Container {
   }
 
   private initBoard() {
-    // Hardcoded mock values instead of GlobalConfig
-    const TOTAL_ROWS = 5;
-    const TOTAL_COLUMNS = 6;
-
-    for (let i = 0; i < TOTAL_ROWS; i++) {
-      for (let j = 0; j < TOTAL_COLUMNS; j++) {
-        // Try/catch regarding sprite loading if assets missing? 
-        // Assuming assets exist, just config is missing.
-        const sprite = Sprite.from("crown_not_selected.png");
-
-        sprite.position.set(
-          j * (this.TILE_WIDTH + this.TILE_OFFSET),
-          i * (this.TILE_HEIGHT + this.TILE_OFFSET),
-        );
-
-        this.board.addChild(sprite);
-      }
+    // ScrollBox clean up
+    if ((this.board as any).removeItems) {
+      (this.board as any).removeItems();
+    } else {
+      this.board.removeChildren();
     }
 
+    // Position the board container
+    // We will populate it dynamically in setBoard
     this.board.position.set(
-      (this.itemWidth - this.board.width) / 2, // Center horizontally
-      this.betId.y + this.betId.height + this.OFFSET,
+      this.OFFSET - 10,
+      this.betId.y + this.betId.height + this.OFFSET * 4
     );
   }
 
@@ -313,32 +315,65 @@ export class HisotryPopupItem extends Container {
     // Multiplier
     const muliplier = response.multiplier;
     this.multiplier.text = `Mult.${formatNumber(muliplier)}x`;
-
-    // Set board data - Mock or Skip
-    // this.setBoard(null); // Skipping for now as we don't have mock data
   }
 
-  private setBoard(response: HistoryDetailApiResponse) {
-    const bomb_field = response.data[0].game_info.minigames.bomb_field;
-    const field = response.data[0].game_info.minigames.field;
+  private setBoard(response: HistoryDetailApiResponse | null) {
+    // Clear items first
+    if ((this.board as any).removeItems) {
+      (this.board as any).removeItems();
+    }
 
-    this.board.children.forEach((value, index) => {
-      const sprite = value as Sprite;
+    if (!response || !response.data || !response.data[0]) return;
 
-      if (field.includes(index)) {
-        if (bomb_field.includes(index))
-          sprite.texture = Sprite.from("bomb_selected.png").texture;
-        else sprite.texture = Sprite.from("crown_selected.png").texture;
+    const info = response.data[0].game_info.minigames;
+    // Parse history_cards string list: e.g. "n-1-5-0.00"
+    // Format: status-suit-rank-multiplier
 
-        sprite.alpha = 1;
-      } else {
-        if (bomb_field.includes(index))
-          sprite.texture = Sprite.from("bomb_not_selected.png").texture;
-        else sprite.texture = Sprite.from("crown_not_selected.png").texture;
+    if (info.history_cards && Array.isArray(info.history_cards)) {
+      info.history_cards.forEach((cardStr: string) => {
+        const parts = cardStr.split('-');
+        if (parts.length >= 4) {
+          const statusKey = parts[0]; // n, s, h, l
+          const suit = parseInt(parts[1]);
+          const rankStr = parts[2];
+          const mult = parseFloat(parts[3]);
 
-        sprite.alpha = 0.65;
-      }
-    });
+          // Convert rank numeric to string char if needed (CardHistoryItem expectation)
+          const ranks = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+          const rankIndex = parseInt(rankStr) - 1;
+          const rankChar = (rankIndex >= 0 && rankIndex < ranks.length) ? ranks[rankIndex] : rankStr;
+
+          let guessAction: GuessAction = GuessAction.Start;
+          // Map statusKey to action string ENUM
+          if (statusKey === 'l') guessAction = GuessAction.Lower;
+          else if (statusKey === 'h') guessAction = GuessAction.Higher;
+          else if (statusKey === 's') guessAction = GuessAction.Skip;
+          else if (statusKey === 'n') guessAction = GuessAction.Start;
+
+          // Map numeric suit to string suit string for CardHistoryItem/Texture
+          let suitStr = "spade";
+          switch (suit) {
+            case 1: suitStr = "diamond"; break;
+            case 2: suitStr = "club"; break;
+            case 3: suitStr = "heart"; break;
+            case 4: suitStr = "spade"; break;
+          }
+
+          const cardItem = new CardHistoryItem(
+            rankChar,
+            suitStr,
+            guessAction,
+            mult
+          );
+
+          cardItem.scale.set(CARD_SCALE);
+
+          this.board.addItem(cardItem);
+        }
+      });
+    }
+
+    // ScrollBox handles layout
   }
 
   public collapse() {
@@ -359,18 +394,18 @@ export class HisotryPopupItem extends Container {
       // Mock Data: Bypass API request
       this.updateLoadingTextVisible(false); // Hide loading immediately
 
-      // You can just call setBoard with mock data if you want the grid
-      // this.setBoard(mockHistoryDetailResponse); 
+      this.updateLoadingTextVisible(true);
 
-      // Or just ensure the container is ready (black lines were added in init)
-
-      /*
-      // API CALL COMMENTED OUT
-      GameStateManager.getInstance().freezeGame();
-      gameService
-        .postHistoryDetail(this.betId.text)
-        .then((response: HistoryDetailApiResponse) => { ... })
-      */
+      // Use static GameService
+      GameService.historyDetail(this.betId.text)
+        .then((response: HistoryDetailApiResponse) => {
+          this.updateLoadingTextVisible(false);
+          this.setBoard(response);
+        })
+        .catch(e => {
+          console.error(e);
+          this.updateLoadingTextVisible(false);
+        });
     }
   }
 

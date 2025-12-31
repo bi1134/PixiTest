@@ -1,6 +1,8 @@
 import gsap from "gsap";
 import { Container, FederatedPointerEvent, Graphics } from "pixi.js";
 import { HisotryPopupItem } from "./HistoryPopupItem";
+import { GameService } from "../../api/services/GameService";
+import { HistoryApiResponse } from "../../api/models/HistoryResponse";
 
 export class PopupItemWrapper extends Container {
   private readonly ITEM_OFFSET = 5;
@@ -97,20 +99,14 @@ export class PopupItemWrapper extends Container {
     this.isLoading = true;
 
     try {
-      // Mock Response Structure
-      const mockDataLength = 20;
-      const mockData = Array(mockDataLength).fill(null).map((_, idx) => ({
-        bet_id: "preview_id_" + idx,
-        amount: (idx + 1) * 1000,
-        timestamp: new Date().toISOString(),
-        multiplier: idx % 2 === 0 ? 2.5 : 0,
-        total_win: idx % 2 === 0 ? (idx + 1) * 2500 : 0,
-        status: idx % 2 === 0 ? 1 : 0
-      }));
+      // Fetch History from GameService
+      const response: HistoryApiResponse = await GameService.history();
 
-      // Update pagination info (Mock)
-      this.currentPage = page;
-      this.totalPages = 1; // Single page for preview
+      const historyList = response.data;
+
+      // Update pagination info
+      this.currentPage = response.current_page;
+      this.totalPages = response.total_page;
 
       // Only trigger callback on first load
       if (page === 1) {
@@ -125,9 +121,21 @@ export class PopupItemWrapper extends Container {
       }
 
       // Add new items
-      for (let i = 0; i < mockData.length; i++) {
+      for (let i = 0; i < historyList.length; i++) {
         const historyPopupItem = new HisotryPopupItem(this.listWidth);
-        historyPopupItem.setHistoryDetailData(mockData[i]);
+        const data = historyList[i];
+
+        // Map API response to Component Data Format
+        // Note: Component expects string date, API provides number timestamp
+        const componentData = {
+          bet_id: data.bet_id,
+          amount: data.amount,
+          timestamp: new Date(data.timestamp).toISOString(),
+          multiplier: data.multiplier,
+          total_win: data.total_win,
+        };
+
+        historyPopupItem.setHistoryDetailData(componentData as any);
 
         historyPopupItem.y =
           startY + i * (this.ITEM_OFFSET + historyPopupItem.height);
@@ -141,7 +149,7 @@ export class PopupItemWrapper extends Container {
       // Calculate scroll bounds
       this.updateScrollBounds();
     } catch (error: any) {
-      console.error("Error loading mock history page:", error);
+      console.error("Error loading history page:", error);
     } finally {
       this.isLoading = false;
     }

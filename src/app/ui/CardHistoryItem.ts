@@ -53,6 +53,9 @@ export class CardHistoryItem extends Container {
     // --- action sprite ---
     const actionTexture = this.ActionToIcon(this._action);
     this.actionSprite = Sprite.from(actionTexture);
+    if (this._action === GuessAction.Start) {
+      this.actionSprite.alpha = 0;
+    }
     this.innerContainer.addChild(this.actionSprite);
 
     // --- multiplier background (below card) ---
@@ -99,7 +102,7 @@ export class CardHistoryItem extends Container {
       case GuessAction.Skip:
         return "icon-skip.png";
       case GuessAction.Start:
-        return "transparent.png";
+        return "icon-higher.png"; // Use standard icon for sizing consistency
       default:
         return "blank-icon.jpg"; // fallback (optional)
     }

@@ -13,8 +13,7 @@ export class NextScreenMobile extends Container {
 
   public layout!: MobileLayout; // Renamed for clarity
   private multiplierManager: MultiplierManager;
-
-  private currentState: GameState = GameState.NonBetting;
+  // private currentState: GameState = GameState.NonBetting; // Moved to GameData
 
   // New container for safe area content
   private safeArea!: Container;
@@ -260,6 +259,12 @@ export class NextScreenMobile extends Container {
       0.4,
       this.multiplierManager.currentMultiplier // Pass multiplier
     );
+    GameData.instance.addCardHistory(
+      this.layout.currentCard.rank,
+      this.layout.currentCard.suit,
+      action,
+      this.multiplierManager.currentMultiplier
+    );
     this.updateButtonLabels();
 
     console.log(
@@ -268,12 +273,13 @@ export class NextScreenMobile extends Container {
   }
 
   private EnterNonBettingState() {
-    this.currentState = GameState.NonBetting;
+    GameData.instance.currentState = GameState.NonBetting;
 
     console.log(this.layout.inputBox.value);
 
     //clear card history
     this.layout.cardHistoryLayout.clearHistory();
+    GameData.instance.resetGameSession();
 
     //prepare for new round
     if (
@@ -311,9 +317,15 @@ export class NextScreenMobile extends Container {
       this.layout.currentCard.suit,
       GuessAction.Start,
       15,
-      5,
+      -15,
       1,
       0.4,
+      this.multiplierManager.currentMultiplier
+    );
+    GameData.instance.addCardHistory(
+      this.layout.currentCard.rank,
+      this.layout.currentCard.suit,
+      GuessAction.Start,
       this.multiplierManager.currentMultiplier
     );
 
@@ -334,7 +346,7 @@ export class NextScreenMobile extends Container {
   }
 
   private EnterBettingState() {
-    this.currentState = GameState.Betting;
+    GameData.instance.currentState = GameState.Betting;
 
     // Enable input again for new round
     this.layout.inputBox.interactive = true;

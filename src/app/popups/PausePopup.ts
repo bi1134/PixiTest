@@ -19,7 +19,9 @@ export class PausePopup extends Container {
   /** The panel background */
   private panelBase: RoundedBox;
 
-  constructor() {
+  private messageLabel: Label;
+
+  constructor(title: string = "Paused", message: string = "Game Paused") {
     super();
 
     this.bg = new Sprite(Texture.WHITE);
@@ -30,20 +32,41 @@ export class PausePopup extends Container {
     this.panel = new Container();
     this.addChild(this.panel);
 
-    this.panelBase = new RoundedBox({ height: 300 });
+    this.panelBase = new RoundedBox({ height: 350 }); // Increase height for message
     this.panel.addChild(this.panelBase);
 
     this.title = new Label({
-      text: "Paused",
+      text: title,
       style: { fill: 0xec1561, fontSize: 50 },
     });
-    this.title.y = -80;
+    this.title.y = -100;
     this.panel.addChild(this.title);
 
+    this.messageLabel = new Label({
+      text: message,
+      style: {
+        fill: 0xffffff,
+        fontSize: 24,
+        wordWrap: true,
+        wordWrapWidth: 350,
+        align: 'center'
+      },
+    });
+    this.messageLabel.y = -20;
+    this.panel.addChild(this.messageLabel);
+
     this.doneButton = new Button({ text: "Resume" });
-    this.doneButton.y = 70;
+    this.doneButton.y = 100;
     this.doneButton.onPress.connect(() => engine().navigation.dismissPopup());
     this.panel.addChild(this.doneButton);
+  }
+
+  public setTitle(text: string) {
+    this.title.text = text;
+  }
+
+  public setMessage(text: string) {
+    this.messageLabel.text = text;
   }
 
   /** Resize the popup, fired whenever window size changes */
