@@ -17,7 +17,9 @@ export interface CardHistoryData {
 export class GameData {
   private static _instance: GameData;
 
-  public totalMoney: number = 1000;
+  public static readonly MIN_BET = 1000;
+
+  public totalMoney: number = 4500000;
   public currentBet: number = 0.02;
   public history: GameRoundResult[] = [];
 

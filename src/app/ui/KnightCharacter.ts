@@ -1,4 +1,5 @@
 import { Container, Sprite, NineSliceSprite, BitmapText, Texture } from "pixi.js";
+import { gsap } from "gsap";
 
 export class KnightCharacter extends Container {
     private knight: Sprite;
@@ -71,10 +72,22 @@ export class KnightCharacter extends Container {
     }
 
     public say(text: string) {
+        gsap.killTweensOf(this.dialogContainer);
+        gsap.killTweensOf(this.dialogContainer.scale);
+
         if (!text) {
-            this.dialogContainer.visible = false;
+            gsap.to(this.dialogContainer.scale, {
+                x: 0.75,
+                y: 0.75,
+                duration: 0.4,
+                ease: "back.in",
+                onComplete: () => {
+                    this.dialogContainer.visible = false;
+                }
+            });
             return;
         }
+
         this.dialogContainer.visible = true;
         this.dialogText.text = text;
 
@@ -94,5 +107,14 @@ export class KnightCharacter extends Container {
         // Bubble is anchored bottom-center (0.5, 1) at (0,0) in dialogContainer
         // So bubble visual center is (0, -bubbleH/2)
         this.dialogText.position.set(0, -bubbleH / 2);
+
+        // Animate In
+        this.dialogContainer.scale.set(0);
+        gsap.to(this.dialogContainer.scale, {
+            x: 1,
+            y: 1,
+            duration: 0.2,
+            ease: "back.out(1.7)",
+        });
     }
 }

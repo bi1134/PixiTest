@@ -14,6 +14,8 @@ import { NextMultiplierBoard } from "../../../ui/NextMultiplierBoard";
 import { KnightCharacter } from "../../../ui/KnightCharacter";
 
 
+import { GameData } from "../../../data/GameData";
+
 export class MobileLayout extends Container {
   public fancyBoxContainer!: Container;
   public fancyBox!: Graphics;
@@ -36,7 +38,7 @@ export class MobileLayout extends Container {
   public moneyLabel!: BitmapLabel;
   public moneyContainer!: Container;
   public inputBox!: CustomInput;
-  public inputDefaultValue: number = 0.02;
+  public inputDefaultValue: number = GameData.MIN_BET;
   public betButton!: BetButton;
 
   public halfValueButton!: CustomButton;
@@ -463,7 +465,30 @@ export class MobileLayout extends Container {
 
   public updateMoney(value?: string, padding: number = 1075 * 0.02) {
     if (value !== undefined) {
-      this.moneyLabel.text = value;
+      // Parse the number from the string (assuming format "12345.00" or similar)
+      const numValue = parseFloat(value.replace(/,/g, ''));
+      if (!isNaN(numValue)) {
+        // Format with dots as thousands separators, no decimals as per "4.500.000" example
+        // The user's example "4.500.000" implies 0 decimal places if whole, or maybe standard "de-DE" style.
+        // Let's assume standard thousands separator with optional decimals if relevant, but user said "normal number with somehow 2 00 after decimal" -> "4.500.000"
+        // So I will format to 0 decimals if it's an integer-like usage or just use the whole number part.
+        // Actually, if it's currency, I should probably keep decimals if they are non-zero?
+        // User said: "right now its display 4500000.00... if i have 4.5mill... it will display 4.500.000"
+        // This implies stripping decimals or formatting to 0 fraction digits if it's a clean number.
+        // Safest is to usetoLocaleString('id-ID') or 'de-DE' which use dots for thousands.
+        // And user seems to dislike the .00 at the end.
+
+        // Let's use maximumFractionDigits: 0 for the main display if the user wants "4.500.000" from "4500000.00"
+        this.moneyLabel.text = numValue.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+        // Wait, 'de-DE' uses comma for decimal. User example "4.500.000" is ambiguous about cents.
+        // If "4500000.00" -> "4.500.000", then cents are dropped or comma is decimal.
+        // Let's assume 'id-ID' (Indonesian) which uses dot for thousands and comma for decimal?
+        // 'id-ID' 4500000 -> "4.500.000".
+        // Let's try to match that style.
+        this.moneyLabel.text = numValue.toLocaleString('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0, maximumFractionDigits: 2 });
+      } else {
+        this.moneyLabel.text = value;
+      }
     }
 
     // Ensure container exists (should be created in resize/create, but safe guard)

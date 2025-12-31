@@ -1,7 +1,7 @@
 import { Container, Sprite, Texture, Graphics } from "pixi.js";
-import { gsap } from "gsap/gsap-core"; // Using GSAP directly
+import { gsap } from "gsap"; // Using GSAP directly
 import { engine } from "../getEngine";
-import { Label } from "../ui/Label";
+import { BitmapLabel } from "../ui/BitmapLabel";
 import { RoundedBox } from "../ui/RoundedBox";
 import { FancyButton } from "@pixi/ui";
 
@@ -12,14 +12,17 @@ export class ResultPopup extends Container {
   /** Container for the popup UI components */
   private panel: Container;
   /** The popup title label */
-  private title: Label;
+  private title: BitmapLabel;
   /** The panel background */
   private panelBase: RoundedBox;
 
-  private resultLabel: Label;
+  private resultLabel: BitmapLabel;
   private resultBackground: Sprite | Graphics;
 
   private invisButton: FancyButton;
+
+  // Container for safe area scaling
+  private safeArea: Container;
 
   constructor() {
     super();
@@ -31,15 +34,18 @@ export class ResultPopup extends Container {
     this.bg.alpha = 0;
     this.addChild(this.bg);
 
+    this.safeArea = new Container();
+    this.addChild(this.safeArea);
+
     this.panel = new Container();
-    this.addChild(this.panel);
+    this.safeArea.addChild(this.panel);
 
     this.panelBase = new RoundedBox({ height: 300 });
     this.panel.addChild(this.panelBase);
 
-    this.title = new Label({
+    this.title = new BitmapLabel({
       text: "1.25x",
-      style: { fill: 0xec1561, fontSize: 120, fontFamily: "Arial" },
+      style: { fill: 0xec1561, fontSize: 120, fontFamily: "coccm-bitmap-3-normal" },
     });
     this.title.y = -80;
     this.panel.addChild(this.title);
@@ -52,12 +58,12 @@ export class ResultPopup extends Container {
     this.panel.addChild(this.resultBackground);
 
     // --- result label ---
-    this.resultLabel = new Label({
+    this.resultLabel = new BitmapLabel({
       text: "0.13", // placeholder
       style: {
         fill: 0xffffff,
         fontSize: 40,
-        fontFamily: "Arial",
+        fontFamily: "coccm-bitmap-3-normal",
         align: "center",
       },
     });
@@ -65,12 +71,26 @@ export class ResultPopup extends Container {
     this.resultLabel.x = this.resultBackground.width / 2;
     this.resultLabel.y = this.resultBackground.height / 2;
     this.panel.addChild(this.resultLabel);
+
+    this.invisButton = new FancyButton({
+      defaultView: "rounded-rectangle.png",
+      anchor: 0.5,
+      width: 100, // placeholder
+      height: 100,
+    });
+    this.invisButton.alpha = 0;
+    this.safeArea.addChild(this.invisButton); // Add to safe area to cover content
+    this.invisButton.onPress.connect(() => engine().navigation.dismissPopup());
   }
 
   public setResult(multiplier: number, baseAmount: number) {
     const total = baseAmount * multiplier;
     this.title.text = `${multiplier.toFixed(2)}x`;
-    this.resultLabel.text = total.toFixed(2);
+
+    // Check if total is effectively an integer (or close enough) to decide decimals?
+    // User requested same format as main money but with currency symbol: "rp 2000" or "$2000"
+    // Using id-ID to match MobileLayout logic, adding 'currency' style
+    this.resultLabel.text = total.toLocaleString('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0, maximumFractionDigits: 2 });
   }
 
   /** Resize the popup, fired whenever window size changes */
@@ -79,19 +99,23 @@ export class ResultPopup extends Container {
     this.bg.width = width;
     this.bg.height = height;
 
-    // --- Center the panel ---
-    this.panel.x = width * 0.5;
-    this.panel.y = height * 0.5;
+    // --- Safe Area Scaling (Match MobileLayout) ---
+    const SAFE_WIDTH = 1075;
+    const SAFE_HEIGHT = 1920;
 
-    const padding = 40;
-    const isMobile = width < height;
+    // Calculate scale to fit (Contain) within the window
+    const scale = Math.min(width / SAFE_WIDTH, height / SAFE_HEIGHT);
 
-    // --- Resize main panel background ---
-    // Mobile: 90% width, Desktop: 30% width
-    const panelWidth = isMobile ? width * 0.9 : width * 0.3;
+    this.safeArea.scale.set(scale);
+    this.safeArea.x = (width - SAFE_WIDTH * scale) / 2;
+    this.safeArea.y = (height - SAFE_HEIGHT * scale) / 2;
 
-    // Ensure minimum width?
-    // panelWidth = Math.max(panelWidth, 300);
+    // Now treat safeArea as 1075x1920 space.
+    // Center panel in safe area
+    this.panel.x = SAFE_WIDTH / 2;
+    this.panel.y = SAFE_HEIGHT / 2;
+
+    const panelWidth = SAFE_WIDTH * 0.9; // 90% of phone width
 
     this.panelBase.width = panelWidth;
 
@@ -100,7 +124,7 @@ export class ResultPopup extends Container {
     const resultHeight = (panelHeight * 1) / 3;
 
     // Optionally scale text to fit section (if you want dynamic font size)
-    this.title.scale.set((labelHeight - padding * 2) / this.title.height);
+    this.title.scale.set((labelHeight - 40 * 2) / this.title.height);
     // Clamp scale
     if (this.title.scale.x > 1) this.title.scale.set(1);
 
@@ -109,14 +133,10 @@ export class ResultPopup extends Container {
     this.title.y = this.panelBase.y - this.title.height / 2;
 
     // --- Result background (bottom section) ---
-    const resultWidth = panelWidth - padding * 2;
+    const resultWidth = panelWidth - 40 * 2;
     this.resultBackground.width = resultWidth;
     this.resultBackground.height = resultHeight;
     this.resultBackground.x = -resultWidth / 2;
-    this.resultBackground.y = this.title.y + this.title.height - padding; // adjust slightly
-
-    // Adjust result background Y to be more bottom aligned?
-    // Let's stick to previous relative logic but safer
     this.resultBackground.y =
       this.panelBase.y + this.panelBase.height / 2 - resultHeight - 20;
 
@@ -126,19 +146,18 @@ export class ResultPopup extends Container {
     this.resultLabel.y =
       this.resultBackground.y + this.resultBackground.height / 2;
 
-    this.invisButton = new FancyButton({
-      defaultView: "rounded-rectangle.png",
-      anchor: 0.5,
-      width: this.resultBackground.width,
-      height: this.resultBackground.height,
-    });
-    this.invisButton.alpha = 0;
+    // Invis button covers the whole safe Area (effectively blocking clicks on game, but user can click anywhere in safe area to close?)
+    // Or should it cover entire screen? 
+    // Construct logic: invisButton needs to be full screen really.
+    // Use bg for full screen click? Or use InvisButton added to this (root) but sized to width/height
+
+    // Actually, let's make invisButton cover the whole screen to catch clicks
+    this.invisButton.parent?.removeChild(this.invisButton);
+    this.addChild(this.invisButton); // Move to root 
     this.invisButton.width = width;
     this.invisButton.height = height;
     this.invisButton.x = width / 2;
     this.invisButton.y = height / 2;
-    this.addChild(this.invisButton);
-    this.invisButton.onPress.connect(() => engine().navigation.dismissPopup());
   }
 
   public async show() {

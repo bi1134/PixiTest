@@ -1,4 +1,4 @@
-import { Container, Texture } from "pixi.js";
+import { Container, Texture, Graphics } from "pixi.js";
 import { engine } from "../../getEngine";
 import { MobileLayout } from "./layout/MobileLayout"; // Updated import
 import { BetButton } from "../../ui/BetButton";
@@ -37,7 +37,7 @@ export class NextScreenMobile extends Container {
 
     this.resize(width, height);
     // Sync initial UI
-    this.layout.updateMoney(`${GameData.instance.totalMoney.toFixed(2)}`);
+    this.layout.updateMoney(`${GameData.instance.totalMoney.toFixed(2)} `);
 
   }
 
@@ -63,7 +63,7 @@ export class NextScreenMobile extends Container {
 
         // Deduct money immediately (Scenario A)
         GameData.instance.totalMoney -= currentBet;
-        this.layout.updateMoney(`${GameData.instance.totalMoney.toFixed(2)}`);
+        this.layout.updateMoney(`${GameData.instance.totalMoney.toFixed(2)} `);
 
         this.EnterNonBettingState();
       }
@@ -123,7 +123,7 @@ export class NextScreenMobile extends Container {
     const ranks = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
     const rankIndex = ranks.indexOf(rank);
 
-    console.log(`[UpdateLabels] Rank: ${rank}, Index: ${rankIndex}`);
+    console.log(`[UpdateLabels] Rank: ${rank}, Index: ${rankIndex} `);
 
     const labels = NextGameLogic.getLabelData(rank);
 
@@ -138,7 +138,7 @@ export class NextScreenMobile extends Container {
     } else {
       // Show Payouts (Rp XXX)
       const currentBet = parseFloat(this.layout.inputBox.value);
-      const validBet = isNaN(currentBet) ? 0.02 : currentBet;
+      const validBet = isNaN(currentBet) ? GameData.MIN_BET : currentBet;
 
       // Calculate Potential Multipliers
       const highNextMult = this.multiplierManager.getNextMultiplier(rank, highAction);
@@ -148,8 +148,8 @@ export class NextScreenMobile extends Container {
       const highPayout = validBet * highNextMult;
       const lowPayout = validBet * lowNextMult;
 
-      this.layout.highDes.text = `Rp ${highPayout.toFixed(2)}`;
-      this.layout.lowDes.text = `Rp ${lowPayout.toFixed(2)}`;
+      this.layout.highDes.text = `Rp ${highPayout.toFixed(2)} `;
+      this.layout.lowDes.text = `Rp ${lowPayout.toFixed(2)} `;
     }
 
     if (highAction === GuessAction.Equal) {
@@ -189,8 +189,8 @@ export class NextScreenMobile extends Container {
       lowProb = (rankIndex + 1) / total;
     }
 
-    this.layout.titleHigh.text = `${(highProb * 100).toFixed(1)}%`;
-    this.layout.titleLow.text = `${(lowProb * 100).toFixed(1)}%`;
+    this.layout.titleHigh.text = `${(highProb * 100).toFixed(1)}% `;
+    this.layout.titleLow.text = `${(lowProb * 100).toFixed(1)}% `;
 
     // Update Next Multiplier Board (Prediction)
     // User requested: "solid current multiplier + additional value ... no need the 100 - percentage"
@@ -232,12 +232,12 @@ export class NextScreenMobile extends Container {
       // Loss Logic
       // Loss Logic
       const rawVal = parseFloat(this.layout.inputBox.value);
-      const lostAmount = isNaN(rawVal) ? 0.02 : rawVal;
+      const lostAmount = isNaN(rawVal) ? GameData.MIN_BET : rawVal;
       GameData.instance.addRoundResult(0, false, lostAmount);
       this.layout.gameHistory.addResult(0, false);
 
       // Update Money and Recenter
-      this.layout.updateMoney(`${GameData.instance.totalMoney.toFixed(2)}`);
+      this.layout.updateMoney(`${GameData.instance.totalMoney.toFixed(2)} `);
 
       this.vibratePhone(200);
       this.EnterBettingState();
@@ -254,7 +254,7 @@ export class NextScreenMobile extends Container {
       this.layout.currentCard.suit,
       action,
       0,
-      -15,
+      -19,
       1,
       0.4,
       this.multiplierManager.currentMultiplier // Pass multiplier
@@ -268,7 +268,7 @@ export class NextScreenMobile extends Container {
     this.updateButtonLabels();
 
     console.log(
-      `Prev: ${prevRank}, Next: ${nextRank}, Guess: ${action}, Result: ${result}, Multiplier: ${this.multiplierManager.currentMultiplier}`,
+      `Prev: ${prevRank}, Next: ${nextRank}, Guess: ${action}, Result: ${result}, Multiplier: ${this.multiplierManager.currentMultiplier} `,
     );
   }
 
@@ -317,7 +317,7 @@ export class NextScreenMobile extends Container {
       this.layout.currentCard.suit,
       GuessAction.Start,
       15,
-      -15,
+      -19,
       1,
       0.4,
       this.multiplierManager.currentMultiplier
@@ -369,7 +369,7 @@ export class NextScreenMobile extends Container {
   private CashOut() {
     const multiplier = this.multiplierManager.currentMultiplier;
     const rawVal = parseFloat(this.layout.inputBox.value);
-    const base = isNaN(rawVal) ? 0.02 : rawVal;
+    const base = isNaN(rawVal) ? GameData.MIN_BET : rawVal;
 
     UI.showResult(multiplier, base);
 
@@ -378,12 +378,12 @@ export class NextScreenMobile extends Container {
       this.layout.currentCard.parent.removeChild(this.layout.currentCard);
     }
 
-    const betAmount = isNaN(rawVal) ? 0.02 : rawVal;
+    const betAmount = isNaN(rawVal) ? GameData.MIN_BET : rawVal;
     GameData.instance.addRoundResult(multiplier, true, betAmount);
     this.layout.gameHistory.addResult(multiplier, true);
 
     // Update Money and Recenter
-    this.layout.updateMoney(`${GameData.instance.totalMoney.toFixed(2)}`);
+    this.layout.updateMoney(`${GameData.instance.totalMoney.toFixed(2)} `);
 
     this.EnterBettingState();
   }
@@ -393,7 +393,7 @@ export class NextScreenMobile extends Container {
 
     // reset invalid or below-zero values
     if (isNaN(val) || val < 0) {
-      this.layout.inputBox.value = "0.02";
+      this.layout.inputBox.value = GameData.MIN_BET.toString();
       return;
     }
 
@@ -433,6 +433,8 @@ export class NextScreenMobile extends Container {
     // Center Safe Area
     this.safeArea.x = (width - SAFE_WIDTH * scale) / 2;
     this.safeArea.y = (height - SAFE_HEIGHT * scale) / 2;
+
+    // --- End Shadow ---
 
     // Resize Internal Components to Fixed Reference Resolution
     const padding = SAFE_WIDTH * 0.02; // 2% of fixed width
