@@ -153,7 +153,6 @@ export class MobileLayout extends Container {
         fontFamily: "coccm-bitmap-3-normal",
       },
     });
-    this.BarMid.addChild(this.moneyLabel); // Add to input container
 
     // Create Money Container
     this.moneyContainer = new Container();
@@ -190,7 +189,8 @@ export class MobileLayout extends Container {
       fontFamily: "coccm-bitmap-3-normal",
       align: "center",
       textColor: 0xFFFFFF,
-      padding: 0
+      padding: 0,
+      textLimitRatio: 0.45 // Limit text width to 45% before scaling 
     });
     this.inputBox.value = this.inputDefaultValue.toString(); // value is string accessor
     this.inputContainer.addChild(this.inputBox); // Add to input container
@@ -416,7 +416,7 @@ export class MobileLayout extends Container {
     this.moneyLabel.y = 0;
 
 
-    this.moneyContainer.x = this.BarMid.width / 2 - this.moneyContainer.width / 4;
+    this.moneyContainer.x = this.BarMid.width / 2 - this.moneyContainer.width / 3;
     this.moneyContainer.y = this.BarMid.height - padding / 2; // Vertically center
     // --- 4. Background ---
     // Resize background to fit the total calculated content height
@@ -463,29 +463,17 @@ export class MobileLayout extends Container {
     this.bottomContainer.setChildIndex(this.betButton, this.bottomContainer.children.length - 1);
   }
 
-  public updateMoney(value?: string, padding: number = 1075 * 0.02) {
+  public updateMoney(value?: string) {
     if (value !== undefined) {
       // Parse the number from the string (assuming format "12345.00" or similar)
       const numValue = parseFloat(value.replace(/,/g, ''));
       if (!isNaN(numValue)) {
-        // Format with dots as thousands separators, no decimals as per "4.500.000" example
-        // The user's example "4.500.000" implies 0 decimal places if whole, or maybe standard "de-DE" style.
-        // Let's assume standard thousands separator with optional decimals if relevant, but user said "normal number with somehow 2 00 after decimal" -> "4.500.000"
-        // So I will format to 0 decimals if it's an integer-like usage or just use the whole number part.
-        // Actually, if it's currency, I should probably keep decimals if they are non-zero?
-        // User said: "right now its display 4500000.00... if i have 4.5mill... it will display 4.500.000"
-        // This implies stripping decimals or formatting to 0 fraction digits if it's a clean number.
-        // Safest is to usetoLocaleString('id-ID') or 'de-DE' which use dots for thousands.
-        // And user seems to dislike the .00 at the end.
-
-        // Let's use maximumFractionDigits: 0 for the main display if the user wants "4.500.000" from "4500000.00"
-        this.moneyLabel.text = numValue.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
-        // Wait, 'de-DE' uses comma for decimal. User example "4.500.000" is ambiguous about cents.
-        // If "4500000.00" -> "4.500.000", then cents are dropped or comma is decimal.
-        // Let's assume 'id-ID' (Indonesian) which uses dot for thousands and comma for decimal?
-        // 'id-ID' 4500000 -> "4.500.000".
-        // Let's try to match that style.
-        this.moneyLabel.text = numValue.toLocaleString('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0, maximumFractionDigits: 2 });
+        // Format: 4.500.000 (no decimals for int) or 4.500.000,50 (if decimals exist)
+        // 'de-DE' provides dot for thousands and comma for decimal.
+        this.moneyLabel.text = numValue.toLocaleString('de-DE', {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 2
+        });
       } else {
         this.moneyLabel.text = value;
       }
@@ -497,9 +485,22 @@ export class MobileLayout extends Container {
     // Recalculate inner positions (in case label width changed)
     this.coinIcon.x = 0;
     this.moneyLabel.x = this.coinIcon.width + 10;
+    this.moneyLabel.y = 0; // vertical center is handled by anchor 0.5
 
-    // Recalculate container center position using stored padding
-    this.moneyContainer.x = this.BarMid.width / 2 - this.moneyContainer.width / 4;
-    this.moneyContainer.y = this.BarMid.height - padding / 2;
+    // --- Content Scaling ---
+    // Reset scale first
+    this.moneyContainer.scale.set(1);
+
+    const contentWidth = this.moneyLabel.x + this.moneyLabel.width;
+    const maxContainerWidth = this.BarMid.width * 0.8; // Use 80% of bar width
+
+    if (contentWidth > maxContainerWidth) {
+      const scale = maxContainerWidth / contentWidth;
+      this.moneyContainer.scale.set(scale);
+    }
+
+    // Recalculate container center position using stored padding and NEW width/scale
+    // Note: container.width reflects scale.
+    this.moneyContainer.x = this.BarMid.width / 2 - this.moneyContainer.width / 3;
   }
 }

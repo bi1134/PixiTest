@@ -194,7 +194,7 @@ export class CardHistoryLayout extends Container {
     // Calculate needed scroll position to keep the new item visible.
     // We use requestAnimationFrame to ensure we read the List's dimensions AFTER PixiUI has updated the layout.
     requestAnimationFrame(() => {
-      if (this.destroyed) return;
+      if (this.destroyed || !this.parent || !this.list.parent) return;
 
       // FIX: Do NOT use this.list.width/height directly. 
       // Pixi Container bounds are based on visual children (which are scaling from 0.5).

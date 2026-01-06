@@ -31,7 +31,6 @@ export class BetButton extends Container {
         this.cursor = 'pointer';
 
         this.on('pointertap', () => {
-            console.log("BetButton Pressed");
             this.onPress.emit(this);
         });
 
@@ -43,25 +42,19 @@ export class BetButton extends Container {
                 align: "center"
             }
         });
-        this.textLabel.anchor.set(0.5);
-        this.textLabel.position.set(0, 0); // Initially at 0,0, wait, need center.
-
         this.addChild(this.textLabel);
-
-        // Let's center based on estimated size or just wait.
-        // Better: Hook into one sprite's texture update.
-        if (this.bgDisabled.texture.baseTexture.valid) {
-            this.alignText();
-        } else {
-            this.bgDisabled.texture.once('update', () => this.alignText());
-        }
+        this.textLabel.anchor.set(0.5);
+        this.textLabel.position.set(0, 0);
     }
 
-    private alignText() {
-        this.textLabel.position.set(this.bgDisabled.width / 2, this.bgDisabled.height / 2);
+    private _isBetting: boolean = false;
+
+    public get isBetting(): boolean {
+        return this._isBetting;
     }
 
     public setBettingState(isBetting: boolean) {
+        this._isBetting = isBetting;
         // Update Text Logic:
         // Betting -> "Bet"
         // NonBetting -> "Cash Out"
@@ -74,6 +67,7 @@ export class BetButton extends Container {
                 fill: "#FFFFFF"
             };
         } else {
+            // Default Cash Out state (can be overridden by setCashOutValue)
             this.textLabel.text = "Cash Out";
             this.textLabel.style = {
                 fontFamily: "coccm-bitmap-3-normal",
@@ -82,6 +76,17 @@ export class BetButton extends Container {
                 fill: "#FFFFFF"
             };
         }
+    }
+
+    public setCashOutValue(value: string) {
+        this.textLabel.text = `Cash Out\n${value}`;
+        this.textLabel.style = {
+            fontFamily: "coccm-bitmap-3-normal",
+            fontSize: 40, // Smaller font for 2 lines
+            align: "center",
+            fill: "#FFFFFF",
+            lineHeight: 55 // Increased line spacing
+        };
     }
 
     public setEnabled(enabled: boolean) {

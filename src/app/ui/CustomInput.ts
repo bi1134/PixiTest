@@ -7,7 +7,7 @@ export class CustomInput extends Container {
     public bg: Sprite;
     public displayText: BitmapLabel;
 
-    private _value: string = "";
+
     private _clearOnNextTouch: boolean = true;
 
     public get value(): string {
@@ -30,6 +30,8 @@ export class CustomInput extends Container {
         this.input.interactive = v;
     }
 
+    private _textLimitRatio: number = 0.9;
+
     constructor(options: {
         bg: Sprite;
         fontSize?: number;
@@ -38,11 +40,16 @@ export class CustomInput extends Container {
         align?: "left" | "center" | "right";
         textColor?: number; // Tint for bitmap label
         padding?: number;
+        textLimitRatio?: number; // Ratio of bg width to limit text before scaling
     }) {
         super();
 
         this.bg = options.bg;
         this.addChild(this.bg);
+
+        if (options.textLimitRatio !== undefined) {
+            this._textLimitRatio = options.textLimitRatio;
+        }
 
         this.input = new Input({
             bg: this.bg,
@@ -100,6 +107,15 @@ export class CustomInput extends Container {
 
     private updateText() {
         this.displayText.text = "RP " + this.input.value;
+
+        // Reset scale to measure natural width
+        this.displayText.scale.set(1);
+
+        const maxWidth = this.bg.width * this._textLimitRatio; // Use configured ratio
+        if (this.displayText.width > maxWidth) {
+            const scale = maxWidth / this.displayText.width;
+            this.displayText.scale.set(scale);
+        }
     }
 
     public resize(width: number, height: number) {

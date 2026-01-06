@@ -151,17 +151,22 @@ export class ResultPopup extends Container {
     // Construct logic: invisButton needs to be full screen really.
     // Use bg for full screen click? Or use InvisButton added to this (root) but sized to width/height
 
-    // Actually, let's make invisButton cover the whole screen to catch clicks
-    this.invisButton.parent?.removeChild(this.invisButton);
-    this.addChild(this.invisButton); // Move to root 
+    // Invis button covers the whole safe Area (effectively blocking clicks on game, but user can click anywhere in safe area to close?)
+    if (this.invisButton.parent !== this) {
+      this.addChild(this.invisButton);
+    }
     this.invisButton.width = width;
     this.invisButton.height = height;
     this.invisButton.x = width / 2;
     this.invisButton.y = height / 2;
+
   }
 
   public async show() {
 
+    // Safety Force Resize
+    const { width, height } = engine().screen;
+    this.resize(width, height);
 
     // Initial State
     this.bg.alpha = 0;

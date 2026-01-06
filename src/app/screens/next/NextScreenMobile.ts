@@ -74,7 +74,7 @@ export class NextScreenMobile extends Container {
   }
 
   private betButtonIsCashOut(): boolean {
-    return this.layout.betButton.text === "Cash Out";
+    return !this.layout.betButton.isBetting;
   }
 
   private HigherButton() {
@@ -123,7 +123,6 @@ export class NextScreenMobile extends Container {
     const ranks = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
     const rankIndex = ranks.indexOf(rank);
 
-    console.log(`[UpdateLabels] Rank: ${rank}, Index: ${rankIndex} `);
 
     const labels = NextGameLogic.getLabelData(rank);
 
@@ -148,8 +147,15 @@ export class NextScreenMobile extends Container {
       const highPayout = validBet * highNextMult;
       const lowPayout = validBet * lowNextMult;
 
-      this.layout.highDes.text = `Rp ${highPayout.toFixed(2)} `;
-      this.layout.lowDes.text = `Rp ${lowPayout.toFixed(2)} `;
+      const formatPayout = (val: number) => {
+        return val.toLocaleString('de-DE', {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 2
+        });
+      };
+
+      this.layout.highDes.text = `Rp ${formatPayout(highPayout)} `;
+      this.layout.lowDes.text = `Rp ${formatPayout(lowPayout)} `;
     }
 
     if (highAction === GuessAction.Equal) {
@@ -225,7 +231,19 @@ export class NextScreenMobile extends Container {
       this.multiplierManager.applyWin(prevRank, action); // Apply win using PREVIOUS rank and CHOSEN action
 
       this.enableButton(this.layout.betButton);
-      this.layout.betButton.text = "Cash Out";
+      // Update Cash Out Button with Value
+      const currentMultiplier = this.multiplierManager.currentMultiplier;
+      const currentBet = parseFloat(this.layout.inputBox.value);
+      const validBet = isNaN(currentBet) ? GameData.MIN_BET : currentBet;
+      const totalPayout = validBet * currentMultiplier;
+
+      const formattedPayout = totalPayout.toLocaleString('de-DE', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      });
+
+      this.layout.betButton.setCashOutValue(`Rp ${formattedPayout}`);
+
     } else if (result === GuessResult.Lose) {
       // Loss Logic
       // Loss Logic
@@ -265,15 +283,14 @@ export class NextScreenMobile extends Container {
     );
     this.updateButtonLabels();
 
-    console.log(
-      `Prev: ${prevRank}, Next: ${nextRank}, Guess: ${action}, Result: ${result}, Multiplier: ${this.multiplierManager.currentMultiplier} `,
-    );
+    this.updateButtonLabels();
   }
 
   private EnterNonBettingState() {
     GameData.instance.currentState = GameState.NonBetting;
 
-    console.log(this.layout.inputBox.value);
+    GameData.instance.currentState = GameState.NonBetting;
+
 
     //clear card history
     this.layout.cardHistoryLayout.clearHistory();
@@ -330,6 +347,18 @@ export class NextScreenMobile extends Container {
     //input and buttons
     this.layout.inputBox.interactive = false;
     this.layout.betButton.setBettingState(false); // Non-Betting -> 1-0, Cash Out
+
+    // Set initial cash out value (Start Bet)
+    const currentBet = parseFloat(this.layout.inputBox.value);
+    const validBet = isNaN(currentBet) ? GameData.MIN_BET : currentBet;
+    const initialPayout = validBet * this.multiplierManager.currentMultiplier; // Should be 1.0
+
+    const formattedInitial = initialPayout.toLocaleString('de-DE', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2
+    });
+    this.layout.betButton.setCashOutValue(`Rp ${formattedInitial}`);
+
     this.layout.halfValueButton.interactive = false;
     this.layout.doubleValueButton.interactive = false;
     this.disableButton(this.layout.betButton); // Cannot cash out immediately on start
@@ -340,7 +369,7 @@ export class NextScreenMobile extends Container {
 
     this.firstLoad = false; // Game has started, switching to Payout mode permanently
 
-    console.log("Entered Non Betting State");
+    this.firstLoad = false; // Game has started, switching to Payout mode permanently
   }
 
   private EnterBettingState() {
@@ -359,7 +388,7 @@ export class NextScreenMobile extends Container {
 
     this.updateButtonLabels();
 
-    console.log("Entered Betting State");
+    this.updateButtonLabels();
   }
 
   //#endregion

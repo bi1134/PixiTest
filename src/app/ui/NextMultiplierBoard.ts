@@ -15,7 +15,7 @@ export class NextMultiplierBoard extends Container {
 
         // Top Label "Next Win"
         this.topLabel = new BitmapText({
-            text: "Next Win",
+            text: "Multiplier",
             style: {
                 fontFamily: "coccm-bitmap-3-normal",
                 fontSize: 40, // Estimated size
