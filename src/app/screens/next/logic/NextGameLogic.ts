@@ -5,15 +5,15 @@ export class NextGameLogic {
   // Determine the action for the "Higher" button based on current rank
   public static getHighAction(rank: string): GuessAction {
     if (rank === "A") return GuessAction.Higher; // Strict >
-    if (rank === "K") return GuessAction.Equal; // Equal
-    return GuessAction.HigherOrEqual; // Inclusive >=
+    if (rank === "K") return GuessAction.Equal; // Equal (for K this is the High button visually)
+    return GuessAction.HigherOrEqual; // Inclusive >= (Mid cards)
   }
 
   // Determine the action for the "Lower" button based on current rank
   public static getLowAction(rank: string): GuessAction {
-    if (rank === "A") return GuessAction.Equal; // Equal
+    if (rank === "A") return GuessAction.Equal; // Equal (for A this is the Low button visually)
     if (rank === "K") return GuessAction.Lower; // Strict <
-    return GuessAction.LowerOrEqual; // Inclusive <=
+    return GuessAction.LowerOrEqual; // Inclusive <= (Mid cards)
   }
 
   // Get display labels for UI buttons
@@ -36,9 +36,9 @@ export class NextGameLogic {
     }
     return {
       highTitle: "Hi",
-      highDesc: "Higher or equal",
+      highDesc: "Higher or Equal",
       lowTitle: "Lo",
-      lowDesc: "Lower or equal",
+      lowDesc: "Lower or Equal",
     };
   }
 
@@ -107,8 +107,6 @@ export class NextGameLogic {
     if (rank === "A") {
       if (action === GuessAction.Higher || action === GuessAction.HigherOrEqual) {
         // High Button -> Strict Higher (> A) for A
-        // Note: Logic says "Higher" button returns "Higher" action for A?
-        // in getHighAction("A") -> returns Higher.
         prob = (total - 1) / total;
       } else {
         // Low Button -> Equal (== A)
@@ -117,22 +115,27 @@ export class NextGameLogic {
     } else if (rank === "K") {
       if (action === GuessAction.Higher || action === GuessAction.HigherOrEqual || action === GuessAction.Equal) {
         // High Button -> Equal (== K)
-        // getHighAction("K") -> Equal
         prob = 1 / total;
       } else {
         // Low Button -> Strict Lower (< K)
         prob = (total - 1) / total;
       }
     } else {
-      // Mid cards
-      if (action === GuessAction.Higher || action === GuessAction.HigherOrEqual) {
-        // Higher or Equal (>= Rank)
+      // Mid cards - Inclusive Logic
+      if (action === GuessAction.HigherOrEqual) {
+        // >= Rank
         // Ranks >= current: (total - rankIndex)
         prob = (total - rankIndex) / total;
-      } else {
-        // Lower or Equal (<= Rank)
+      } else if (action === GuessAction.LowerOrEqual) {
+        // <= Rank
         // Ranks <= current: (rankIndex + 1)
         prob = (rankIndex + 1) / total;
+      } else if (action === GuessAction.Higher) {
+        // Fallback for strict (should not be called by UI but good for safety)
+        prob = (total - rankIndex - 1) / total;
+      } else if (action === GuessAction.Lower) {
+        // Fallback for strict
+        prob = rankIndex / total;
       }
     }
 

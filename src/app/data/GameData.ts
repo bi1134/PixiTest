@@ -9,7 +9,7 @@ export interface GameRoundResult {
 
 export interface CardHistoryData {
   rank: string;
-  suit: number;
+  suit: string;
   action: GuessAction;
   multiplier: number;
 }
@@ -41,7 +41,7 @@ export class GameData {
     this.cardHistory = [];
   }
 
-  public addCardHistory(rank: string, suit: number, action: GuessAction, multiplier: number) {
+  public addCardHistory(rank: string, suit: string, action: GuessAction, multiplier: number) {
     this.cardHistory.push({ rank, suit, action, multiplier });
   }
 

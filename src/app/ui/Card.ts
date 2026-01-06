@@ -1,3 +1,4 @@
+import { GlareFilter } from "../filters/GlareFilter";
 import { Spine } from "@esotericsoftware/spine-pixi-v8";
 import {
   Container,
@@ -20,6 +21,9 @@ export class Card extends Container {
   private spineCard: Spine;
   private mesh: PerspectiveMesh;
   private shadow: Graphics;
+
+  // Glare components
+  private glareFilter: GlareFilter;
 
   private _rank: string = "A";
   private _suit: CardSuit = "spade";
@@ -91,17 +95,25 @@ export class Card extends Container {
     this.addChild(this.shadow);
     this.addChild(this.mesh);
 
+    // --- Glare Setup ---
+    // Use GlareFilter on the mesh
+    this.glareFilter = new GlareFilter();
+    this.glareFilter.progress = 0; // Start off-screen
+    this.glareFilter.alpha = 0;
+
+    // Apply filter to mesh
+    this.mesh.filters = [this.glareFilter];
+
     //make the card "hitbox" bigger
     this.setHoverPadding(15);
 
     // make Spine visually match the mesh’s center alignment
-    this.spineCard.scale.set(1);
+    this.spineCard.scale.set(1.75);
     this.spineCard.x = 0;
     this.spineCard.y = 0;
 
     // ensure mesh is hidden initially
     //this.mesh.visible = false;
-    this.mesh.visible = true;
     this.shadow.visible = this.mesh.visible;
 
     // initial texture update (to match default A spade)
@@ -117,6 +129,7 @@ export class Card extends Container {
 
     this.tiltLoop(); // keep the follow system always running
   }
+
 
   // --- same API as before ---
   public RandomizeValue(): void {
@@ -135,6 +148,9 @@ export class Card extends Container {
     this.UpdateTexture();
   }
 
+  private lastWidth = 0;
+  private lastHeight = 0;
+
   private UpdateTexture(): void {
     // build texture file name
     const textureName = `${this._suit}-card-${this._rank.toLowerCase()}.png`;
@@ -146,14 +162,20 @@ export class Card extends Container {
     this.mesh.x = -this.baseWidth / 2;
     this.mesh.y = -this.baseHeight / 2;
 
-    this.shadow.clear();
-    this.shadow.rect(
-      -this.baseWidth / 2,
-      -this.baseHeight / 2,
-      this.baseWidth,
-      this.baseHeight,
-    );
-    this.shadow.fill({ color: 0x000000, alpha: 0.2 });
+    // Optimize: Only regenerate shadow/mask if size changed (or initialized)
+    const sizeChanged = this.baseWidth !== this.lastWidth || this.baseHeight !== this.lastHeight;
+
+    if (sizeChanged) {
+      this.lastWidth = this.baseWidth;
+      this.lastHeight = this.baseHeight;
+
+
+      this.shadow.clear();
+      this.drawCutCornerRect(this.shadow, -this.baseWidth / 2 - 15, -this.baseHeight / 2 + 15, this.baseWidth, this.baseHeight, 20);
+      this.shadow.fill({ color: 0x000000, alpha: 0.2 });
+
+      this.setHoverPadding(15); // refresh hitbox if size changed
+    }
 
     // spine skin name convention
     // e.g. "spade-a", "heart-10", "diamond-k"
@@ -165,8 +187,18 @@ export class Card extends Container {
     } catch (e) {
       console.warn(`Spine skin '${skinName}' not found.`);
     }
+  }
 
-    this.setHoverPadding(15); // refresh hitbox if size changed
+  private drawCutCornerRect(g: Graphics, x: number, y: number, w: number, h: number, cut: number) {
+    g.moveTo(x + cut, y);
+    g.lineTo(x + w - cut, y);
+    g.lineTo(x + w, y + cut);
+    g.lineTo(x + w, y + h - cut);
+    g.lineTo(x + w - cut, y + h);
+    g.lineTo(x + cut, y + h);
+    g.lineTo(x, y + h - cut);
+    g.lineTo(x, y + cut);
+    g.closePath();
   }
 
   // ========== LOGIC ==========
@@ -192,20 +224,54 @@ export class Card extends Container {
     // play hover animations
     this.playTiltSequence();
     this.playLiftSequence();
+    this.playGlare();
+  }
+
+  private playGlare() {
+    // Reset glare
+    this.glareFilter.progress = 0;
+    this.glareFilter.alpha = 1;
+
+    gsap.killTweensOf(this.glareFilter); // We tween the filter object directly (proxy properties)
+
+    // Sweep animation
+    gsap.to(this.glareFilter, {
+      progress: 1,
+      duration: 1.0,
+      ease: "power2.out",
+    });
+
+    // Fade out at end
+    gsap.to(this.glareFilter, {
+      alpha: 0,
+      duration: 0.3,
+      delay: 0.7,
+      ease: "power1.in"
+    });
   }
 
   private onPointerOut(): void {
     this.hovering = false;
     this.targetX = 0;
     this.targetY = 0;
+
+    // Immediately kill any active or queued animations from the 'Over' state
+    gsap.killTweensOf(this);       // stops angle/tilt animations
+    gsap.killTweensOf(this.scale); // stops lift/scale animations
+
+    // Kill glare
+    gsap.killTweensOf(this.glareFilter);
+    this.glareFilter.alpha = 0;
+    this.glareFilter.progress = 0;
+
     this.resetScale();
 
     // swap back
-    this.mesh.visible = true;
     this.shadow.visible = true;
     //this.mesh.visible = false;
     this.spineCard.visible = true;
   }
+
 
   // ===== ANIMATION ========
 
@@ -256,6 +322,8 @@ export class Card extends Container {
         outPoints[3].x,
         outPoints[3].y,
       );
+
+      // Glare sync no longer needed as Filter handles it on the mesh automatically
     };
 
     const tiltSpeed = 0.15;

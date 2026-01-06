@@ -193,11 +193,9 @@ export class NextScreenMobile extends Container {
     this.layout.titleLow.text = `${(lowProb * 100).toFixed(1)}% `;
 
     // Update Next Multiplier Board (Prediction)
-    // User requested: "solid current multiplier + additional value ... no need the 100 - percentage"
-    // confirming "fake value" of roughly +0.5.
-    const fakeIncrement = 0.5;
-    const nextVal = this.multiplierManager.currentMultiplier + fakeIncrement;
-    this.layout.multiplierBoard.setMultiplier(parseFloat(nextVal.toFixed(2)));
+    // Show current multiplier accurately
+    this.layout.multiplierBoard.setMultiplier(this.multiplierManager.currentMultiplier);
+
   }
 
   //#region guessing logic
