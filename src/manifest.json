@@ -26,6 +26,23 @@
         },
         {
           "alias": [
+            "main/cards/card-shadow.png",
+            "card-shadow.png"
+          ],
+          "src": [
+            "main/cards/card-shadow@0.5x.webp",
+            "main/cards/card-shadow@0.5x.png",
+            "main/cards/card-shadow.webp",
+            "main/cards/card-shadow.png"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
             "main/cards/card.atlas",
             "card.atlas"
           ],
@@ -720,6 +737,23 @@
         },
         {
           "alias": [
+            "main/cards/Heart-J.png",
+            "Heart-J.png"
+          ],
+          "src": [
+            "main/cards/Heart-J@0.5x.webp",
+            "main/cards/Heart-J@0.5x.png",
+            "main/cards/Heart-J.webp",
+            "main/cards/Heart-J.png"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
             "main/cards/opened-card-area.png",
             "opened-card-area.png"
           ],
@@ -1341,6 +1375,36 @@
         },
         {
           "alias": [
+            "main/sounds/button_click_02.ogg",
+            "button_click_02.ogg"
+          ],
+          "src": [
+            "main/sounds/button_click_02.ogg",
+            "main/sounds/button_click_02.mp3"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/sounds/menu_click_06.ogg",
+            "menu_click_06.ogg"
+          ],
+          "src": [
+            "main/sounds/menu_click_06.ogg",
+            "main/sounds/menu_click_06.mp3"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
             "main/sounds/sfx-hover.wav",
             "sfx-hover.wav"
           ],
@@ -1530,23 +1594,6 @@
         },
         {
           "alias": [
-            "preload/high.png",
-            "high.png"
-          ],
-          "src": [
-            "preload/high@0.5x.webp",
-            "preload/high@0.5x.png",
-            "preload/high.webp",
-            "preload/high.png"
-          ],
-          "data": {
-            "tags": {
-              "m": true
-            }
-          }
-        },
-        {
-          "alias": [
             "preload/history.png",
             "history.png"
           ],
@@ -1581,62 +1628,11 @@
         },
         {
           "alias": [
-            "preload/logo-dark.png",
-            "logo-dark.png"
-          ],
-          "src": [
-            "preload/logo-dark@0.5x.webp",
-            "preload/logo-dark@0.5x.png",
-            "preload/logo-dark.webp",
-            "preload/logo-dark.png"
-          ],
-          "data": {
-            "tags": {
-              "m": true
-            }
-          }
-        },
-        {
-          "alias": [
-            "preload/logo.png",
-            "logo.png"
-          ],
-          "src": [
-            "preload/logo@0.5x.webp",
-            "preload/logo@0.5x.png",
-            "preload/logo.webp",
-            "preload/logo.png"
-          ],
-          "data": {
-            "tags": {
-              "m": true
-            }
-          }
-        },
-        {
-          "alias": [
             "preload/logo.svg",
             "logo.svg"
           ],
           "src": [
             "preload/logo.svg"
-          ],
-          "data": {
-            "tags": {
-              "m": true
-            }
-          }
-        },
-        {
-          "alias": [
-            "preload/low.png",
-            "low.png"
-          ],
-          "src": [
-            "preload/low@0.5x.webp",
-            "preload/low@0.5x.png",
-            "preload/low.webp",
-            "preload/low.png"
           ],
           "data": {
             "tags": {

@@ -1,6 +1,6 @@
 import { FancyButton } from "@pixi/ui";
 import { Container, Graphics, Sprite } from "pixi.js";
-import { Label } from "../../../ui/Label";
+
 import { CustomButton } from "../../../ui/CustomButton";
 import { Card } from "../../../ui/Card";
 import { LayoutHelper } from "../../../utils/LayoutHelper";

@@ -36,7 +36,7 @@ export type ItemHisotyPopupOptions = {
 
 export class HisotryPopupItem extends Container {
   private readonly OFFSET = 10;
-  private readonly TILE_OFFSET = 15;
+
   private readonly FONT_SIZE = 17;
 
   // Layout Constants
@@ -54,8 +54,7 @@ export class HisotryPopupItem extends Container {
   private expandSwitcher: Switcher;
 
   // Inner UI
-  private readonly TILE_WIDTH = 110;
-  private readonly TILE_HEIGHT = 90;
+
   private innerWrapper: Container;
   private textWrapper: Container;
   private idText: BitmapText;

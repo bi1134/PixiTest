@@ -1,11 +1,10 @@
-import { Ticker, Container, BitmapText, Sprite } from "pixi.js";
+import { Ticker, Container, Sprite } from "pixi.js";
 import { gsap } from "gsap";
 import { CustomSettingSwitcher, CustomSwitcherType } from "./CustomSettingSwitcher";
 
 export class SpeedButton extends Container {
   private switcher: CustomSettingSwitcher;
   private icon: Sprite;
-  private textLabel: BitmapText;
   private isSpeedUp = false;
 
   constructor() {
@@ -25,21 +24,6 @@ export class SpeedButton extends Container {
     this.icon.x = this.switcher.width / 2;
     this.icon.y = this.switcher.height / 2 - 20;
     this.switcher.addChild(this.icon);
-
-
-    // Label (below)
-    this.textLabel = new BitmapText({
-      text: "Speed Up", // Default 1x
-      style: {
-        fontFamily: "coccm-bitmap-3-normal",
-        fontSize: 35, // Matching previous customOpts or SettingsUI style
-        align: "center",
-      },
-    });
-    this.textLabel.anchor.set(0.5);
-    this.textLabel.x = this.switcher.width / 2;
-    this.textLabel.y = this.switcher.height + 20;
-    this.addChild(this.textLabel);
 
     // Logic
     this.switcher.onChange.connect(this.onToggle.bind(this));

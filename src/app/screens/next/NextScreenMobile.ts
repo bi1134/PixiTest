@@ -1,4 +1,4 @@
-import { Container, Texture, Graphics } from "pixi.js";
+import { Container, Texture } from "pixi.js";
 import { engine } from "../../getEngine";
 import { MobileLayout } from "./layout/MobileLayout"; // Updated import
 import { BetButton } from "../../ui/BetButton";
@@ -42,9 +42,6 @@ export class NextScreenMobile extends Container {
   }
 
   private setupEvents() {
-    this.layout.inputBox.onEnter.connect(() => {
-      this.ValidateInput();
-    });
 
     this.layout.upButton.onPress.connect(() => this.HigherButton());
     this.layout.downButton.onPress.connect(() => this.LowerButton());
@@ -270,10 +267,11 @@ export class NextScreenMobile extends Container {
       this.layout.currentCard.suit,
       action,
       0,
-      -19,
+      -18,
       1,
-      0.4,
-      this.multiplierManager.currentMultiplier // Pass multiplier
+      0.35, // 30% of original card size
+      this.multiplierManager.currentMultiplier, // Pass multiplier
+      result !== GuessResult.Lose // isWin
     );
     GameData.instance.addCardHistory(
       this.layout.currentCard.rank,
@@ -331,11 +329,12 @@ export class NextScreenMobile extends Container {
       this.layout.currentCard.rank,
       this.layout.currentCard.suit,
       GuessAction.Start,
-      15,
-      -19,
+      10,
+      -18,
       1,
-      0.4,
-      this.multiplierManager.currentMultiplier
+      0.35, // 30% of original card size
+      this.multiplierManager.currentMultiplier,
+      true // isWin
     );
     GameData.instance.addCardHistory(
       this.layout.currentCard.rank,
@@ -448,8 +447,8 @@ export class NextScreenMobile extends Container {
     }
 
     // Fixed Safe Area Dimensions
-    const SAFE_WIDTH = 1075;
-    const SAFE_HEIGHT = 1920;
+    const SAFE_WIDTH = 720;
+    const SAFE_HEIGHT = 1280;
 
     // Calculate scale to fit (Contain)
     const scale = Math.min(width / SAFE_WIDTH, height / SAFE_HEIGHT);

@@ -1,14 +1,19 @@
 export interface PickResponseData {
   pick: number;
-  rank: number;
-  suit: number;
-  history_cards: string[];
-  chance_up: number;
-  chance_down: number;
+  rank?: number;
+  suit?: number;
+  history_cards?: string[];
+  chance_up?: number;
+  chance_down?: number;
   amount: number;
   multiplier: number;
   total_win: number;
   end_round: boolean;
+  field?: number[];
+  bomb_field?: number | null;
+  next_multiplier?: number[];
+  prize_list?: number[];
+  bomb_count?: number;
 }
 
 export interface PickApiResponse {

@@ -1,4 +1,4 @@
-import { BitmapText, Container, Graphics, Sprite } from "pixi.js";
+import { BitmapText, Container, Sprite } from "pixi.js";
 
 import { GuessAction } from "../screens/next/types/GameTypes";
 import { gsap } from "gsap";
@@ -26,7 +26,7 @@ export class CardHistoryItem extends Container {
 
   // public targetX: number = 0; // Removed: Handled by PixiUI List
 
-  constructor(rank: string, suit: string, action: GuessAction, multiplier?: number) {
+  constructor(rank: string, suit: string, action: GuessAction, multiplier?: number, isWin?: boolean) {
     super();
 
     // Create inner container for local animations (like "fake position" slide-in)
@@ -34,10 +34,10 @@ export class CardHistoryItem extends Container {
     this.innerContainer = new Container();
     this.addChild(this.innerContainer);
 
-    this.Setup(rank, suit, action, multiplier);
+    this.Setup(rank, suit, action, multiplier, isWin);
   }
 
-  private Setup(rank: string, suit: string, action: GuessAction, multiplier?: number) {
+  private Setup(rank: string, suit: string, action: GuessAction, multiplier?: number, isWin?: boolean) {
     // Clear previous if reusing
     this.innerContainer.removeChildren();
 
@@ -45,22 +45,24 @@ export class CardHistoryItem extends Container {
     this._suit = suit;
     this._action = action;
 
+    // --- tray background (behind card) ---
+    const trayTexture = (isWin ?? true) ? "Tray-Green.png" : "Tray-Red.png";
+    this.multiplierBackground = Sprite.from(trayTexture);
+    this.innerContainer.addChild(this.multiplierBackground);
+
     // --- card sprite ---
     const textureName = `${this._suit}-card-${this._rank.toLowerCase()}.png`;
     this.cardSprite = Sprite.from(`${textureName}`);
     this.innerContainer.addChild(this.cardSprite);
 
     // --- action sprite ---
-    const actionTexture = this.ActionToIcon(this._action);
+    const actionTexture = this.ActionToIcon(this._action, isWin);
     this.actionSprite = Sprite.from(actionTexture);
     if (this._action === GuessAction.Start) {
       this.actionSprite.alpha = 0;
     }
+    this.actionSprite.anchor.set(0.5);
     this.innerContainer.addChild(this.actionSprite);
-
-    // --- multiplier background (below card) ---
-    this.multiplierBackground = Sprite.from("Bar-result.png");
-    this.innerContainer.addChild(this.multiplierBackground);
 
     let labelText = "";
     if (action === GuessAction.Start) {
@@ -80,62 +82,92 @@ export class CardHistoryItem extends Container {
     });
     this.innerContainer.addChild(this.multiplierTextLabel);
 
-    this.updateLayout(4);
+    this.updateLayout();
   }
 
   //guess enum to icon texture name
-  private ActionToIcon(action: GuessAction): string {
+  private ActionToIcon(action: GuessAction, isWin: boolean = true): string {
+    const prefix = isWin ? "Icon-green" : "Icon-red";
+
     switch (action) {
       case GuessAction.Higher:
-        return "icon-higher.png";
+        return `${prefix}-3.png`; // Higher
       case GuessAction.HigherOrEqual:
-        return "icon-higherEqual.png";
-
+        return `${prefix}-0.png`; // HigherOrEqual
       case GuessAction.Lower:
-        return "icon-lower.png";
+        return `${prefix}-2.png`; // Lower
       case GuessAction.LowerOrEqual:
-        return "icon-lowerEqual.png";
+        return `${prefix}-1.png`; // LowerOrEqual
 
       case GuessAction.Equal:
-        return "icon-equal.png";
+        return "icon-equal.png"; // Keep standard or map? User didn't specify.
 
       case GuessAction.Skip:
         return "icon-skip.png";
       case GuessAction.Start:
-        return "icon-higher.png"; // Use standard icon for sizing consistency
+        return `${prefix}-3.png`; // Use Higher icon as default/start?
       default:
-        return "blank-icon.jpg"; // fallback (optional)
+        return "blank-icon.jpg";
     }
   }
 
-  public updateLayout(padding: number = 4) {
+  public updateLayout() {
     // --- Layout internal parts relative to this item’s origin ---
-    this.multiplierBackground.width = this.cardSprite.width;
-    this.multiplierBackground.height = this.cardSprite.height * 0.2;
-    this.multiplierBackground.x =
-      this.cardSprite.width / 2 - this.multiplierBackground.width / 2;
-    this.multiplierBackground.y = this.cardSprite.height + padding;
+    // Tray is behind card, assume centered on card or card centered on it?
+    // User said "behind the card". Usually implies card is on top.
 
-    this.actionSprite.scale.set(1.75);
-    this.actionSprite.x = this.cardSprite.x - this.actionSprite.width / 1.5;
-    this.actionSprite.y =
-      this.cardSprite.height / 2 - this.actionSprite.height / 3;
+    // Scale tray to match card width (assuming tray texture might be different res)
+    if (this.cardSprite.texture.width > 1 && this.multiplierBackground.texture.width > 1) {
+      const scale = this.cardSprite.width / this.multiplierBackground.texture.width;
+      this.multiplierBackground.scale.set(scale);
+    } else {
+      // Fallback if textures not ready (though they should be preloaded)
+      // This ensures we don't divide by zero or get weird results
+      this.multiplierBackground.scale.set(1);
+    }
 
-    this.multiplierTextLabel.x =
-      this.multiplierBackground.x +
-      this.multiplierBackground.width / 2;
-    this.multiplierTextLabel.y =
-      this.multiplierBackground.y + this.multiplierBackground.height / 2;
+    this.multiplierBackground.anchor.set(0.5);
+    this.cardSprite.anchor.set(0.5);
+
+    // Center both
+    this.cardSprite.x = 0;
+    this.cardSprite.y = 0;
+
+    this.multiplierBackground.x = 0;
+    this.multiplierBackground.y = 0; // Using anchor 0.5 for both implies they overlap perfectly center-to-center
+
+    // Since we changed anchor to 0.5, we might need to adjust parent positioning expectation if it relied on top-left (0,0)
+    // List elements usually expect top-left at 0,0 locally?
+    // If I shift them to 0,0 with anchor 0.5, the visual top-left will be (-w/2, -h/2).
+    // Let's shift them positively so top-left is roughly 0,0.
+
+    const maxWidth = Math.max(this.cardSprite.width, this.multiplierBackground.width);
+    const maxHeight = Math.max(this.cardSprite.height, this.multiplierBackground.height);
+
+    this.cardSprite.x = maxWidth / 2;
+    this.cardSprite.y = maxHeight / 2;
+    this.multiplierBackground.x = maxWidth / 2;
+    this.multiplierBackground.y = maxHeight / 2;
+
+    // Action Sprite (Arrow)
+    this.actionSprite.scale.set(3);
+    this.actionSprite.x = this.cardSprite.x - this.cardSprite.width / 1.75;
+    this.actionSprite.y = this.multiplierBackground.y; // Center on card? Or offset?
+    // If "action sprite" was the arrow, keeping it centered on card is standard for "Result" overlays.
+    this.multiplierTextLabel.position.set(
+      this.multiplierBackground.x,
+      this.multiplierBackground.y + this.multiplierBackground.height / 2 - this.multiplierTextLabel.height / 1.5 // Near bottom
+    );
+    // If tray covers card, text should be visible.
   }
 
   public get widthScaled(): number {
-    return this.cardSprite.width * this.scale.x;
+    return Math.max(this.cardSprite.width, this.multiplierBackground.width) * this.scale.x;
   }
 
   public get heightScaled(): number {
     return (
-      (this.cardSprite.height + this.multiplierBackground.height + 20) * this.scale.y
-      // Approximation of total visual height including multiplier and padding
+      (Math.max(this.cardSprite.height, this.multiplierBackground.height)) * this.scale.y
     );
   }
 

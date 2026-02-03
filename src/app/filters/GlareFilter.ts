@@ -1,4 +1,4 @@
-import { Filter, GlProgram, GpuProgram } from "pixi.js";
+import { Filter, GlProgram } from "pixi.js";
 
 const fragment = `
 in vec2 vTextureCoord;

@@ -1,5 +1,6 @@
 import { Container, Sprite } from "pixi.js";
 import { Input } from "@pixi/ui";
+import { Signal } from "typed-signals";
 import { BitmapLabel } from "./BitmapLabel";
 
 export class CustomInput extends Container {
@@ -7,8 +8,10 @@ export class CustomInput extends Container {
     public bg: Sprite;
     public displayText: BitmapLabel;
 
+    public onPress: Signal<(e?: any) => void> = new Signal();
 
     private _clearOnNextTouch: boolean = true;
+
 
     public get value(): string {
         return this.input.value;
@@ -93,10 +96,13 @@ export class CustomInput extends Container {
 
         // Handle "cleanOnFocus" visual for the bitmap label
         this.input.on("pointertap", () => {
-            // Manual Clear on First Touch
+            // Emit press event for external keyboard
+            this.onPress.emit();
+
+            // Manual Clear on First Touch (only if using native input, but with keyboard we might rely on keyboard logic)
             if (this._clearOnNextTouch) {
-                this.input.value = "";
-                this.displayText.text = "RP ";
+                // this.input.value = ""; // Don't clear automatically if using custom keyboard
+                // this.displayText.text = "RP ";
                 this._clearOnNextTouch = false;
             }
         });

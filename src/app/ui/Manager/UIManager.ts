@@ -1,5 +1,5 @@
 // src/app/ui/UIManager.ts
-import { Container } from "pixi.js";
+
 import { engine } from "../../getEngine";
 import { ResultPopup } from "../../popups/ResultPopup";
 import { PopupHistoryUI } from "../../popups/History/PopupHistoryUI";

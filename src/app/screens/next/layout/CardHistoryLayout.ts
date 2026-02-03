@@ -101,6 +101,7 @@ export class CardHistoryLayout extends Container {
       rightWidth: 35,
       bottomHeight: 35,
     });
+    this.cardsHistoryBackground.alpha = 0;
     this.cardsHistoryBackground.width = listWidth;
     this.cardsHistoryBackground.height = listHeight;
     this.addChild(this.cardsHistoryBackground);
@@ -138,10 +139,11 @@ export class CardHistoryLayout extends Container {
     rightPad: number = 0,
     _scrollMutiplier: number = 5,
     itemScale?: number,
-    multiplier?: number
+    multiplier?: number,
+    isWin?: boolean
   ) {
     // 1. Create New Item
-    const item = new CardHistoryItem(value, suit, action, multiplier);
+    const item = new CardHistoryItem(value, suit, action, multiplier, isWin);
 
 
     const finalScale = itemScale ?? 1;
@@ -208,14 +210,22 @@ export class CardHistoryLayout extends Container {
         // Accessing .width/.height on GapContainer uses our overridden stable getter
         if (this.options.type === 'vertical') {
           listHeight = lastChild.y + lastChild.height;
-          listWidth = this.list.width; // Fallback for cross-axis
+          // Calculate max width manually to avoid mask warning
+          listWidth = 0;
+          for (const child of this.list.children) {
+            if (child.width > listWidth) listWidth = child.width;
+          }
         } else {
           listWidth = lastChild.x + lastChild.width;
-          listHeight = this.list.height; // Fallback for cross-axis
+          // Calculate max height manually to avoid mask warning
+          listHeight = 0;
+          for (const child of this.list.children) {
+            if (child.height > listHeight) listHeight = child.height;
+          }
         }
       } else {
-        listWidth = this.list.width;
-        listHeight = this.list.height;
+        listWidth = 0;
+        listHeight = 0;
       }
 
       const visibleWidth = this.cardsHistoryBackground.width;
@@ -306,15 +316,16 @@ export class CardHistoryLayout extends Container {
     // --- Update mask to match background ---
     // We add a small left padding to the MASK to cleanly clip any overflowing items on the left
     // This resolves the "partial 6th card" issue by hiding it earlier.
-    const maskLeftPadding = 15;
+    const maskLeftPadding = 0;
+    const maskRightExtension = 100; // Extend mask to the right
 
     this.cardsHistoryMask
       .clear()
       .rect(
         maskLeftPadding,
-        0,
-        width - maskLeftPadding,
-        height,
+        -50,
+        width + maskRightExtension,
+        height + 150, // height + bottom buffer + top buffer compensation
       )
       .fill(0xffffff);
     // Explicitly update hitArea or mask logic if needed, but Graphics mask works by geometry.
@@ -340,10 +351,11 @@ export class CardHistoryLayout extends Container {
       }
 
       this.list.y = finalY + this.listYOffset;
-    } else {
       // Horizontal Logic
       // 1. Center Y
-      this.list.y = height / 2 - this.list.height / 2 + this.listYOffset;
+      // Use first child height for more stable centering if available, else list.height
+      const childHeight = this.list.children.length > 0 ? this.list.children[0].height : this.list.height;
+      this.list.y = height / 2 - childHeight / 2 + this.listYOffset;
 
       // 2. Align Horizontal
       let finalX = padding;
@@ -353,7 +365,9 @@ export class CardHistoryLayout extends Container {
       if (contentWidth + padding * 2 <= width) {
         finalX = padding;
       } else {
-        finalX = width - contentWidth - this.pushBackPadding;
+        // Align to the extended right edge
+        const effectiveWidth = width + maskRightExtension;
+        finalX = effectiveWidth - contentWidth - this.pushBackPadding;
       }
 
       this.list.x = finalX + this.listXOffset;

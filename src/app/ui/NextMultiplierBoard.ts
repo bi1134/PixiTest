@@ -20,12 +20,12 @@ export class NextMultiplierBoard extends Container {
                 fontFamily: "coccm-bitmap-3-normal",
                 fontSize: 40, // Estimated size
                 align: "center",
-                tint: 0xd6c6c6 // Slightly dim or white
             }
         });
         this.topLabel.anchor.set(0.5);
         this.topLabel.position.set(0, this.bg.y); // Upper half
-        this.addChild(this.topLabel);
+        this.topLabel.tint = 0xd6c6c6; // Slightly dim or white
+        //this.addChild(this.topLabel);
 
         // Bottom Label "1.5x"
         this.bottomLabel = new BitmapText({
@@ -38,7 +38,7 @@ export class NextMultiplierBoard extends Container {
             }
         });
         this.bottomLabel.anchor.set(0.5);
-        this.bottomLabel.position.set(0, this.topLabel.y + this.topLabel.height + this.bottomLabel.height / 2); // Lower half
+        this.bottomLabel.position.set(0, this.bg.y); // Lower half
         this.addChild(this.bottomLabel);
     }
 

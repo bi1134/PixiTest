@@ -6,21 +6,20 @@ import {
   Texture,
   Ticker,
   Rectangle,
-  Graphics,
 } from "pixi.js";
 import { gsap } from "gsap";
 
 export type CardSuit = "spade" | "heart" | "club" | "diamond";
 export enum AnimationState {
-  OpenIdle = "open-idle",
+  OpenIdle = "idle",
   Flip = "flip",
-  CloseIdle = "close-idle",
+  CloseIdle = "idle-star",
 }
 
 export class Card extends Container {
   private spineCard: Spine;
   private mesh: PerspectiveMesh;
-  private shadow: Graphics;
+  private shadow: PerspectiveMesh;
 
   // Glare components
   private glareFilter: GlareFilter;
@@ -67,10 +66,20 @@ export class Card extends Container {
     });
 
     this.spineCard.state.setAnimation(0, AnimationState.OpenIdle, true);
-    //this.addChild(this.spineCard);
+    this.addChild(this.spineCard);
 
     const texture = Texture.from("main/cards/spade-card-a.png");
-    this.shadow = new Graphics();
+    // Shadow as Mesh
+    this.shadow = new PerspectiveMesh({
+      texture: Texture.from("card-shadow.png"),
+      width: texture.width,
+      height: texture.height,
+    });
+    // Offset shadow relative to center, similar to how we previously positioned sprite
+    // But PerspectiveMesh coordinate system usually relies on setCorners.
+    // For now, let's add it. We'll handle positioning via corners or container offset?
+    // Using container offset for shadow mesh is easiest if consistent.
+
     this.mesh = new PerspectiveMesh({
       texture,
       width: texture.width,
@@ -84,13 +93,9 @@ export class Card extends Container {
     this.mesh.x = -this.baseWidth / 2;
     this.mesh.y = -this.baseHeight / 2;
 
-    this.shadow.rect(
-      -this.baseWidth / 2,
-      -this.baseHeight / 2,
-      this.baseWidth,
-      this.baseHeight,
-    );
-    this.shadow.fill({ color: 0x000000, alpha: 0.2 });
+    // Shadow offset - we can offset the mesh instance itself
+    this.shadow.x = this.mesh.x;
+    this.shadow.y = this.mesh.y;
 
     this.addChild(this.shadow);
     this.addChild(this.mesh);
@@ -108,13 +113,13 @@ export class Card extends Container {
     this.setHoverPadding(15);
 
     // make Spine visually match the mesh’s center alignment
-    this.spineCard.scale.set(1.75);
+    this.spineCard.scale.set(1);
     this.spineCard.x = 0;
     this.spineCard.y = 0;
 
     // ensure mesh is hidden initially
-    //this.mesh.visible = false;
-    this.shadow.visible = this.mesh.visible;
+    this.mesh.visible = false;
+    this.shadow.visible = false;
 
     // initial texture update (to match default A spade)
     this.UpdateTexture();
@@ -169,10 +174,9 @@ export class Card extends Container {
       this.lastWidth = this.baseWidth;
       this.lastHeight = this.baseHeight;
 
-
-      this.shadow.clear();
-      this.drawCutCornerRect(this.shadow, -this.baseWidth / 2 - 15, -this.baseHeight / 2 + 15, this.baseWidth, this.baseHeight, 20);
-      this.shadow.fill({ color: 0x000000, alpha: 0.2 });
+      // With PerspectiveMesh, size is largely handled by setCorners in tiltLoop using baseWidth/Height
+      // But we might need to update base mesh dimensions if texture resizable?
+      // For now, assuming tiltLoop handles visual shape.
 
       this.setHoverPadding(15); // refresh hitbox if size changed
     }
@@ -189,17 +193,7 @@ export class Card extends Container {
     }
   }
 
-  private drawCutCornerRect(g: Graphics, x: number, y: number, w: number, h: number, cut: number) {
-    g.moveTo(x + cut, y);
-    g.lineTo(x + w - cut, y);
-    g.lineTo(x + w, y + cut);
-    g.lineTo(x + w, y + h - cut);
-    g.lineTo(x + w - cut, y + h);
-    g.lineTo(x + cut, y + h);
-    g.lineTo(x, y + h - cut);
-    g.lineTo(x, y + cut);
-    g.closePath();
-  }
+
 
   // ========== LOGIC ==========
 
@@ -267,8 +261,8 @@ export class Card extends Container {
     this.resetScale();
 
     // swap back
-    this.shadow.visible = true;
-    //this.mesh.visible = false;
+    this.shadow.visible = false;
+    this.mesh.visible = false;
     this.spineCard.visible = true;
   }
 
@@ -292,6 +286,7 @@ export class Card extends Container {
       const cosY = Math.cos(radY);
       const sinY = Math.sin(radY);
 
+      // Card corners
       for (let i = 0; i < 4; i++) {
         const src = points[i];
         const out = outPoints[i];
@@ -322,8 +317,54 @@ export class Card extends Container {
         outPoints[3].x,
         outPoints[3].y,
       );
+      // Sync shadow corners (Z-depth based offset)
+      // Simulating light from Top-Left, shadow to South-East
+      const shadowOffsetX = 5;
+      const shadowOffsetY = 5;
+      const zStrength = 0.07;
 
-      // Glare sync no longer needed as Filter handles it on the mesh automatically
+      const sOutPoints = points.map(() => ({ x: 0, y: 0 }));
+
+      for (let i = 0; i < 4; i++) {
+        const src = points[i];
+        const out = sOutPoints[i];
+        const x = src.x - this.baseWidth / 2;
+        const y = src.y - this.baseHeight / 2;
+        let z = 0;
+
+        // Rotate Y
+        const xY = cosY * x - sinY * z;
+        z = sinY * x + cosY * z;
+
+        // Rotate X
+        const yX = cosX * y + sinX * z;
+        z = -sinX * y + cosX * z;
+
+        // Z positive = closer to viewer (lifted) -> Larger offset
+        // Z negative = further from viewer (pressed) -> Smaller offset
+        const heightFactor = Math.max(0, 1 + z * zStrength);
+
+        const offX = shadowOffsetX * heightFactor;
+        const offY = shadowOffsetY * heightFactor;
+
+        // Use NORMAL projection (xY, yX) matching the card mesh
+        const scale = this.perspective / (this.perspective - z);
+
+        // Apply projection + offset
+        out.x = (xY * scale + this.baseWidth / 2) + offX;
+        out.y = (yX * scale + this.baseHeight / 2) + offY;
+      }
+
+      this.shadow.setCorners(
+        sOutPoints[0].x,
+        sOutPoints[0].y,
+        sOutPoints[1].x,
+        sOutPoints[1].y,
+        sOutPoints[2].x,
+        sOutPoints[2].y,
+        sOutPoints[3].x,
+        sOutPoints[3].y,
+      );
     };
 
     const tiltSpeed = 0.15;

@@ -1,5 +1,5 @@
 import { ApiClient } from "../ApiClient";
-import { ApiRoute, getBaseUrl, getToken } from "../ApiRoute";
+import { ApiRoute } from "../ApiRoute";
 import { BetApiResponse, mockBetResponse } from "../models/BetResponse";
 import { CashoutApiResponse, mockCashoutResponse } from "../models/CashoutResponse";
 import { LastActivityApiResponse, mockLastActivityResponse } from "../models/LastActivityResponse";
@@ -15,7 +15,7 @@ export class GameService {
     if (res.useMock) {
       return this.mockDelay(mockLastActivityResponse);
     }
-    return res.data;
+    return res.data as LastActivityApiResponse;
   }
 
   public static async bet(
@@ -30,7 +30,7 @@ export class GameService {
     if (res.useMock) {
       return this.mockDelay(mockBetResponse);
     }
-    return res.data;
+    return res.data as BetApiResponse;
   }
 
   public static async skip(action: string = "skip"): Promise<PickApiResponse> {
@@ -41,7 +41,7 @@ export class GameService {
     if (res.useMock) {
       return this.mockDelay(mockPickResponse);
     }
-    return res.data;
+    return res.data as PickApiResponse;
   }
 
   public static async pick(action: string): Promise<PickApiResponse> {
@@ -52,7 +52,7 @@ export class GameService {
     if (res.useMock) {
       return this.mockDelay(mockPickResponse);
     }
-    return res.data;
+    return res.data as PickApiResponse;
   }
 
   public static async cashout(): Promise<CashoutApiResponse> {
@@ -60,7 +60,7 @@ export class GameService {
     if (res.useMock) {
       return this.mockDelay(mockCashoutResponse);
     }
-    return res.data;
+    return res.data as CashoutApiResponse;
   }
 
   public static async result(): Promise<ResultApiResponse> {
@@ -68,7 +68,7 @@ export class GameService {
     if (res.useMock) {
       return this.mockDelay(mockResultResponse);
     }
-    return res.data;
+    return res.data as ResultApiResponse;
   }
 
   public static async history(): Promise<HistoryApiResponse> {
@@ -76,7 +76,7 @@ export class GameService {
     if (res.useMock) {
       return this.mockDelay(mockHistoryResponse);
     }
-    return res.data;
+    return res.data as HistoryApiResponse;
   }
 
   public static async historyDetail(txId: string): Promise<HistoryDetailApiResponse> {
@@ -84,7 +84,7 @@ export class GameService {
     if (res.useMock) {
       return this.mockDelay(mockHistoryDetailResponse);
     }
-    return res.data;
+    return res.data as HistoryDetailApiResponse;
   }
 
   private static mockDelay<T>(data: T): Promise<T> {

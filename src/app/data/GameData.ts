@@ -18,6 +18,7 @@ export class GameData {
   private static _instance: GameData;
 
   public static readonly MIN_BET = 1000;
+  public static readonly MAX_BET = 10000000;
 
   public totalMoney: number = 4500000;
   public currentBet: number = 0.02;

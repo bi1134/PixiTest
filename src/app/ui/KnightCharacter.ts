@@ -52,7 +52,6 @@ export class KnightCharacter extends Container {
                 fontFamily: "coccm-bitmap-3-normal",
                 fontSize: 50,
                 align: "center",
-                maxWidth: 800, // Max width before wrapping?
                 wordWrap: true, // Need word wrap for chat bubble
                 wordWrapWidth: 800,
                 fill: "#f3da67"

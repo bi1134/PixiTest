@@ -1,6 +1,6 @@
 import { Switcher } from "@pixi/ui";
 import { gsap } from "gsap";
-import { BitmapText, ColorMatrixFilter, Container, Sprite } from "pixi.js";
+import { ColorMatrixFilter, Container, Sprite } from "pixi.js";
 import { engine } from "../getEngine";
 import {
   CustomSettingSwitcher,
@@ -15,7 +15,6 @@ export class SettingsUI extends Container {
   private questionMark: CustomSettingSwitcher;
   private historyIcon: CustomSettingSwitcher;
   private audio: CustomSettingSwitcher;
-  private settingText: BitmapText;
   public bgSetting: Sprite;
 
 
@@ -30,17 +29,6 @@ export class SettingsUI extends Container {
 
     this.bgSetting.zIndex = -1;
     this.bgSetting.visible = false;
-
-    // Title Text
-    this.settingText = new BitmapText({
-      text: "Setting \n Menu",
-      anchor: 0.5,
-      style: {
-        fontSize: 35,
-        fontFamily: "coccm-bitmap-3-normal.fnt",
-        align: "center",
-      },
-    });
 
     // Main switcher button
     this.settingsSwitcher = new Switcher([
@@ -98,7 +86,6 @@ export class SettingsUI extends Container {
 
     this.addChild(
       this.bgSetting,
-      this.settingText,
       this.historyIcon,
       this.audio,
       this.questionMark,
@@ -134,14 +121,6 @@ export class SettingsUI extends Container {
       this.audio.y + this.audio.height * 2 + padding,
     );
 
-    LayoutHelper.setPositionX(
-      this.settingText,
-      this.settingsSwitcher.x + this.settingsSwitcher.width / 2,
-    );
-    LayoutHelper.setPositionY(
-      this.settingText,
-      this.settingsSwitcher.y + this.settingsSwitcher.height + this.settingText.height / 2,
-    );
   }
 
   public updateUI(isBetting: boolean) {

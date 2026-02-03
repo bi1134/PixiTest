@@ -1,6 +1,7 @@
 import { Container, Graphics } from "pixi.js";
 import { gsap } from "gsap";
 import { GameHistoryItem } from "./GameHistoryItem";
+import { LayoutHelper } from "../utils/LayoutHelper";
 
 export class GameHistoryContainer extends Container {
   private background: Graphics;
@@ -31,7 +32,8 @@ export class GameHistoryContainer extends Container {
 
     const centerY = height / 2;
     for (const item of this.historyItems) {
-
+      item.resize(NaN, height); // Pass height, width handled by scale
+      LayoutHelper.scaleToHeight(item, height * 0.8); // Scale to 80% of bar height
       item.y = centerY;
     }
   }
