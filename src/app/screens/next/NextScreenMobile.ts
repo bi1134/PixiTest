@@ -88,6 +88,8 @@ export class NextScreenMobile extends Container {
 
   private SkipButton() {
     this.EvaluateGuess(GuessAction.Skip);
+    this.layout.gameInfo.knightCharacter.playState('skip');
+    this.layout.gameInfo.knightCharacter.say("YOU CAN DO IT!");
     this.vibratePhone(100);
   }
 
@@ -153,6 +155,9 @@ export class NextScreenMobile extends Container {
 
       this.layout.highDes.text = `Rp ${formatPayout(highPayout)} `;
       this.layout.lowDes.text = `Rp ${formatPayout(lowPayout)} `;
+
+      // Update Prediction Multipliers on the Board
+      this.layout.gameInfo.updatePredictions(highNextMult, lowNextMult);
     }
 
     if (highAction === GuessAction.Equal) {
@@ -219,7 +224,11 @@ export class NextScreenMobile extends Container {
       action,
     );
 
-    // Update card visual
+    // Visual Transition: Fly off old card
+    this.layout.animateFlyOff(prevRank, this.layout.currentCard.suit);
+    this.layout.animateDeal();
+
+    // Update card visual (Flips to new value)
     this.layout.currentCard.SetValue(nextRank, nextSuit);
 
     // Handle Result
@@ -241,6 +250,9 @@ export class NextScreenMobile extends Container {
 
       this.layout.betButton.setCashOutValue(`Rp ${formattedPayout}`);
 
+      this.layout.gameInfo.knightCharacter.playState('win');
+      this.layout.gameInfo.knightCharacter.say('Good Job!');
+
     } else if (result === GuessResult.Lose) {
       // Loss Logic
       // Loss Logic
@@ -248,6 +260,12 @@ export class NextScreenMobile extends Container {
       const lostAmount = isNaN(rawVal) ? GameData.MIN_BET : rawVal;
       GameData.instance.addRoundResult(0, false, lostAmount);
       this.layout.gameHistory.addResult(0, false);
+
+      this.layout.gameInfo.knightCharacter.playState('lose');
+      this.layout.gameInfo.knightCharacter.say('BET AGAIN!');
+
+      // Play Card Shake/Reveal
+      this.layout.currentCard.playLoseAnimation();
 
       // Update Money and Recenter
       this.layout.updateMoney(`${GameData.instance.totalMoney.toFixed(2)} `);
@@ -267,7 +285,7 @@ export class NextScreenMobile extends Container {
       this.layout.currentCard.suit,
       action,
       0,
-      -18,
+      -22,
       1,
       0.35, // 30% of original card size
       this.multiplierManager.currentMultiplier, // Pass multiplier
@@ -286,6 +304,9 @@ export class NextScreenMobile extends Container {
 
   private EnterNonBettingState() {
     GameData.instance.currentState = GameState.NonBetting;
+
+    // Force switch back to Spine view
+    this.layout.currentCard.resetToIdle();
 
     GameData.instance.currentState = GameState.NonBetting;
 
@@ -330,7 +351,7 @@ export class NextScreenMobile extends Container {
       this.layout.currentCard.suit,
       GuessAction.Start,
       10,
-      -18,
+      -22,
       1,
       0.35, // 30% of original card size
       this.multiplierManager.currentMultiplier,
@@ -373,6 +394,9 @@ export class NextScreenMobile extends Container {
 
   private EnterBettingState() {
     GameData.instance.currentState = GameState.Betting;
+
+    // Force Mesh View during betting (so it doesn't flip back to Spine on hover out)
+    this.layout.currentCard.forceMeshView = true;
 
     // Enable input again for new round
     this.layout.inputBox.interactive = true;

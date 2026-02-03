@@ -10,8 +10,13 @@ export function assetpackPlugin() {
     pipes: [
       ...pixiPipes({
         cacheBust: false,
+
         manifest: {
           output: "./src/manifest.json",
+        },
+        texturePacker: {
+
+
         },
       }),
     ],

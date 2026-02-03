@@ -21,10 +21,10 @@ export class GameHistoryItem extends Container {
     });
     this.textLabel = new BitmapLabel({
       text: `x${data.multiplier}`,
-      style: { fill: "#e9e9e9ff", fontSize: 25, fontFamily: "coccm-bitmap-3-normal" },
+      style: { fill: "#e9e9e9ff", fontSize: 20, fontFamily: "coccm-bitmap-3-normal" },
     });
 
-    // Set dimensions if needed, or rely on asset
+    // Default dimensions, will be resized immediately by container
     this.button.width = 100;
     this.button.height = 40;
 
@@ -36,10 +36,11 @@ export class GameHistoryItem extends Container {
     this.button.width = width;
     this.button.height = height;
 
-    // Center text on the button
-    // Since button anchor is 0.5, (0,0) is the center.
-    this.textLabel.x = 0;
+    // Align text to the left
+    this.textLabel.anchor.set(0, 0.5);
+    // Button anchor is 0.5, so left edge is -width/2
+    const padding = 10;
+    this.textLabel.x = -width / 2 + padding * 3;
     this.textLabel.y = 0;
-    this.textLabel.anchor.set(0.5);
   }
 }

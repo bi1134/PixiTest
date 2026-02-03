@@ -10,6 +10,7 @@
     "dev": "vite"
   },
   "dependencies": {
+    "@assetpack/core": "^1.7.0",
     "@esotericsoftware/spine-pixi-v8": "~4.2.0",
     "@pixi/sound": "^6.0.1",
     "@pixi/ui": "^2.3.2",
@@ -18,7 +19,6 @@
     "pixi.js": "^8.14.3"
   },
   "devDependencies": {
-    "@assetpack/core": "^1.4.0",
     "@eslint/js": "^9.21.0",
     "eslint": "^9.21.0",
     "eslint-config-prettier": "^10.1.2",

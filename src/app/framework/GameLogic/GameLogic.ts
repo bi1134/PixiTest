@@ -1,7 +1,8 @@
 import { FancyButton } from "@pixi/ui";
-import { Container, Sprite } from "pixi.js";
+import { Container, Sprite, Texture } from "pixi.js";
+import { gsap } from "gsap";
 import { BitmapLabel } from "../../ui/BitmapLabel";
-import { Card } from "../../ui/Card";
+import { Card, CardSuit } from "../../ui/Card";
 import { CustomButton } from "../../ui/CustomButton";
 import { LayoutHelper } from "../../utils/LayoutHelper";
 import { CardHistoryLayout } from "../../screens/next/layout/CardHistoryLayout";
@@ -101,7 +102,59 @@ export class GameLogic extends Container {
             type: 'horizontal',
             direction: 'ltr'
         });
+        this.cardHistoryLayout = new CardHistoryLayout({
+            type: 'horizontal',
+            direction: 'ltr'
+        });
         this.addChild(this.cardHistoryLayout);
+    }
+
+    public async animateFlyOff(rank: string, suit: CardSuit) {
+        // Create Sprite clone of the card
+        const textureName = `${suit}-card-${rank.toLowerCase()}.png`;
+        const flySprite = Sprite.from(textureName);
+
+        // Match current card transform
+        flySprite.anchor.set(0.5);
+        flySprite.scale.copyFrom(this.currentCard.scale);
+        flySprite.position.copyFrom(this.currentCard.position);
+
+        // Add to container (above back card, below current?)
+        // Ideally above everything to fly out clearly
+        this.cardsContainer.addChild(flySprite);
+
+        // Animate
+        // Darken -> Tint
+        flySprite.tint = 0x888888;
+
+        const targetX = -500; // Fly left offscreen
+
+        await gsap.to(flySprite, {
+            x: targetX,
+            angle: -25, // Tilt left
+            duration: 0.25,
+            ease: "back.in(0.8)",
+            onComplete: () => {
+                flySprite.destroy();
+            }
+        });
+    }
+
+    public animateDeal() {
+        const startX = this.backCard.x + this.backCard.width / 2;
+        const startY = this.backCard.y + this.backCard.height / 2;
+
+        const targetX = this.cardPlaceHolder.x + this.cardPlaceHolder.width / 2;
+        const targetY = this.cardPlaceHolder.y + this.cardPlaceHolder.height / 2;
+
+        this.currentCard.position.set(startX, startY);
+
+        gsap.to(this.currentCard, {
+            x: targetX,
+            y: targetY,
+            duration: 0.3,
+            ease: "power2.out"
+        });
     }
 
     public resize(width: number, _height: number, padding: number) {
@@ -117,6 +170,10 @@ export class GameLogic extends Container {
 
         LayoutHelper.setPositionX(this.backCard, this.backCard.width / 10);
         LayoutHelper.setPositionY(this.backCard, this.backCard.height / 10);
+
+        // Position current card placeholder to the right of the deck (backCard)
+        this.cardPlaceHolder.x = this.backCard.x - this.cardPlaceHolder.width / 8;
+        this.cardPlaceHolder.y = this.backCard.y - this.cardPlaceHolder.height / 8; // Align vertically with deck? Or centered?
 
         this.currentCard.x = this.cardPlaceHolder.x + this.cardPlaceHolder.width / 2;
         this.currentCard.y = this.cardPlaceHolder.y + this.cardPlaceHolder.height / 2;

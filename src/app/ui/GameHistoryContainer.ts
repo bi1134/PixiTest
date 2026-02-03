@@ -1,12 +1,15 @@
 import { Container, Graphics } from "pixi.js";
 import { gsap } from "gsap";
 import { GameHistoryItem } from "./GameHistoryItem";
-import { LayoutHelper } from "../utils/LayoutHelper";
+
 
 export class GameHistoryContainer extends Container {
   private background: Graphics;
   private historyItems: GameHistoryItem[] = [];
   private maskGfx: Graphics;
+
+  private lastItemWidth: number = 100;
+  private lastItemHeight: number = 60;
 
   constructor(width: number = 400, height: number = 60) {
     super();
@@ -30,11 +33,19 @@ export class GameHistoryContainer extends Container {
     this.background.clear().rect(0, 0, width, height).fill(0x000000);
     this.maskGfx.clear().rect(0, 0, width, height).fill(0x000000);
 
+    // Calculate dimensions: 5.5 items visible
+    this.lastItemWidth = width / 4.5;
+    this.lastItemHeight = height;
+
     const centerY = height / 2;
     for (const item of this.historyItems) {
-      item.resize(NaN, height); // Pass height, width handled by scale
-      LayoutHelper.scaleToHeight(item, height * 0.8); // Scale to 80% of bar height
+      // Resize item to fill height (as requested)
+      item.resize(this.lastItemWidth, this.lastItemHeight);
       item.y = centerY;
+      // Note: X positions might need update if we want perfect reflow, 
+      // but usually items are just drifting. If we need to fix their positions rel to each other:
+      // Ideally we'd need to re-layout based on their logical index. 
+      // For now, updating size is critical.
     }
   }
 
@@ -47,9 +58,8 @@ export class GameHistoryContainer extends Container {
     });
 
     const padding = 10;
-    // Calculate item width to fit ~5-6 items
-    const itemWidth = this.background.width / 5;
-    const itemHeight = this.background.height;
+    const itemWidth = this.lastItemWidth;
+    const itemHeight = this.lastItemHeight;
 
     item.resize(itemWidth, itemHeight);
 
@@ -61,7 +71,7 @@ export class GameHistoryContainer extends Container {
     this.addChild(item);
     this.historyItems.push(item);
 
-    // Overlap: Negative gap
+    // Overlap: Negative gap based on item width
     const gap = -itemWidth * 0.15; // 15% overlap
     const shiftAmount = itemWidth + gap;
 
@@ -79,15 +89,13 @@ export class GameHistoryContainer extends Container {
 
       // Cull items that go offscreen Right
       if (historyItem.targetX > this.background.width + itemWidth) {
-        // cleanup can happen here if we wanted to remove them from array/display
-        // For now just letting them drift off
+        // cleanup possible here
       }
     }
 
     // 2. Position New Item
     // It enters at: Padding
     // We aim for the left side with some padding.
-    // If we want symmetrical look to previous right-side entry:
     const entryX = padding + itemWidth / 3;
 
     item.targetX = entryX;

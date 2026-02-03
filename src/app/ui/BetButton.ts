@@ -122,21 +122,31 @@ export class BetButton extends Container {
     }
 
     public setCashOutValue(value: string | number) {
-        let numericValue: number;
-        if (typeof value === 'string') {
-            numericValue = parseFloat(value);
+        let displayValue: string;
+
+        if (typeof value === 'number') {
+            displayValue = `RP ${value.toLocaleString('id-ID', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 2
+            })}`;
         } else {
-            numericValue = value;
+            // Assume it's already formatted if it's a string, just ensure prefix consistency if needed
+            // But if the user passes "Rp 123", we might just want to use it.
+            // Given NextScreenMobile passes `Rp ${formatted}`, we can just use the value directly if it's not a pure number string
+            const isPureNumber = !isNaN(parseFloat(value)) && isFinite(Number(value));
+            if (isPureNumber) {
+                const num = parseFloat(value);
+                displayValue = `RP ${num.toLocaleString('id-ID', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 2
+                })}`;
+            } else {
+                displayValue = value; // Use directly
+            }
         }
 
-        // Format: RP 000.000.000 (dots for thousands)
-        let formatted = numericValue.toLocaleString('id-ID', {
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 2
-        });
-
         // Update Separate Labels
-        this.labelValue.text = `RP ${formatted}`;
+        this.labelValue.text = displayValue.toUpperCase(); // Ensure "RP" is caps if desired
 
         // Ensure visibility
         this.textLabel.visible = false;

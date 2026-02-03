@@ -128,7 +128,7 @@ export class BetBar extends Container {
         };
     }
 
-    public resize(width: number, height: number, padding: number) {
+    public resize(width: number, height: number, padding: number, bottomOffset: number = 0) {
         // Stack Bottom Up:
         // [History Bar] (Bottom)
         // [Bet Control Row] (Speed | Bet | Settings)
@@ -137,22 +137,29 @@ export class BetBar extends Container {
 
         const centerX = width / 2;
 
-        LayoutHelper.scaleToWidth(this.keyboard, width);
-        this.keyboard.y = height - this.keyboard.height / 1.15;
-        // 1. History Bar (Bottom)
-        const historyHeight = this.betButton.height * 0.35;
-        this.gameHistory.resize(width, historyHeight);
-        this.gameHistory.x = 0;
-        this.gameHistory.y = height - historyHeight;
-
-        // 2. Bet Control Row (Above History)
+        // --- 0. Pre-calc Bet Button Size (Critical for layout deps) ---
         const betBtnMaxW = width * 0.5;
         // Reset scale so we don't double scale if this is called multiple times
         this.betButton.scale.set(1);
         this.betButton.setSize(betBtnMaxW, this.betButton.defaultHeight * 0.5);
 
+        LayoutHelper.scaleToWidth(this.keyboard, width);
+        this.keyboard.y = height - this.keyboard.height / 1.15;
+
+        // 1. History Bar (Bottom)
+        const historyHeight = this.betButton.height * 0.35;
+        this.gameHistory.resize(width, historyHeight);
+        this.gameHistory.x = 0;
+        // Position history at the TRUE bottom (Screen Bottom), accounting for offset
+        this.gameHistory.y = height + bottomOffset - historyHeight;
+
+        // 2. Bet Control Row (Above History position in SAFE ZONE)
+        // We calculate position as if history was at 'height' (no offset), ensuring controls stay in safe zone
+        const safeHistoryY = height - historyHeight;
+
         this.betButton.x = centerX;
-        this.betButton.y = this.gameHistory.y - this.betButton.height / 2 - this.gameHistory.height / 1.15; // Padding using new height estimate
+        // Align relative to the SAFE history position
+        this.betButton.y = safeHistoryY - this.betButton.height / 2 - this.gameHistory.height * 1.5;
 
         LayoutHelper.scaleToHeight(this.speedButton, this.betButton.height, true);
         // Speed (Left of Bet)
@@ -173,7 +180,7 @@ export class BetBar extends Container {
         this.updateMoneyLayout(); // Centers money on BarMid
 
         // 4. Input Row (Above BarMid)
-        const inputHeight = this.betButton.height * 0.7;
+        const inputHeight = this.betButton.height * 0.6;
         const inputWidth = this.betButton.width;
 
         this.inputBox.resize(inputWidth, inputHeight);
@@ -181,7 +188,7 @@ export class BetBar extends Container {
         this.inputBox.pivot.set(this.inputBox.width / 2, this.inputBox.height / 2);
 
         this.inputBox.x = centerX;
-        this.inputBox.y = this.betButton.y - this.betButton.height; // Slightly up?
+        this.inputBox.y = this.betButton.y - this.betButton.height + padding; // Slightly up?
 
         // Half / Double
         LayoutHelper.scaleToHeight(this.halfValueButton, inputHeight, true);

@@ -43,37 +43,6 @@
         },
         {
           "alias": [
-            "main/cards/card.atlas",
-            "card.atlas"
-          ],
-          "src": [
-            "main/cards/card@0.5x.webp.atlas",
-            "main/cards/card@0.5x.png.atlas",
-            "main/cards/card.webp.atlas",
-            "main/cards/card.png.atlas"
-          ],
-          "data": {
-            "tags": {
-              "m": true
-            }
-          }
-        },
-        {
-          "alias": [
-            "main/cards/card.skel",
-            "card.skel"
-          ],
-          "src": [
-            "main/cards/card.skel"
-          ],
-          "data": {
-            "tags": {
-              "m": true
-            }
-          }
-        },
-        {
-          "alias": [
             "main/cards/club-card-10.png",
             "club-card-10.png"
           ],
@@ -737,23 +706,6 @@
         },
         {
           "alias": [
-            "main/cards/Heart-J.png",
-            "Heart-J.png"
-          ],
-          "src": [
-            "main/cards/Heart-J@0.5x.webp",
-            "main/cards/Heart-J@0.5x.png",
-            "main/cards/Heart-J.webp",
-            "main/cards/Heart-J.png"
-          ],
-          "data": {
-            "tags": {
-              "m": true
-            }
-          }
-        },
-        {
-          "alias": [
             "main/cards/opened-card-area.png",
             "opened-card-area.png"
           ],
@@ -1014,6 +966,20 @@
             "main/fonts/coccm-bitmap-3-normal@0.5x.png",
             "main/fonts/coccm-bitmap-3-normal.webp",
             "main/fonts/coccm-bitmap-3-normal.png"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/fonts/SVN-Supercell Magic.otf",
+            "SVN-Supercell Magic.otf"
+          ],
+          "src": [
+            "main/fonts/SVN-Supercell Magic.otf"
           ],
           "data": {
             "tags": {
@@ -1337,6 +1303,23 @@
             "main/knight/table@0.5x.png",
             "main/knight/table.webp",
             "main/knight/table.png"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/knight/Dialog_1.png",
+            "Dialog_1.png"
+          ],
+          "src": [
+            "main/knight/Dialog_1@0.5x.webp",
+            "main/knight/Dialog_1@0.5x.png",
+            "main/knight/Dialog_1.webp",
+            "main/knight/Dialog_1.png"
           ],
           "data": {
             "tags": {

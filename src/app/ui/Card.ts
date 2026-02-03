@@ -11,9 +11,9 @@ import { gsap } from "gsap";
 
 export type CardSuit = "spade" | "heart" | "club" | "diamond";
 export enum AnimationState {
-  OpenIdle = "idle",
+  Idle = "idle",
   Flip = "flip",
-  CloseIdle = "idle-star",
+  StartIdle = "idle-start",
 }
 
 export class Card extends Container {
@@ -58,15 +58,62 @@ export class Card extends Container {
 
   constructor() {
     super();
+    // DEBUG LOGGING
+    console.warn("Card.ts: Constructor called");
+    try {
+      // @ts-ignore
+      console.log("Card Spine details:", this.spineCard ? "exists" : "waiting");
+    } catch (e) { }
 
-    //setup spine
-    this.spineCard = Spine.from({
-      skeleton: "card.skel",
-      atlas: "card.atlas",
+    // Initialize Spine asynchronously to bypass AssetPack/Manifest requirement
+    this.spineCard = null as any; // Initialize as null
+
+    // Load the raw assets directly from public/spine-assets (absolute path to ignore basePath)
+    import("pixi.js").then(({ Assets }) => {
+      Assets.load([
+        "/spine-assets/Card.skel",
+        "/spine-assets/Card.atlas"
+      ]).then(() => {
+        // Once loaded, create the Spine instance
+        this.spineCard = Spine.from({
+          skeleton: "/spine-assets/Card.skel",
+          atlas: "/spine-assets/Card.atlas",
+        });
+
+        this.spineCard.state.setAnimation(0, AnimationState.Idle, true);
+        this.addChild(this.spineCard);
+
+        // Re-apply visibility/transform settings
+        this.spineCard.visible = !this.mesh.visible;
+        this.spineCard.scale.set(1);
+        this.spineCard.x = 0;
+        this.spineCard.y = 0;
+
+        // Trigger texture update to set initial skin
+        this.UpdateTexture();
+
+        // DEBUG: Inspect loaded spine data
+        console.log("Spine Card Debug: Loaded!");
+        console.log("Skin:", this.spineCard.skeleton.skin?.name);
+        const slot = this.spineCard.skeleton.slots[0];
+        const attachment = slot?.getAttachment();
+        console.log("Slot 0 Attachment:", attachment?.name);
+      }).catch(err => {
+        console.error("Failed to load Spine assets:", err);
+      });
     });
 
-    this.spineCard.state.setAnimation(0, AnimationState.OpenIdle, true);
-    this.addChild(this.spineCard);
+    // DEBUG: Transparency & Resolution check (delayed)
+    setTimeout(() => {
+      try {
+        if (!this.spineCard) return;
+        // @ts-ignore
+        const slot = this.spineCard.skeleton.findSlot("card-front") || this.spineCard.skeleton.slots[0];
+        const att = slot?.getAttachment();
+        console.log("DEBUG: Spine Attachment:", att?.name);
+        console.log("DEBUG: Active Skin:", this.spineCard.skeleton.skin?.name);
+      } catch (e) { console.error("DEBUG ERR:", e); }
+    }, 2000);
 
     const texture = Texture.from("main/cards/spade-card-a.png");
     // Shadow as Mesh
@@ -107,15 +154,15 @@ export class Card extends Container {
     this.glareFilter.alpha = 0;
 
     // Apply filter to mesh
-    this.mesh.filters = [this.glareFilter];
+    // this.mesh.filters = [this.glareFilter];
 
     //make the card "hitbox" bigger
     this.setHoverPadding(15);
 
     // make Spine visually match the mesh’s center alignment
-    this.spineCard.scale.set(1);
-    this.spineCard.x = 0;
-    this.spineCard.y = 0;
+    // this.spineCard.scale.set(1); // Moved to load callback
+    // this.spineCard.x = 0;
+    // this.spineCard.y = 0;
 
     // ensure mesh is hidden initially
     this.mesh.visible = false;
@@ -185,11 +232,19 @@ export class Card extends Container {
     // e.g. "spade-a", "heart-10", "diamond-k"
     const skinName = `${this._suit}-${this._rank.toLowerCase()}`;
 
-    try {
-      this.spineCard.skeleton.setSkinByName(skinName);
-      this.spineCard.skeleton.setSlotsToSetupPose();
-    } catch (e) {
-      console.warn(`Spine skin '${skinName}' not found.`);
+    if (this.spineCard && this.spineCard.skeleton) {
+      try {
+        this.spineCard.skeleton.setSkinByName(skinName);
+        this.spineCard.skeleton.setSlotsToSetupPose();
+
+        // Animation Sequence: Flip -> StartIdle -> Idle
+        this.spineCard.state.setAnimation(0, AnimationState.Flip, false);
+        this.spineCard.state.addAnimation(0, AnimationState.StartIdle, false, 0);
+        this.spineCard.state.addAnimation(0, AnimationState.Idle, true, 0);
+
+      } catch (e) {
+        console.warn(`Spine skin '${skinName}' not found.`);
+      }
     }
   }
 
@@ -211,7 +266,7 @@ export class Card extends Container {
     this.hovering = true;
 
     // swap visible targets
-    this.spineCard.visible = false;
+    if (this.spineCard) this.spineCard.visible = false;
     this.mesh.visible = true;
     this.shadow.visible = true;
 
@@ -244,6 +299,9 @@ export class Card extends Container {
     });
   }
 
+  // Controls if we should stay in mesh mode even after pointer out
+  public forceMeshView = false;
+
   private onPointerOut(): void {
     this.hovering = false;
     this.targetX = 0;
@@ -260,12 +318,49 @@ export class Card extends Container {
 
     this.resetScale();
 
-    // swap back
-    this.shadow.visible = false;
-    this.mesh.visible = false;
-    this.spineCard.visible = true;
+    // swap back ONLY if not forced to stay in mesh view
+    if (!this.forceMeshView) {
+      this.shadow.visible = false;
+      this.mesh.visible = false;
+      if (this.spineCard) this.spineCard.visible = true;
+    }
   }
 
+
+
+  public async playLoseAnimation() {
+    // Force switch to mesh/shadow view
+    if (this.spineCard) this.spineCard.visible = false;
+    this.mesh.visible = true;
+    this.shadow.visible = true;
+
+    // Play hover-like sequence (Tilt, Lift, Glare)
+    const tilt = this.playTiltSequence();
+    const lift = this.playLiftSequence();
+    this.playGlare();
+
+    await Promise.all([tilt, lift]);
+
+    // Small pause before settling back
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    // Lerp back to base scale (original size)
+    this.resetScale();
+    // Lerp back to base scale (original size)
+    this.resetScale();
+  }
+
+  public resetToIdle() {
+    this.forceMeshView = false;
+    this.hovering = false;
+    this.shadow.visible = false;
+    this.mesh.visible = false;
+    if (this.spineCard) {
+      this.spineCard.visible = true;
+      this.spineCard.state.setAnimation(0, AnimationState.Idle, true);
+    }
+    this.resetScale();
+  }
 
   // ===== ANIMATION ========
 
