@@ -162,7 +162,7 @@ export class CardHistoryItem extends Container {
 
     // Action Sprite (Arrow)
     this.actionSprite.scale.set(3);
-    this.actionSprite.x = this.cardSprite.x - this.cardSprite.width / 1.75;
+    this.actionSprite.x = this.cardSprite.x - this.cardSprite.width / 1.65;
     this.actionSprite.y = this.multiplierBackground.y; // Center on card? Or offset?
     // If "action sprite" was the arrow, keeping it centered on card is standard for "Result" overlays.
     this.multiplierTextLabel.position.set(

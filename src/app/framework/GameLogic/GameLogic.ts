@@ -102,10 +102,6 @@ export class GameLogic extends Container {
             type: 'horizontal',
             direction: 'ltr'
         });
-        this.cardHistoryLayout = new CardHistoryLayout({
-            type: 'horizontal',
-            direction: 'ltr'
-        });
         this.addChild(this.cardHistoryLayout);
     }
 
@@ -283,6 +279,6 @@ export class GameLogic extends Container {
         const cardAreaBottom = this.buttonsContainer.y + this.buttonsContainer.height;
         this.cardHistoryLayout.y = cardAreaBottom + padding;
 
-        this.cardHistoryLayout.pushBackPadding = -5;
+        this.cardHistoryLayout.pushBackPadding = -25;
     }
 }

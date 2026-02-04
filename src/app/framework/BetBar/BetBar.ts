@@ -103,7 +103,7 @@ export class BetBar extends Container {
 
         this.speedButton = new SpeedButton();
         this.addChild(this.speedButton);
-        this.speedButton.interactive = false;
+        this.speedButton.interactive = true;
         this.speedButton.alpha = 0.5;
 
         // --- Keyboard ---
