@@ -33,6 +33,13 @@ export class NextScreen extends Container {
 
     console.log(`[NextScreen] Loading Mobile View (Unified)...`);
 
+    // Preload Character Spine Assets to prevent pop-in delay
+    const { Assets } = await import("pixi.js");
+    await Assets.load([
+      "/spine-assets/hilo-character.skel",
+      "/spine-assets/hilo-character.atlas"
+    ]);
+
     await engine().navigation.showScreen(NextScreenMobile);
   }
 }

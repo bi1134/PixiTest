@@ -78,6 +78,7 @@ export class BetBar extends Container {
                     color: "#000000",
                     width: 7,
                 },
+                padding: 100, // Prevent clipping
             }
         });
         this.addChild(this.inputBox);
@@ -87,6 +88,8 @@ export class BetBar extends Container {
 
         this.halfValueButton = new CustomButton({
             text: "1/2",
+            offsetY: 0, // Compensate for padding
+            offsetX: -10,
             style: {
                 fontSize: 40,
                 fontFamily: "SVN-Supercell Magic",
@@ -102,6 +105,7 @@ export class BetBar extends Container {
                     color: "#000000",
                     width: 7,
                 },
+                padding: 40, // Prevent clipping
             }
         }, {
             defaultView: "Button-2-1.png",
@@ -110,6 +114,8 @@ export class BetBar extends Container {
 
         this.doubleValueButton = new CustomButton({
             text: "x2",
+            offsetY: 0, // Compensate for padding
+            offsetX: -10,
             style: {
                 fontSize: 45,
                 fontFamily: "SVN-Supercell Magic",
@@ -125,6 +131,7 @@ export class BetBar extends Container {
                     color: "#000000",
                     width: 7,
                 },
+                padding: 40, // Prevent clipping
             }
         }, {
             defaultView: "Button-2-2.png",

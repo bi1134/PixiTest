@@ -38,6 +38,7 @@ export class GameInformation extends Container {
                 fontSize: 15,
                 align: "center",
                 fill: "#ffffffff",
+                padding: 80, // Prevent clipping
             }
         });
         this.addChild(this.AdditionalInfoLabel);

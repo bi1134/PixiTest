@@ -133,7 +133,7 @@ export class CustomKeyboard extends Container {
     private handleKeyPressed(value: number) {
         engine().audio.sfx.play('main/sounds/menu_click_06.ogg');
 
-        const { min, max } = this.getUnitLimits(this.currentUnit);
+        const { max } = this.getUnitLimits(this.currentUnit);
 
         switch (value) {
             case NumberType.MAX:
@@ -142,7 +142,8 @@ export class CustomKeyboard extends Container {
 
             case NumberType.DELETE:
                 const str = this.currentVal.toString();
-                this.currentVal = str.length > 1 ? parseInt(str.slice(0, -1)) : min;
+                // Allow 0 - min bet is enforced on confirm
+                this.currentVal = str.length > 1 ? parseInt(str.slice(0, -1)) : 0;
                 break;
 
             default:
@@ -160,10 +161,8 @@ export class CustomKeyboard extends Container {
     private handleReset() {
         engine().audio.sfx.play('main/sounds/menu_click_06.ogg');
 
-        if (this.currentUnit === CustomKeyboardUnit.CURRENCY)
-            this.currentVal = GameData.MIN_BET;
-        else
-            this.currentVal = this.getUnitLimits(this.currentUnit).min;
+        // Reset to 0 - min bet is enforced on confirm
+        this.currentVal = 0;
         this.updateValueText();
     }
 

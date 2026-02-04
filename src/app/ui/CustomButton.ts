@@ -4,6 +4,7 @@ import { BitmapText, Text, TextStyleOptions } from "pixi.js";
 export type CustomButtonOptions = {
     text?: string;
     fontSize?: number;
+    offsetX?: number;
     offsetY?: number;
     lineHeight?: number;
     fontFamily?: string;
@@ -78,14 +79,19 @@ export class CustomButton extends FancyButton {
                     align: 'center',
                     lineHeight: opts?.lineHeight,
                     letterSpacing: -2,
+                    fill: "#ffffffff"
                 }
             });
-            this.customText.tint = opts?.textColor ?? 0x4a4a4a;
+            this.customText.tint = opts?.textColor ?? 0xffffff;
         }
 
         // Handle anchor separately
         this.customText.anchor.set(0.5);
 
+        // Apply manual offsets for fine-tuning position
+        if (opts?.offsetX) {
+            this.customText.x += opts.offsetX;
+        }
         if (opts?.offsetY) {
             this.customText.y -= opts.offsetY;
         }

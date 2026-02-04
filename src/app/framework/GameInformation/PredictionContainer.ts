@@ -25,10 +25,10 @@ export class PredictionContainer extends Container {
             text: type === 'higher' ? "Higher" : "Lower",
             style: {
                 fontFamily: "SVN-Supercell Magic", // Consistent font
-                fontSize: 20,
+                fontSize: 18,
                 align: "center",
                 fill: "#ebb33d",
-                letterSpacing: -2,
+                padding: 40
             }
         });
         this.labelText.anchor.set(0.5);

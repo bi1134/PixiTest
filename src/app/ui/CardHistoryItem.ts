@@ -89,6 +89,7 @@ export class CardHistoryItem extends Container {
           color: "#000000",
           width: 9,
         },
+        padding: 20, // Prevent clipping
       },
     });
     this.innerContainer.addChild(this.multiplierTextLabel);

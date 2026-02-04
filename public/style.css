@@ -1,3 +1,8 @@
+@font-face {
+    font-family: "SVN-Supercell Magic";
+    src: url("/fonts/SVN-Supercell Magic.otf") format("opentype");
+}
+
 body {
     margin: 0;
     padding: 0;

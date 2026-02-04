@@ -24,6 +24,8 @@ export class BetInput extends Container {
     }
 
     private _textLimitRatio: number = 0.9;
+    private _offsetX: number = 0;
+    private _offsetY: number = 0;
 
     constructor(options: {
         bg: Sprite;
@@ -35,6 +37,8 @@ export class BetInput extends Container {
         padding?: number;
         textLimitRatio?: number; // Ratio of bg width to limit text before scaling
         style?: TextStyleOptions; // New style support
+        offsetX?: number; // Horizontal offset for text
+        offsetY?: number; // Vertical offset for text
     }) {
         super();
 
@@ -45,6 +49,12 @@ export class BetInput extends Container {
 
         if (options.textLimitRatio !== undefined) {
             this._textLimitRatio = options.textLimitRatio;
+        }
+        if (options.offsetX !== undefined) {
+            this._offsetX = options.offsetX;
+        }
+        if (options.offsetY !== undefined) {
+            this._offsetY = options.offsetY;
         }
 
         if (options.style) {
@@ -83,6 +93,10 @@ export class BetInput extends Container {
 
         // Initial sync
         this.value = options.placeholder || "0";
+
+        // Initial text positioning (before resize is called)
+        this.displayText.x = this.bg.width / 2 + this._offsetX;
+        this.displayText.y = this.bg.height / 2 + this._offsetY;
     }
 
     private updateText() {
@@ -121,8 +135,8 @@ export class BetInput extends Container {
         this.bg.x = 0;
         this.bg.y = 0;
 
-        this.displayText.x = width / 2;
-        this.displayText.y = height / 2;
+        this.displayText.x = width / 2 + this._offsetX;
+        this.displayText.y = height / 2 + this._offsetY;
     }
 }
 

@@ -19,41 +19,31 @@ export class Character extends Container {
     constructor() {
         super();
 
-        import("pixi.js").then(({ Assets }) => {
-            Assets.load([
-                "/spine-assets/hilo-character.skel",
-                "/spine-assets/hilo-character.atlas"
-            ]).then(() => {
-                // Once loaded, create the Spine instance
-                this.character = Spine.from({
-                    skeleton: "/spine-assets/hilo-character.skel",
-                    atlas: "/spine-assets/hilo-character.atlas",
-                });
-
-                // Log available animations for debugging
-                console.log("Character Animations:", this.character.skeleton.data.animations.map(a => a.name));
-                console.log("AnimationState Enum:", AnimationState);
-
-                this.character.state.setAnimation(0, AnimationState.Idle, true);
-                this.addChild(this.character);
-
-                // Ensure dialog is visually on top of the character
-                this.addChild(this.dialogContainer);
-
-                // Re-apply visibility/transform settings
-                this.character.x = 0;
-                this.character.y = 0;
-                this.character.scale.x = -1;
-
-                const padding = 10;
-                this.dialogContainer.x = this.character.x - this.character.width;
-                this.dialogContainer.y = this.character.y - this.character.height / 2 + padding * 2;
-                this.say("Press Bet \n to Start");
-
-            });
-        });
+        // Initialize containers first
         this.dialogContainer = new Container();
-        this.addChild(this.dialogContainer);
+
+        // Assets are preloaded in NextScreen.ts
+        // Create the Spine instance synchronously
+        this.character = Spine.from({
+            skeleton: "/spine-assets/hilo-character.skel",
+            atlas: "/spine-assets/hilo-character.atlas",
+        });
+
+        this.addChild(this.character);
+        this.addChild(this.dialogContainer); // Ensure dialog is on top
+
+        // Log available animations for debugging
+        if (this.character.skeleton && this.character.skeleton.data && this.character.skeleton.data.animations) {
+            console.log("Character Animations:", this.character.skeleton.data.animations.map(a => a.name));
+        }
+        console.log("AnimationState Enum:", AnimationState);
+
+        this.character.state.setAnimation(0, AnimationState.Idle, true);
+
+        // Transform Settings
+        this.character.x = 0;
+        this.character.y = 0;
+        this.character.scale.x = -1;
 
         // NineSlice Chat Bubble
         // Normal Dialog Bubble (Sprite)
@@ -78,6 +68,14 @@ export class Character extends Container {
         // Text is centered in the bubble
         // Bubble anchor is (0.5, 1), so (0, -height/2) is center
         this.dialogContainer.addChild(this.dialogText);
+
+        // Position Dialog Container
+        const padding = 10;
+        this.dialogContainer.x = this.character.x - this.character.width;
+        this.dialogContainer.y = this.character.y - this.character.height / 2 + padding * 2;
+
+        // Initial Dialog
+        this.say("Press Bet \n to Start");
     }
 
     public say(text: string, type: 'normal' | 'combo' = 'normal') {

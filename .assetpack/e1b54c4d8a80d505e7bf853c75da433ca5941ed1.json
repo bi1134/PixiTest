@@ -6,8 +6,8 @@
             "inheritedMetaData": {},
             "transformData": {},
             "stats": {
-                "date": 1770182237456,
-                "duration": 0.41959999967366457,
+                "date": 1770196493236,
+                "duration": 9.925900000002002,
                 "success": true
             }
         },
@@ -44,8 +44,8 @@
             "inheritedMetaData": {},
             "transformData": {},
             "stats": {
-                "date": 1770182237456,
-                "duration": 0.37630000058561563,
+                "date": 1770196493236,
+                "duration": 9.685300000011921,
                 "success": true
             }
         },
@@ -7951,6 +7951,111 @@
             },
             "transformData": {}
         },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/knight/Dialog.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/knight",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1770178957797,
+                "duration": 931.5213999999687,
+                "success": true
+            },
+            "hash": "sSnMPg"
+        },
+        ".assetpack/mipmap/main{m}/knight/Dialog.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/knight/Dialog.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/knight/Dialog.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/knight/Dialog.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/knight/Dialog.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/knight/Dialog.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/knight/Dialog.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/knight/Dialog.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/knight/Dialog.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/knight/Dialog.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/mipmap/main{m}/knight/Dialog@0.5x.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/knight/Dialog.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/knight/Dialog@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/knight/Dialog@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/knight/Dialog@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/knight/Dialog@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/knight/Dialog@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/knight/Dialog@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/knight/Dialog@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/knight/Dialog@0.5x.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
         "E:/PixiJS/PixiTest/raw-assets/main{m}/knight/Dialog_1.png": {
             "isFolder": false,
             "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/knight",
@@ -8155,111 +8260,6 @@
         "E:/PixiJS/PixiTest/public/assets/main/knight/table@0.5x.webp": {
             "isFolder": false,
             "transformParent": ".assetpack/compress/main{m}/knight/table@0.5x.webp",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        "E:/PixiJS/PixiTest/raw-assets/main{m}/knight/Dialog.png": {
-            "isFolder": false,
-            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/knight",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {},
-            "stats": {
-                "date": 1770178957797,
-                "duration": 931.5213999999687,
-                "success": true
-            },
-            "hash": "sSnMPg"
-        },
-        ".assetpack/mipmap/main{m}/knight/Dialog.png": {
-            "isFolder": false,
-            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/knight/Dialog.png",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        ".assetpack/compress/main{m}/knight/Dialog.png": {
-            "isFolder": false,
-            "transformParent": ".assetpack/mipmap/main{m}/knight/Dialog.png",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        "E:/PixiJS/PixiTest/public/assets/main/knight/Dialog.png": {
-            "isFolder": false,
-            "transformParent": ".assetpack/compress/main{m}/knight/Dialog.png",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        ".assetpack/compress/main{m}/knight/Dialog.webp": {
-            "isFolder": false,
-            "transformParent": ".assetpack/mipmap/main{m}/knight/Dialog.png",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        "E:/PixiJS/PixiTest/public/assets/main/knight/Dialog.webp": {
-            "isFolder": false,
-            "transformParent": ".assetpack/compress/main{m}/knight/Dialog.webp",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        ".assetpack/mipmap/main{m}/knight/Dialog@0.5x.png": {
-            "isFolder": false,
-            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/knight/Dialog.png",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        ".assetpack/compress/main{m}/knight/Dialog@0.5x.png": {
-            "isFolder": false,
-            "transformParent": ".assetpack/mipmap/main{m}/knight/Dialog@0.5x.png",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        "E:/PixiJS/PixiTest/public/assets/main/knight/Dialog@0.5x.png": {
-            "isFolder": false,
-            "transformParent": ".assetpack/compress/main{m}/knight/Dialog@0.5x.png",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        ".assetpack/compress/main{m}/knight/Dialog@0.5x.webp": {
-            "isFolder": false,
-            "transformParent": ".assetpack/mipmap/main{m}/knight/Dialog@0.5x.png",
-            "metaData": {},
-            "inheritedMetaData": {
-                "m": true
-            },
-            "transformData": {}
-        },
-        "E:/PixiJS/PixiTest/public/assets/main/knight/Dialog@0.5x.webp": {
-            "isFolder": false,
-            "transformParent": ".assetpack/compress/main{m}/knight/Dialog@0.5x.webp",
             "metaData": {},
             "inheritedMetaData": {
                 "m": true
@@ -8553,6 +8553,488 @@
         "E:/PixiJS/PixiTest/public/assets/main/sounds/sfx-press.ogg": {
             "isFolder": false,
             "transformParent": ".assetpack/audio/main{m}/sounds/sfx-press.ogg",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/spine": {
+            "isFolder": true,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1770196493236,
+                "duration": 9.658599999995204,
+                "success": true
+            }
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/spine/cash-out.atlas": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/spine",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1770196493236,
+                "duration": 14.01620000001276,
+                "success": true
+            },
+            "hash": "cOjsUA"
+        },
+        ".assetpack/mipmap-spine-atlas/main{m}/spine/cash-out.atlas": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/spine/cash-out.atlas",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/spine-atlas-compress/main{m}/spine/cash-out.png.atlas": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap-spine-atlas/main{m}/spine/cash-out.atlas",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/spine/cash-out.png.atlas": {
+            "isFolder": false,
+            "transformParent": ".assetpack/spine-atlas-compress/main{m}/spine/cash-out.png.atlas",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/spine-atlas-compress/main{m}/spine/cash-out.webp.atlas": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap-spine-atlas/main{m}/spine/cash-out.atlas",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/spine/cash-out.webp.atlas": {
+            "isFolder": false,
+            "transformParent": ".assetpack/spine-atlas-compress/main{m}/spine/cash-out.webp.atlas",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/mipmap-spine-atlas/main{m}/spine/cash-out@0.5x.atlas": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/spine/cash-out.atlas",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/spine-atlas-compress/main{m}/spine/cash-out@0.5x.png.atlas": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap-spine-atlas/main{m}/spine/cash-out@0.5x.atlas",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/spine/cash-out@0.5x.png.atlas": {
+            "isFolder": false,
+            "transformParent": ".assetpack/spine-atlas-compress/main{m}/spine/cash-out@0.5x.png.atlas",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/spine-atlas-compress/main{m}/spine/cash-out@0.5x.webp.atlas": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap-spine-atlas/main{m}/spine/cash-out@0.5x.atlas",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/spine/cash-out@0.5x.webp.atlas": {
+            "isFolder": false,
+            "transformParent": ".assetpack/spine-atlas-compress/main{m}/spine/cash-out@0.5x.webp.atlas",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/spine/cash-out.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/spine",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1770196493237,
+                "duration": 364.15869999999995,
+                "success": true
+            },
+            "hash": "ei0rig"
+        },
+        ".assetpack/mipmap/main{m}/spine/cash-out.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/spine/cash-out.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/spine/cash-out.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/spine/cash-out.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/spine/cash-out.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/spine/cash-out.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/spine/cash-out.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/spine/cash-out.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/spine/cash-out.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/spine/cash-out.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/mipmap/main{m}/spine/cash-out@0.5x.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/spine/cash-out.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/spine/cash-out@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/spine/cash-out@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/spine/cash-out@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/spine/cash-out@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/spine/cash-out@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/spine/cash-out@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/spine/cash-out@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/spine/cash-out@0.5x.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/spine/cash-out.skel": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/spine",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1770196493246,
+                "duration": 4.357000000018161,
+                "success": true
+            },
+            "hash": "KPZ9"
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/spine/cash-out.skel": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/spine/cash-out.skel",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/spine/hilo-character.atlas": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/spine",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1770196102508,
+                "duration": 17.912200000020675,
+                "success": true
+            },
+            "hash": "wJXGmg"
+        },
+        ".assetpack/mipmap-spine-atlas/main{m}/spine/hilo-character.atlas": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/spine/hilo-character.atlas",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/spine-atlas-compress/main{m}/spine/hilo-character.png.atlas": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap-spine-atlas/main{m}/spine/hilo-character.atlas",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/spine/hilo-character.png.atlas": {
+            "isFolder": false,
+            "transformParent": ".assetpack/spine-atlas-compress/main{m}/spine/hilo-character.png.atlas",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/spine-atlas-compress/main{m}/spine/hilo-character.webp.atlas": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap-spine-atlas/main{m}/spine/hilo-character.atlas",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/spine/hilo-character.webp.atlas": {
+            "isFolder": false,
+            "transformParent": ".assetpack/spine-atlas-compress/main{m}/spine/hilo-character.webp.atlas",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/mipmap-spine-atlas/main{m}/spine/hilo-character@0.5x.atlas": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/spine/hilo-character.atlas",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/spine-atlas-compress/main{m}/spine/hilo-character@0.5x.png.atlas": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap-spine-atlas/main{m}/spine/hilo-character@0.5x.atlas",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/spine/hilo-character@0.5x.png.atlas": {
+            "isFolder": false,
+            "transformParent": ".assetpack/spine-atlas-compress/main{m}/spine/hilo-character@0.5x.png.atlas",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/spine-atlas-compress/main{m}/spine/hilo-character@0.5x.webp.atlas": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap-spine-atlas/main{m}/spine/hilo-character@0.5x.atlas",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/spine/hilo-character@0.5x.webp.atlas": {
+            "isFolder": false,
+            "transformParent": ".assetpack/spine-atlas-compress/main{m}/spine/hilo-character@0.5x.webp.atlas",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/spine/hilo-character.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/spine",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1770196102510,
+                "duration": 538.8262000000104,
+                "success": true
+            },
+            "hash": "Gl3z0g"
+        },
+        ".assetpack/mipmap/main{m}/spine/hilo-character.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/spine/hilo-character.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/spine/hilo-character.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/spine/hilo-character.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/spine/hilo-character.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/spine/hilo-character.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/spine/hilo-character.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/spine/hilo-character.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/spine/hilo-character.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/spine/hilo-character.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/mipmap/main{m}/spine/hilo-character@0.5x.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/spine/hilo-character.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/spine/hilo-character@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/spine/hilo-character@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/spine/hilo-character@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/spine/hilo-character@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/spine/hilo-character@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/spine/hilo-character@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/spine/hilo-character@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/spine/hilo-character@0.5x.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/spine/hilo-character.skel": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/spine",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1770196102519,
+                "duration": 6.3316999999806285,
+                "success": true
+            },
+            "hash": "lJkZ1A"
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/spine/hilo-character.skel": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/spine/hilo-character.skel",
             "metaData": {},
             "inheritedMetaData": {
                 "m": true
