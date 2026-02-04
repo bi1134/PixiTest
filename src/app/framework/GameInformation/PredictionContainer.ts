@@ -22,6 +22,7 @@ export class PredictionContainer extends Container {
                 fontSize: 35,
                 align: "center",
                 fill: "#ebb33d",
+                letterSpacing: -2,
             }
         });
         this.addChild(this.labelText);

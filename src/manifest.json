@@ -1295,14 +1295,14 @@
         },
         {
           "alias": [
-            "main/knight/table.png",
-            "table.png"
+            "main/knight/Dialog_1.png",
+            "Dialog_1.png"
           ],
           "src": [
-            "main/knight/table@0.5x.webp",
-            "main/knight/table@0.5x.png",
-            "main/knight/table.webp",
-            "main/knight/table.png"
+            "main/knight/Dialog_1@0.5x.webp",
+            "main/knight/Dialog_1@0.5x.png",
+            "main/knight/Dialog_1.webp",
+            "main/knight/Dialog_1.png"
           ],
           "data": {
             "tags": {
@@ -1312,14 +1312,14 @@
         },
         {
           "alias": [
-            "main/knight/Dialog_1.png",
-            "Dialog_1.png"
+            "main/knight/table.png",
+            "table.png"
           ],
           "src": [
-            "main/knight/Dialog_1@0.5x.webp",
-            "main/knight/Dialog_1@0.5x.png",
-            "main/knight/Dialog_1.webp",
-            "main/knight/Dialog_1.png"
+            "main/knight/table@0.5x.webp",
+            "main/knight/table@0.5x.png",
+            "main/knight/table.webp",
+            "main/knight/table.png"
           ],
           "data": {
             "tags": {

@@ -49,6 +49,7 @@ export class BetBar extends Container {
                 fill: "#f7c049",
                 fontSize: 25,
                 fontFamily: "coccm-bitmap-3-normal",
+                letterSpacing: -2,
             },
         });
         this.moneyLabel.anchor.set(0, 0.5);
@@ -65,7 +66,7 @@ export class BetBar extends Container {
             fontFamily: "coccm-bitmap-3-normal",
             align: "center",
             textColor: 0xFFFFFF,
-            textLimitRatio: 0.45
+            textLimitRatio: 0.45,
         });
         this.addChild(this.inputBox);
 
@@ -76,7 +77,7 @@ export class BetBar extends Container {
             text: "1/2",
             fontSize: 42,
             fontFamily: "coccm-bitmap-3-normal",
-            textColor: 0x4a4a4a
+            textColor: 0xffffff
         }, {
             defaultView: "Button-2-1.png",
         });
@@ -84,9 +85,9 @@ export class BetBar extends Container {
 
         this.doubleValueButton = new CustomButton({
             text: "x2",
-            fontSize: 42,
+            fontSize: 45,
             fontFamily: "coccm-bitmap-3-normal",
-            textColor: 0x4a4a4a
+            textColor: 0xffffff,
         }, {
             defaultView: "Button-2-2.png",
         });
@@ -102,6 +103,8 @@ export class BetBar extends Container {
 
         this.speedButton = new SpeedButton();
         this.addChild(this.speedButton);
+        this.speedButton.interactive = false;
+        this.speedButton.alpha = 0.5;
 
         // --- Keyboard ---
         this.keyboard = new CustomKeyboard();

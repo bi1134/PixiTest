@@ -61,21 +61,21 @@ export class GameLogic extends Container {
         // --- labels and descriptions ---
         this.titleHigh = new BitmapLabel({
             text: "Hi",
-            style: { tint: 0xb2b2b2, fontSize: 20, fontFamily: "coccm-bitmap-3-normal" },
+            style: { tint: 0xb2b2b2, fontSize: 20, fontFamily: "coccm-bitmap-3-normal", letterSpacing: -2 },
         });
         this.titleLow = new BitmapLabel({
             text: "Lo",
-            style: { tint: 0xb2b2b2, fontSize: 20, fontFamily: "coccm-bitmap-3-normal" },
+            style: { tint: 0xb2b2b2, fontSize: 20, fontFamily: "coccm-bitmap-3-normal", letterSpacing: -2 },
         });
         this.buttonsContainer.addChild(this.titleHigh, this.titleLow);
 
         this.highDes = new BitmapLabel({
             text: "Higher or equal",
-            style: { fill: "#f9e45c", fontSize: 17, fontFamily: "coccm-bitmap-3-normal", },
+            style: { fill: "#f9e45c", fontSize: 17, fontFamily: "coccm-bitmap-3-normal", letterSpacing: -2 },
         });
         this.lowDes = new BitmapLabel({
             text: "Lower or equal",
-            style: { fill: "#f9e45c", fontSize: 17, fontFamily: "coccm-bitmap-3-normal" },
+            style: { fill: "#f9e45c", fontSize: 17, fontFamily: "coccm-bitmap-3-normal", letterSpacing: -2 },
         });
         this.buttonsContainer.addChild(this.highDes, this.lowDes);
 

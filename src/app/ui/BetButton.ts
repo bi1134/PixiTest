@@ -41,7 +41,8 @@ export class BetButton extends Container {
             style: {
                 fontFamily: "coccm-bitmap-3-normal",
                 fontSize: 50,
-                align: "center"
+                align: "center",
+                letterSpacing: -2,
             }
         });
         this.addChild(this.textLabel);
@@ -55,7 +56,8 @@ export class BetButton extends Container {
                 fontFamily: "coccm-bitmap-3-normal",
                 fontSize: 30, // Big Title
                 align: "center",
-                fill: "#FFFFFF"
+                fill: "#FFFFFF",
+                letterSpacing: -2,
             }
         });
         this.labelCashOut.anchor.set(0.5);
@@ -70,7 +72,8 @@ export class BetButton extends Container {
                 fontFamily: "coccm-bitmap-3-normal",
                 fontSize: 25, // Smaller Value
                 align: "center",
-                fill: "#FFFFFF"
+                fill: "#FFFFFF",
+                letterSpacing: -2,
             }
         });
         this.labelValue.anchor.set(0.5);

@@ -53,6 +53,7 @@ export class BetInput extends Container {
                 fontSize: options.fontSize || 30,
                 align: options.align || "center",
                 tint: options.textColor || 0xffffff,
+                letterSpacing: -2,
             },
         });
         this.displayText.anchor.set(0.5);

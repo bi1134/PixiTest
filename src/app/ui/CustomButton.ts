@@ -56,16 +56,18 @@ export class CustomButton extends FancyButton {
 
         this.customText = new BitmapText({
             text: opts?.text,
-            anchor: 0.5,
             style: {
                 fontFamily: opts?.fontFamily ?? 'coccm-bitmap-3-normal.fnt',
                 fontSize: opts?.fontSize ?? 23,
                 align: 'center',
                 lineHeight: opts?.lineHeight,
-                letterSpacing: -1,
-                tint: opts?.textColor ?? 0x4a4a4a
+                letterSpacing: -2,
             }
         });
+
+        // Handle tint and anchor separately
+        this.customText.anchor.set(0.5);
+        this.customText.tint = opts?.textColor ?? 0x4a4a4a;
 
         if (opts?.offsetY) {
             this.customText.y -= opts.offsetY;

@@ -18,7 +18,7 @@ export class NextMultiplierBoard extends Container {
             text: "Multiplier",
             style: {
                 fontFamily: "coccm-bitmap-3-normal",
-                fontSize: 40, // Estimated size
+                fontSize: 30, // Estimated size
                 align: "center",
             }
         });
@@ -32,9 +32,9 @@ export class NextMultiplierBoard extends Container {
             text: "1.5x",
             style: {
                 fontFamily: "coccm-bitmap-3-normal",
-                fontSize: 45, // Larger
+                fontSize: 35, // Larger
                 align: "center",
-                fill: "#ffd700" // Gold-ish
+                fill: "#ffffffff" // Gold-ish
             }
         });
         this.bottomLabel.anchor.set(0.5);

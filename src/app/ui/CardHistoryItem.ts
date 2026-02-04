@@ -2,12 +2,13 @@ import { BitmapText, Container, Sprite } from "pixi.js";
 
 import { GuessAction } from "../screens/next/types/GameTypes";
 import { gsap } from "gsap";
+import { Label } from "./Label";
 
 export class CardHistoryItem extends Container {
   private innerContainer: Container;
   private cardSprite!: Sprite;
   private actionSprite!: Sprite;
-  private multiplierTextLabel!: BitmapText;
+  private multiplierTextLabel!: Label;
   private multiplierBackground!: Sprite;
 
   private _rank!: string;
@@ -71,13 +72,23 @@ export class CardHistoryItem extends Container {
       labelText = `${multiplier}x`;
     }
 
-    this.multiplierTextLabel = new BitmapText({
+    this.multiplierTextLabel = new Label({
       text: labelText,
-      anchor: 0.5,
       style: {
-        fontSize: 45,
-        fontFamily: "coccm-bitmap-3-normal.fnt",
+        fontSize: 30,
+        fontFamily: "SVN-Supercell Magic",
         align: "center",
+        fill: "#ffffffff",
+        dropShadow: {
+          color: "#000000",
+          blur: 1,
+          distance: 4,
+          angle: 90 * (Math.PI / 180),
+        },
+        stroke: {
+          color: "#000000",
+          width: 9,
+        },
       },
     });
     this.innerContainer.addChild(this.multiplierTextLabel);
@@ -156,7 +167,7 @@ export class CardHistoryItem extends Container {
     // If "action sprite" was the arrow, keeping it centered on card is standard for "Result" overlays.
     this.multiplierTextLabel.position.set(
       this.multiplierBackground.x,
-      this.multiplierBackground.y + this.multiplierBackground.height / 2 - this.multiplierTextLabel.height / 1.5 // Near bottom
+      this.multiplierBackground.y + this.multiplierBackground.height / 2 - this.multiplierTextLabel.height / 1.75 // Near bottom
     );
     // If tray covers card, text should be visible.
   }
