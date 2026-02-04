@@ -278,7 +278,7 @@ export class GameLogic extends Container {
         this.cardHistoryLayout.x = this.multiplierBoard.x - this.multiplierBoard.width / 2;
 
         const cardAreaBottom = this.buttonsContainer.y + this.buttonsContainer.height;
-        this.cardHistoryLayout.y = cardAreaBottom + padding * 1.5;
+        this.cardHistoryLayout.y = cardAreaBottom + padding;
 
         this.cardHistoryLayout.pushBackPadding = -25;
 

@@ -47,7 +47,7 @@ export class Character extends Container {
 
                 const padding = 10;
                 this.dialogContainer.x = this.character.x - this.character.width;
-                this.dialogContainer.y = this.character.y - this.character.height / 2;
+                this.dialogContainer.y = this.character.y - this.character.height / 2 + padding * 2;
                 this.say("Press Bet \n to Start");
 
             });

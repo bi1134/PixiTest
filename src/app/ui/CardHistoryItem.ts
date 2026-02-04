@@ -129,7 +129,7 @@ export class CardHistoryItem extends Container {
 
     // Scale tray to match card width (assuming tray texture might be different res)
     if (this.cardSprite.texture.width > 1 && this.multiplierBackground.texture.width > 1) {
-      const scale = this.cardSprite.width / this.multiplierBackground.texture.width;
+      const scale = this.cardSprite.width / this.multiplierBackground.texture.width + 0.1;
       this.multiplierBackground.scale.set(scale);
     } else {
       // Fallback if textures not ready (though they should be preloaded)

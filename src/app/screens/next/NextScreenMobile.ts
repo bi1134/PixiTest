@@ -202,7 +202,9 @@ export class NextScreenMobile extends Container {
 
     // Update Next Multiplier Board (Prediction)
     // Show current multiplier accurately
-    this.layout.multiplierBoard.setMultiplier(this.multiplierManager.currentMultiplier);
+    const currentBet = parseFloat(this.layout.inputBox.value);
+    const validBet = isNaN(currentBet) ? GameData.MIN_BET : currentBet;
+    this.layout.multiplierBoard.updateValues(this.multiplierManager.currentMultiplier, validBet);
 
   }
 
@@ -276,7 +278,10 @@ export class NextScreenMobile extends Container {
     // Skip does nothing extra beyond setting card (already done)
 
     // Update Multiplier Board
-    this.layout.multiplierBoard.setMultiplier(this.multiplierManager.currentMultiplier);
+    // Update Multiplier Board
+    const currentBet = parseFloat(this.layout.inputBox.value);
+    const validBet = isNaN(currentBet) ? GameData.MIN_BET : currentBet;
+    this.layout.multiplierBoard.updateValues(this.multiplierManager.currentMultiplier, validBet);
 
     // --- Add the NEW current card (after pressing button) to history ---
     // We pass the CURRENT multiplier (state after guess)
@@ -341,7 +346,10 @@ export class NextScreenMobile extends Container {
 
     // --- randomize the starting card (rank + suit) ---
     this.multiplierManager.reset();
-    this.layout.multiplierBoard.setMultiplier(this.multiplierManager.currentMultiplier); // Init board
+    // Default multiplier 1.0, current bet from input
+    const currentBet = parseFloat(this.layout.inputBox.value);
+    const validBet = isNaN(currentBet) ? GameData.MIN_BET : currentBet;
+    this.layout.multiplierBoard.updateValues(this.multiplierManager.currentMultiplier, validBet); // Init board
 
     this.layout.currentCard.RandomizeValue();
     this.updateButtonLabels();
@@ -369,8 +377,7 @@ export class NextScreenMobile extends Container {
     this.layout.betButton.setBettingState(false); // Non-Betting -> 1-0, Cash Out
 
     // Set initial cash out value (Start Bet)
-    const currentBet = parseFloat(this.layout.inputBox.value);
-    const validBet = isNaN(currentBet) ? GameData.MIN_BET : currentBet;
+    // Variables currentBet and validBet already declared above
     const initialPayout = validBet * this.multiplierManager.currentMultiplier; // Should be 1.0
 
     const formattedInitial = initialPayout.toLocaleString('de-DE', {

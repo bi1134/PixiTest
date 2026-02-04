@@ -147,10 +147,38 @@ export class CardHistoryLayout extends Container {
 
 
     const finalScale = itemScale ?? 1;
+    const boostScale = finalScale * 1.1; // Newest card is 10% larger
+
+    // Calculate centering offset for the boosted card
+    // Since pivot serves as 0,0 (visually top-left), scaling down pushes visual center down.
+    // We move Y up to compensate.
+    const unscaledHeight = item.getLocalBounds().height;
+    const centerOffset = (unscaledHeight * (boostScale - 1)) / 25;
+
+    // 0. Scale down previous newest item (if exists)
+    if (this.list.children.length > 0) {
+      const lastWrapper = this.list.children[this.list.children.length - 1] as Container;
+      if (lastWrapper && lastWrapper.children.length > 0) {
+        const prevItem = lastWrapper.children[0];
+        gsap.to(prevItem.scale, {
+          x: finalScale,
+          y: finalScale,
+          duration: 0.3,
+          ease: "back.out",
+        });
+        // Reset position to 0 (top-aligned/normal)
+        gsap.to(prevItem, {
+          y: 0,
+          duration: 0.3,
+          ease: "back.out",
+        });
+      }
+    }
+
     item.setBaseScale(finalScale);
 
     const itemWidth = item.getLocalBounds().width * finalScale;
-    const itemHeight = item.getLocalBounds().height * finalScale; // Use bounds for animation offset
+    const itemHeight = item.getLocalBounds().height * finalScale;
 
     // Use GapContainer wrapper to handle per-item spacing
     const wrapper = new GapContainer(leftPad, rightPad, this.options.type ?? 'horizontal');
@@ -162,7 +190,13 @@ export class CardHistoryLayout extends Container {
     // 4. Trigger Item Entry Animations
     // "Pop In"
     item.alpha = 0;
-    item.scale.set(finalScale * 0.5);
+    // Set initial scale/pos matches target (or start small)
+    item.scale.set(boostScale * 0.5);
+    // Start at centering position? Or 0?
+    // If we want it to pop into center, we should animate Y to centerOffset.
+    item.y = centerOffset; // Set initial Y to target offset so it doesn't jump?
+    // Actually we animate entry.
+
     const popDuration = 0.3;
 
     const animAlpha = gsap.to(item, {
@@ -172,9 +206,35 @@ export class CardHistoryLayout extends Container {
     });
     item.trackAnimation(animAlpha as any);
 
+    // Animate scale. Y position is constant (centerOffset) for the Big Card?
+    // Yes, if we want it centered, it stays at centerOffset.
+    // If we start scale small, centerOffset calculation differs?
+    // No, if we fix Y at centerOffset, then as it scales up/down around Top-Left, visual center moves.
+    // If we want Visual Center to be constant at Middle Line:
+    // Middle Line Y = unscaledHeight/2.
+    // At scale S, Visual Center Y = Ypos + (unscaledHeight/2 * S).
+    // We want this == unscaledHeight/2 (Normal Item Center).
+    // Ypos = unscaledHeight/2 * (1 - S).
+    // This assumes we animate Y dynamically with Scale.
+    // If we set Y to final offset, it will align at end.
+    // During animation, it might wobble.
+    // But aligning at end is most important.
+
+    // So distinct animation for Y?
+    // We set item.y = centerOffset (target) immediately?
+    // Or animate it?
+    // If we start at scale=0.5, offset would be different.
+    // StartOffset = unscaledHeight/2 * (1 - 0.5*boost) approx.
+    // Let's just animate Y from something to centerOffset.
+
+    gsap.fromTo(item,
+      { y: 0 },
+      { y: centerOffset, duration: popDuration, ease: "back.out" }
+    );
+
     const animScale = gsap.to(item.scale, {
-      x: finalScale,
-      y: finalScale,
+      x: boostScale, // Target boosted scale
+      y: boostScale,
       duration: popDuration,
       ease: "back.out",
     });

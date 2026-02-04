@@ -79,7 +79,28 @@ export class NextMultiplierBoard extends Container {
     }
 
     public setMultiplier(value: number) {
-        this.bottomLabel.text = `${value}x`;
+        // Deprecated or fallback
+        this.updateValues(value, 0);
+    }
+
+    public updateValues(multiplier: number, currentBet: number) {
+        const totalWin = multiplier * currentBet;
+
+        let displayString = `${multiplier}x`;
+        if (totalWin > 0) {
+            const formatted = totalWin.toLocaleString('de-DE', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 2
+            });
+            // Display: "Rp 1,000"
+            // If we want multiplier too: "Rp 1,000 (1.5x)"
+            // User asked "like in BetButton", which is just Money usually.
+            // But this is "NextMultiplierBoard".
+            // Let's explicitly format it as Money.
+            displayString = `Rp ${formatted}`; // Capitalize RP? BetButton uses "RP". NextScreen "Rp".
+        }
+
+        this.bottomLabel.text = displayString;
 
         if (this.infoSpine) {
             this.infoSpine.state.setAnimation(0, UIInfoAnimationState.action, false);

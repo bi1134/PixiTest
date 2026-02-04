@@ -26,11 +26,11 @@ export class MobileLayout extends Container {
     this.fancyBoxContainer.addChild(this.background);
 
     // --- Instantiate Framework Components ---
-    this.gameInfo = new GameInformation();
-    this.fancyBoxContainer.addChild(this.gameInfo);
-
     this.gameLogic = new GameLogic();
     this.fancyBoxContainer.addChild(this.gameLogic);
+
+    this.gameInfo = new GameInformation();
+    this.fancyBoxContainer.addChild(this.gameInfo);
 
     this.betBar = new BetBar(width);
     this.fancyBoxContainer.addChild(this.betBar);
