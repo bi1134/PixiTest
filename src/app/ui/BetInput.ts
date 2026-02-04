@@ -1,10 +1,10 @@
-import { Container, Sprite } from "pixi.js";
+import { Container, Sprite, Text, TextStyleOptions } from "pixi.js";
 import { Signal } from "typed-signals";
 import { BitmapLabel } from "../ui/BitmapLabel";
 
 export class BetInput extends Container {
     public bg: Sprite;
-    public displayText: BitmapLabel;
+    public displayText: BitmapLabel | Text;
 
     public onPress: Signal<(e?: any) => void> = new Signal();
 
@@ -31,31 +31,47 @@ export class BetInput extends Container {
         fontFamily?: string;
         placeholder?: string;
         align?: "left" | "center" | "right";
-        textColor?: number; // Tint for bitmap label
+        textColor?: number; // Tint for display text
         padding?: number;
         textLimitRatio?: number; // Ratio of bg width to limit text before scaling
+        style?: TextStyleOptions; // New style support
     }) {
         super();
 
         this.bg = options.bg;
-        this.bg.anchor.set(0.5); // Center anchor for easier pivot handling
+        // Resetting anchor to 0 to match likely previous behavior if 'bg' was sprite default.
+        this.bg.anchor.set(0);
         this.addChild(this.bg);
 
         if (options.textLimitRatio !== undefined) {
             this._textLimitRatio = options.textLimitRatio;
         }
 
-        // 2. Create BitmapLabel for display
-        this.displayText = new BitmapLabel({
-            text: "",
-            style: {
-                fontFamily: options.fontFamily || "coccm-bitmap-3-normal",
-                fontSize: options.fontSize || 30,
-                align: options.align || "center",
-                tint: options.textColor || 0xffffff,
-                letterSpacing: -2,
-            },
-        });
+        if (options.style) {
+            // Use Text for rich styling
+            this.displayText = new Text({
+                text: "",
+                style: options.style
+            });
+            // Apply textColor override if provided and not in style?
+            // Usually style.fill takes precedence.
+            if (options.textColor !== undefined && !options.style.fill) {
+                this.displayText.style.fill = options.textColor;
+            }
+        } else {
+            // 2. Create BitmapLabel for display (Legacy)
+            this.displayText = new BitmapLabel({
+                text: "",
+                style: {
+                    fontFamily: options.fontFamily || "coccm-bitmap-3-normal",
+                    fontSize: options.fontSize || 30,
+                    align: options.align || "center",
+                    tint: options.textColor || 0xffffff,
+                    letterSpacing: -2,
+                },
+            });
+        }
+
         this.displayText.anchor.set(0.5);
         this.addChild(this.displayText);
 

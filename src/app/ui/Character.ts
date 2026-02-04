@@ -1,4 +1,4 @@
-import { Container, NineSliceSprite, BitmapText, Texture } from "pixi.js";
+import { Container, Sprite, BitmapText } from "pixi.js";
 import { gsap } from "gsap";
 import { Spine } from "@esotericsoftware/spine-pixi-v8";
 
@@ -11,7 +11,7 @@ export enum AnimationState {
 }
 
 export class Character extends Container {
-    private dialogBubble: NineSliceSprite;
+    private dialogBubble: Sprite;
     private character?: Spine;
     private dialogText: BitmapText;
     private dialogContainer: Container;
@@ -48,7 +48,7 @@ export class Character extends Container {
                 const padding = 10;
                 this.dialogContainer.x = this.character.x - this.character.width;
                 this.dialogContainer.y = this.character.y - this.character.height / 2;
-                this.say("Press Bet to Start");
+                this.say("Press Bet \n to Start");
 
             });
         });
@@ -56,15 +56,9 @@ export class Character extends Container {
         this.addChild(this.dialogContainer);
 
         // NineSlice Chat Bubble
-        this.dialogBubble = new NineSliceSprite({
-            texture: Texture.from("Dialog_1.png"),
-            leftWidth: 40,
-            topHeight: 45,
-            rightWidth: 20,
-            bottomHeight: 50,
-        });
-        this.dialogBubble.anchor.set(0.5, 1); // Bottom center anchor for bubble growing upwards
-        this.dialogBubble.scale.x = -1; // Flip horizontally
+        // Normal Dialog Bubble (Sprite)
+        this.dialogBubble = Sprite.from("Dialog.png");
+        this.dialogBubble.anchor.set(0.5, 1); // Bottom center
         this.dialogContainer.addChild(this.dialogBubble);
 
         // Label for text
@@ -76,18 +70,17 @@ export class Character extends Container {
                 align: "center",
                 wordWrap: true, // Need word wrap for chat bubble
                 wordWrapWidth: 800,
-                fill: "#fbca3f"
+                fill: "#fbca3f",
+                lineHeight: 40
             }
         });
         this.dialogText.anchor.set(0.5, 0.5);
         // Text is centered in the bubble
         // Bubble anchor is (0.5, 1), so (0, -height/2) is center
         this.dialogContainer.addChild(this.dialogText);
-
-        this.dialogContainer.addChild(this.dialogText);
     }
 
-    public say(text: string) {
+    public say(text: string, type: 'normal' | 'combo' = 'normal') {
         gsap.killTweensOf(this.dialogContainer);
         gsap.killTweensOf(this.dialogContainer.scale);
 
@@ -104,41 +97,53 @@ export class Character extends Container {
             return;
         }
 
+        if (type === 'combo') {
+            // TODO: Implement combo dialog logic
+            return;
+        }
+
+        // --- Normal Dialog Logic ---
         this.dialogContainer.visible = true;
 
-        // Calculate target width based on character
-        let charWidth = 100; // Default fallback
-        if (this.character) {
-            // Use stable skeleton data width to avoid size jumping during animations
-            charWidth = this.character.skeleton.data.width;
-        }
-        const bubbleW = charWidth * 1.25;
-        const paddingH = 50;
+        // Reset scale before measurement
+        this.dialogText.scale.set(1);
 
-        // Update text style to wrap within bubble
-        this.dialogText.style.wordWrap = true;
-        this.dialogText.style.wordWrapWidth = bubbleW - 30; // internal padding
+        // Use bubble size to constrain text
+        // Ensure we have valid dimensions (fallback if texture not ready)
+        const bubbleW = this.dialogBubble.width > 2 ? this.dialogBubble.width : 250;
+        const bubbleH = this.dialogBubble.height > 2 ? this.dialogBubble.height : 150;
+
+        // Set wrapping to fit within bubble width with padding
+        const paddingX = 40;
+        const maxTextW = bubbleW - paddingX;
+        this.dialogText.style.wordWrapWidth = maxTextW;
+
         this.dialogText.text = text;
 
-        // Measure text height after wrapping
+        // Scale down if text exceeds bounds (height or width)
         const bounds = this.dialogText.getLocalBounds();
-        const paddingV = 45;
+        const maxTextH = bubbleH * 0.65; // ~65% of height to avoid tail/edges
 
-        // Resize bubble
-        const bubbleH = Math.max(80, bounds.height + paddingV);
+        let scale = 1;
+        if (bounds.width > maxTextW) {
+            scale = maxTextW / bounds.width;
+        }
+        if (bounds.height > maxTextH) {
+            const hScale = maxTextH / bounds.height;
+            if (hScale < scale) scale = hScale;
+        }
+        this.dialogText.scale.set(scale);
 
-        this.dialogBubble.width = bubbleW;
-        this.dialogBubble.height = bubbleH;
-
-        // Re-center text in bubble
-        // Bubble visual center is (0, -bubbleH/2) since it grows up from (0,0)
+        // Center text in bubble visual center
+        // Bubble anchor (0.5, 1) -> (0,0) is bottom-center
+        // Visual center is roughly mid-height above tail
         this.dialogText.position.set(0, -bubbleH / 2);
 
         // Animate In
         this.dialogContainer.scale.set(0);
         gsap.to(this.dialogContainer.scale, {
-            x: 1,
-            y: 1,
+            x: 1.1,
+            y: 1.1,
             duration: 0.2,
             ease: "back.out(1.7)",
         });
@@ -153,7 +158,7 @@ export class Character extends Container {
                 animName = AnimationState.Win;
                 break;
             case 'lose':
-                animName = AnimationState.Lose;
+                animName = AnimationState.Laugh;
                 break;
             case 'skip':
                 animName = AnimationState.Skip; // Assuming you have a Skip animation, or maybe use flip? user said "skip then skip state"

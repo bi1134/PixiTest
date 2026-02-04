@@ -262,7 +262,7 @@ export class NextScreenMobile extends Container {
       this.layout.gameHistory.addResult(0, false);
 
       this.layout.gameInfo.knightCharacter.playState('lose');
-      this.layout.gameInfo.knightCharacter.say('BET AGAIN!');
+      this.layout.gameInfo.knightCharacter.say('YOU LOSE, BET AGAIN!');
 
       // Play Card Shake/Reveal
       this.layout.currentCard.playLoseAnimation();
@@ -424,10 +424,8 @@ export class NextScreenMobile extends Container {
 
     UI.showResult(multiplier, base);
 
-    // Show back of card
-    if (this.layout.currentCard.parent) {
-      this.layout.currentCard.parent.removeChild(this.layout.currentCard);
-    }
+    // Show reveal animation (Mesh + Shadow) using existing lose animation logic
+    this.layout.currentCard.playLoseAnimation();
 
     const betAmount = isNaN(rawVal) ? GameData.MIN_BET : rawVal;
     GameData.instance.addRoundResult(multiplier, true, betAmount);
@@ -506,7 +504,7 @@ export class NextScreenMobile extends Container {
       button.setEnabled(false);
     } else {
       button.interactive = false;
-      button.alpha = 0.5;
+      button.alpha = 0.75;
     }
   }
 

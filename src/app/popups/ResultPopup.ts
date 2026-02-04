@@ -1,9 +1,16 @@
-import { Container, Sprite, Texture, Graphics } from "pixi.js";
+import { Container, Sprite, Texture } from "pixi.js";
 import { gsap } from "gsap"; // Using GSAP directly
 import { engine } from "../getEngine";
 import { BitmapLabel } from "../ui/BitmapLabel";
-import { RoundedBox } from "../ui/RoundedBox";
+//import { RoundedBox } from "../ui/RoundedBox";
 import { FancyButton } from "@pixi/ui";
+import { Spine } from "@esotericsoftware/spine-pixi-v8";
+import { LayoutHelper } from "../utils/LayoutHelper";
+
+export enum CashOutAnimationState {
+  Idle = "idle",
+  Action = "appear",
+}
 
 /** Popup that shows up when gameplay is paused */
 export class ResultPopup extends Container {
@@ -14,10 +21,9 @@ export class ResultPopup extends Container {
   /** The popup title label */
   private title: BitmapLabel;
   /** The panel background */
-  private panelBase: RoundedBox;
+  private panelBase?: Spine;
 
   private resultLabel: BitmapLabel;
-  private resultBackground: Sprite | Graphics;
 
   private invisButton: FancyButton;
 
@@ -40,22 +46,44 @@ export class ResultPopup extends Container {
     this.panel = new Container();
     this.safeArea.addChild(this.panel);
 
-    this.panelBase = new RoundedBox({ height: 300 });
-    this.panel.addChild(this.panelBase);
+    import("pixi.js").then(({ Assets }) => {
+      Assets.load([
+        "/spine-assets/cash-out.skel",
+        "/spine-assets/cash-out.atlas"
+      ]).then(() => {
+        // Once loaded, create the Spine instance
+        this.panelBase = Spine.from({
+          skeleton: "/spine-assets/cash-out.skel",
+          atlas: "/spine-assets/cash-out.atlas",
+        });
+
+        // Initialize animation based on current visibility
+        console.log("ResultPopup Animations:", this.panelBase.skeleton.data.animations.map(a => a.name));
+
+        if (this.visible) {
+          this.runAppearAnimation();
+        } else {
+          this.panelBase.state.setAnimation(0, CashOutAnimationState.Idle, true);
+        }
+
+        this.panel.addChildAt(this.panelBase, 0); // Background
+
+        // Trigger resize to position correctly once loaded
+        const { width, height } = engine().screen;
+        this.resize(width, height);
+
+      });
+    });
+
 
     this.title = new BitmapLabel({
       text: "1.25x",
-      style: { fill: 0xec1561, fontSize: 120, fontFamily: "coccm-bitmap-3-normal" },
+      style: { fill: 0xec1561, fontSize: 40, fontFamily: "coccm-bitmap-3-normal", letterSpacing: -2 },
     });
     this.title.y = -80;
     this.panel.addChild(this.title);
 
-    // --- result background (placeholder, can be replaced with sprite later) ---
-    this.resultBackground = new Graphics()
-      .roundRect(0, 0, 400, 80, 20)
-      .fill(0x222222);
-    this.resultBackground.y = -this.resultBackground.height / 2;
-    this.panel.addChild(this.resultBackground);
+    // --- result background removed as per request ---
 
     // --- result label ---
     this.resultLabel = new BitmapLabel({
@@ -65,11 +93,10 @@ export class ResultPopup extends Container {
         fontSize: 40,
         fontFamily: "coccm-bitmap-3-normal",
         align: "center",
+        letterSpacing: -2,
       },
     });
     this.resultLabel.anchor.set(0.5);
-    this.resultLabel.x = this.resultBackground.width / 2;
-    this.resultLabel.y = this.resultBackground.height / 2;
     this.panel.addChild(this.resultLabel);
 
     this.invisButton = new FancyButton({
@@ -115,41 +142,22 @@ export class ResultPopup extends Container {
     this.panel.x = SAFE_WIDTH / 2;
     this.panel.y = SAFE_HEIGHT / 2;
 
-    const panelWidth = SAFE_WIDTH * 0.9; // 90% of phone width
 
-    this.panelBase.width = panelWidth;
 
-    const panelHeight = this.panelBase.height;
-    const labelHeight = (panelHeight * 2) / 3;
-    const resultHeight = (panelHeight * 1) / 3;
+    const panelWidth = SAFE_WIDTH * 0.9;
 
-    // Optionally scale text to fit section (if you want dynamic font size)
-    this.title.scale.set((labelHeight - 40 * 2) / this.title.height);
-    // Clamp scale
-    if (this.title.scale.x > 1) this.title.scale.set(1);
+    if (this.panelBase) {
+      this.panelBase.scale.set(1.5);
+      this.panelBase.position.set(0, -150);
+    }
 
-    // --- Multiplier label (top section) ---
+
     this.title.x = 0;
-    this.title.y = this.panelBase.y - this.title.height / 2;
+    // Put title near top of spine
+    this.title.y = 200; // Padding from top edge
 
-    // --- Result background (bottom section) ---
-    const resultWidth = panelWidth - 40 * 2;
-    this.resultBackground.width = resultWidth;
-    this.resultBackground.height = resultHeight;
-    this.resultBackground.x = -resultWidth / 2;
-    this.resultBackground.y =
-      this.panelBase.y + this.panelBase.height / 2 - resultHeight - 20;
-
-    // --- Result label centered on result background ---
-    this.resultLabel.x =
-      this.resultBackground.x + this.resultBackground.width / 2;
-    this.resultLabel.y =
-      this.resultBackground.y + this.resultBackground.height / 2;
-
-    // Invis button covers the whole safe Area (effectively blocking clicks on game, but user can click anywhere in safe area to close?)
-    // Or should it cover entire screen? 
-    // Construct logic: invisButton needs to be full screen really.
-    // Use bg for full screen click? Or use InvisButton added to this (root) but sized to width/height
+    this.resultLabel.x = 0;
+    this.resultLabel.y = 250; // Slightly below center? Or bottom?
 
     // Invis button covers the whole safe Area (effectively blocking clicks on game, but user can click anywhere in safe area to close?)
     if (this.invisButton.parent !== this) {
@@ -162,6 +170,45 @@ export class ResultPopup extends Container {
 
   }
 
+  private runAppearAnimation() {
+    if (!this.panelBase) return;
+
+    const entry = this.panelBase.state.setAnimation(0, CashOutAnimationState.Action, false);
+    this.panelBase.state.addAnimation(0, CashOutAnimationState.Idle, true, 0);
+
+    let isTextShown = false;
+    const showText = () => {
+      if (isTextShown) return;
+      isTextShown = true;
+
+      console.log("ResultPopup: showText called");
+
+      gsap.to(this.title, { alpha: 1, duration: 0.1 });
+      gsap.to(this.title.scale, { x: 1, y: 1, duration: 0.2, ease: "back.out(2)" });
+
+      gsap.delayedCall(0.1, () => {
+        gsap.to(this.resultLabel, { alpha: 1, duration: 0.1 });
+        gsap.to(this.resultLabel.scale, { x: 1, y: 1, duration: 0.2, ease: "back.out(2)" });
+      });
+    };
+
+    if (entry && entry.animation) {
+      const duration = entry.animation.duration;
+
+      gsap.delayedCall(duration * 0.3, showText);
+    } else {
+      console.warn("ResultPopup: Animation entry invalid or not found for", CashOutAnimationState.Action);
+      showText();
+    }
+
+    // Failsafe
+    setTimeout(() => {
+      if (!isTextShown) {
+        showText();
+      }
+    }, 2000);
+  }
+
   public async show() {
 
     // Safety Force Resize
@@ -172,6 +219,21 @@ export class ResultPopup extends Container {
     this.bg.alpha = 0;
     this.panel.scale.set(0.5);
     this.visible = true;
+
+    // Reset text visibility
+    // Reset text visibility
+    this.title.alpha = 0;
+    this.title.scale.set(0);
+    this.resultLabel.alpha = 0;
+    this.resultLabel.scale.set(0);
+
+    if (this.panelBase) {
+      this.runAppearAnimation();
+    } else {
+      // Fallback if spine not loaded
+      this.title.alpha = 1;
+      this.resultLabel.alpha = 1;
+    }
 
     // --- Background fade in ---
     gsap.to(this.bg, {
@@ -191,7 +253,7 @@ export class ResultPopup extends Container {
     // If we want it to auto-hide:
     setTimeout(() => {
       this.hide().then(() => engine().navigation.dismissPopup());
-    }, 2000);
+    }, 10000);
   }
 
   /** Dismiss the popup, animated */

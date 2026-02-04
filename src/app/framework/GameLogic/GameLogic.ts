@@ -1,5 +1,5 @@
 import { FancyButton } from "@pixi/ui";
-import { Container, Sprite, Texture } from "pixi.js";
+import { Container, Sprite } from "pixi.js";
 import { gsap } from "gsap";
 import { BitmapLabel } from "../../ui/BitmapLabel";
 import { Card, CardSuit } from "../../ui/Card";
@@ -155,6 +155,7 @@ export class GameLogic extends Container {
 
     public resize(width: number, _height: number, padding: number) {
 
+
         LayoutHelper.scaleToWidth(this.multiplierBoard, width * 0.8);
         this.multiplierBoard.x = width / 2;
         // Reset to strict top position + half height (anchor 0.5 assumed or desired centered)
@@ -190,11 +191,11 @@ export class GameLogic extends Container {
         this.cardsContainer.addChild(this.fancySkipButton);
 
         // Hi/Lo Buttons
-        this.upButton.scale.set(1);
-        this.downButton.scale.set(1);
+        this.upButton.scale.set(1.01);
+        this.downButton.scale.set(1.01);
 
         const btnY =
-            this.backCard.y + this.backCard.height / 2.5;
+            this.backCard.y + this.backCard.height / 2.65;
 
         this.upButton.y = - padding;
         this.downButton.y = this.downButton.height + padding * 1.75;
@@ -205,6 +206,7 @@ export class GameLogic extends Container {
         this.upButton.x = btnX;
         this.downButton.x = btnX;
 
+        // Higher lower text position
         LayoutHelper.setPositionX(
             this.highDes,
             this.upButton.x + this.upButton.width / 2,
@@ -213,7 +215,6 @@ export class GameLogic extends Container {
             this.lowDes,
             this.downButton.x + this.downButton.width / 2,
         );
-
         LayoutHelper.setPositionY(
             this.highDes,
             this.upButton.y + this.upButton.height - this.highDes.height / 0.5,
@@ -277,8 +278,9 @@ export class GameLogic extends Container {
         this.cardHistoryLayout.x = this.multiplierBoard.x - this.multiplierBoard.width / 2;
 
         const cardAreaBottom = this.buttonsContainer.y + this.buttonsContainer.height;
-        this.cardHistoryLayout.y = cardAreaBottom + padding;
+        this.cardHistoryLayout.y = cardAreaBottom + padding * 1.5;
 
         this.cardHistoryLayout.pushBackPadding = -25;
+
     }
 }

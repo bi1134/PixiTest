@@ -6,8 +6,8 @@
             "inheritedMetaData": {},
             "transformData": {},
             "stats": {
-                "date": 1770113228312,
-                "duration": 1.9221000000834465,
+                "date": 1770182237456,
+                "duration": 0.41959999967366457,
                 "success": true
             }
         },
@@ -44,8 +44,8 @@
             "inheritedMetaData": {},
             "transformData": {},
             "stats": {
-                "date": 1770113228313,
-                "duration": 1.5398000003769994,
+                "date": 1770182237456,
+                "duration": 0.37630000058561563,
                 "success": true
             }
         },
@@ -58,8 +58,8 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107586568,
-                "duration": 0.5041999999998552,
+                "date": 1770182237456,
+                "duration": 0.36419999971985817,
                 "success": true
             }
         },
@@ -72,8 +72,8 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107586568,
-                "duration": 173.51549999999997,
+                "date": 1770182235199,
+                "duration": 669.2524000005797,
                 "success": true
             },
             "hash": "bt0EvA"
@@ -177,8 +177,8 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107586570,
-                "duration": 164.35860000000002,
+                "date": 1770182235200,
+                "duration": 648.9059000005946,
                 "success": true
             },
             "hash": "1e8O4g"
@@ -282,11 +282,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107586570,
-                "duration": 180.2469000000001,
+                "date": 1770182237456,
+                "duration": 58.6683999998495,
                 "success": true
             },
-            "hash": "oxLE"
+            "hash": "4lOlQw"
         },
         ".assetpack/mipmap/main{m}/cards/club-card-10.png": {
             "isFolder": false,
@@ -387,11 +387,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107586570,
-                "duration": 188.23620000000005,
+                "date": 1770182237456,
+                "duration": 69.53219999931753,
                 "success": true
             },
-            "hash": "lfPZ3Q"
+            "hash": "ySPOuw"
         },
         ".assetpack/mipmap/main{m}/cards/club-card-2.png": {
             "isFolder": false,
@@ -492,11 +492,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107586570,
-                "duration": 196.8882000000001,
+                "date": 1770182237457,
+                "duration": 82.70520000066608,
                 "success": true
             },
-            "hash": "IBZ7Eg"
+            "hash": "b4lsWw"
         },
         ".assetpack/mipmap/main{m}/cards/club-card-3.png": {
             "isFolder": false,
@@ -597,11 +597,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107586734,
-                "duration": 85.25780000000009,
+                "date": 1770182237457,
+                "duration": 97.10639999993145,
                 "success": true
             },
-            "hash": "FihPvQ"
+            "hash": "N7m3xQ"
         },
         ".assetpack/mipmap/main{m}/cards/club-card-4.png": {
             "isFolder": false,
@@ -702,11 +702,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107586742,
-                "duration": 65.49900000000002,
+                "date": 1770182237457,
+                "duration": 121.64620000030845,
                 "success": true
             },
-            "hash": "d_nwjA"
+            "hash": "1Fdfdg"
         },
         ".assetpack/mipmap/main{m}/cards/club-card-5.png": {
             "isFolder": false,
@@ -807,11 +807,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107586750,
-                "duration": 82.82940000000008,
+                "date": 1770182237515,
+                "duration": 146.26050000078976,
                 "success": true
             },
-            "hash": "o8atFA"
+            "hash": "Q745"
         },
         ".assetpack/mipmap/main{m}/cards/club-card-6.png": {
             "isFolder": false,
@@ -912,11 +912,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107586759,
-                "duration": 89.0145,
+                "date": 1770182237526,
+                "duration": 147.25690000038594,
                 "success": true
             },
-            "hash": "87qrZg"
+            "hash": "lPFwNw"
         },
         ".assetpack/mipmap/main{m}/cards/club-card-7.png": {
             "isFolder": false,
@@ -1017,11 +1017,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107586767,
-                "duration": 97.29150000000004,
+                "date": 1770182237539,
+                "duration": 147.27539999969304,
                 "success": true
             },
-            "hash": "Xq5MFQ"
+            "hash": "xBr8hg"
         },
         ".assetpack/mipmap/main{m}/cards/club-card-8.png": {
             "isFolder": false,
@@ -1122,11 +1122,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107586807,
-                "duration": 78.31550000000016,
+                "date": 1770182237554,
+                "duration": 152.17480000015348,
                 "success": true
             },
-            "hash": "09n25Q"
+            "hash": "h6MbVA"
         },
         ".assetpack/mipmap/main{m}/cards/club-card-9.png": {
             "isFolder": false,
@@ -1227,11 +1227,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107586820,
-                "duration": 78.74500000000012,
+                "date": 1770182237578,
+                "duration": 153.6178999999538,
                 "success": true
             },
-            "hash": "oMrgPA"
+            "hash": "_hNXQg"
         },
         ".assetpack/mipmap/main{m}/cards/club-card-a.png": {
             "isFolder": false,
@@ -1332,11 +1332,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107586833,
-                "duration": 215.56600000000003,
+                "date": 1770182237661,
+                "duration": 372.7764999996871,
                 "success": true
             },
-            "hash": "ZDWu"
+            "hash": "U7J2UQ"
         },
         ".assetpack/mipmap/main{m}/cards/club-card-j.png": {
             "isFolder": false,
@@ -1437,11 +1437,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107586848,
-                "duration": 206.26459999999997,
+                "date": 1770182237673,
+                "duration": 292.61189999990165,
                 "success": true
             },
-            "hash": "9-CYCA"
+            "hash": "tqp2Gw"
         },
         ".assetpack/mipmap/main{m}/cards/club-card-k.png": {
             "isFolder": false,
@@ -1542,11 +1542,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107586865,
-                "duration": 334.4514999999999,
+                "date": 1770182237687,
+                "duration": 478.5478999996558,
                 "success": true
             },
-            "hash": "_p4JJA"
+            "hash": "65bYFA"
         },
         ".assetpack/mipmap/main{m}/cards/club-card-q.png": {
             "isFolder": false,
@@ -1647,11 +1647,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107586886,
-                "duration": 205.6047000000001,
+                "date": 1770182235200,
+                "duration": 683.6647999994457,
                 "success": true
             },
-            "hash": "bqpfow"
+            "hash": "j170WA"
         },
         ".assetpack/mipmap/main{m}/cards/diamond-card-10.png": {
             "isFolder": false,
@@ -1752,11 +1752,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107586898,
-                "duration": 232.99030000000016,
+                "date": 1770182237706,
+                "duration": 308.0272000003606,
                 "success": true
             },
-            "hash": "M1nAkw"
+            "hash": "3JgJWg"
         },
         ".assetpack/mipmap/main{m}/cards/diamond-card-2.png": {
             "isFolder": false,
@@ -1857,11 +1857,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107587049,
-                "duration": 107.40359999999987,
+                "date": 1770182237732,
+                "duration": 326.19639999978244,
                 "success": true
             },
-            "hash": "SnqldA"
+            "hash": "p9vsZA"
         },
         ".assetpack/mipmap/main{m}/cards/diamond-card-3.png": {
             "isFolder": false,
@@ -1962,11 +1962,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107587054,
-                "duration": 118.20140000000015,
+                "date": 1770182235200,
+                "duration": 673.5394999999553,
                 "success": true
             },
-            "hash": "noz6aw"
+            "hash": "FoWZPA"
         },
         ".assetpack/mipmap/main{m}/cards/diamond-card-4.png": {
             "isFolder": false,
@@ -2067,11 +2067,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107587091,
-                "duration": 128.92579999999998,
+                "date": 1770182235200,
+                "duration": 691.3011000007391,
                 "success": true
             },
-            "hash": "d7Fa1w"
+            "hash": "Pnqk"
         },
         ".assetpack/mipmap/main{m}/cards/diamond-card-5.png": {
             "isFolder": false,
@@ -2172,11 +2172,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107587131,
-                "duration": 101.31159999999977,
+                "date": 1770182235849,
+                "duration": 100.98259999975562,
                 "success": true
             },
-            "hash": "4zQPIA"
+            "hash": "l4B1AQ"
         },
         ".assetpack/mipmap/main{m}/cards/diamond-card-6.png": {
             "isFolder": false,
@@ -2277,11 +2277,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107587156,
-                "duration": 87.41229999999996,
+                "date": 1770182235869,
+                "duration": 91.92360000032932,
                 "success": true
             },
-            "hash": "wqkV1w"
+            "hash": "Y3gveA"
         },
         ".assetpack/mipmap/main{m}/cards/diamond-card-7.png": {
             "isFolder": false,
@@ -2382,11 +2382,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107587172,
-                "duration": 85.79390000000012,
+                "date": 1770182235874,
+                "duration": 103.21420000027865,
                 "success": true
             },
-            "hash": "KXvk4w"
+            "hash": "POCfGQ"
         },
         ".assetpack/mipmap/main{m}/cards/diamond-card-8.png": {
             "isFolder": false,
@@ -2487,11 +2487,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107587199,
-                "duration": 79.0123000000001,
+                "date": 1770182235884,
+                "duration": 116.9167999997735,
                 "success": true
             },
-            "hash": "XcNh5g"
+            "hash": "oLphtA"
         },
         ".assetpack/mipmap/main{m}/cards/diamond-card-9.png": {
             "isFolder": false,
@@ -2592,11 +2592,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107587220,
-                "duration": 79.95630000000006,
+                "date": 1770182235892,
+                "duration": 126.24729999992996,
                 "success": true
             },
-            "hash": "IrIQGQ"
+            "hash": "mln6Yw"
         },
         ".assetpack/mipmap/main{m}/cards/diamond-card-a.png": {
             "isFolder": false,
@@ -2697,11 +2697,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107587233,
-                "duration": 274.9902000000002,
+                "date": 1770182235950,
+                "duration": 286.0437000002712,
                 "success": true
             },
-            "hash": "5zY3kQ"
+            "hash": "VbMMqQ"
         },
         ".assetpack/mipmap/main{m}/cards/diamond-card-j.png": {
             "isFolder": false,
@@ -2802,11 +2802,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107587244,
-                "duration": 213.65610000000015,
+                "date": 1770182235960,
+                "duration": 240.65200000070035,
                 "success": true
             },
-            "hash": "9S9VmQ"
+            "hash": "3qzTCA"
         },
         ".assetpack/mipmap/main{m}/cards/diamond-card-k.png": {
             "isFolder": false,
@@ -2907,11 +2907,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107587258,
-                "duration": 303.5215999999996,
+                "date": 1770182235977,
+                "duration": 407.0408000005409,
                 "success": true
             },
-            "hash": "vuU-8A"
+            "hash": "sWExUg"
         },
         ".assetpack/mipmap/main{m}/cards/diamond-card-q.png": {
             "isFolder": false,
@@ -3012,11 +3012,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107587278,
-                "duration": 247.6514000000002,
+                "date": 1770182236001,
+                "duration": 153.3594000004232,
                 "success": true
             },
-            "hash": "5jweQQ"
+            "hash": "JM8CeA"
         },
         ".assetpack/mipmap/main{m}/cards/heart-card-10.png": {
             "isFolder": false,
@@ -3117,11 +3117,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107587300,
-                "duration": 239.50900000000001,
+                "date": 1770182236018,
+                "duration": 230.21320000011474,
                 "success": true
             },
-            "hash": "-kCRcg"
+            "hash": "xv-zqg"
         },
         ".assetpack/mipmap/main{m}/cards/heart-card-2.png": {
             "isFolder": false,
@@ -3222,11 +3222,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107587457,
-                "duration": 122.33370000000014,
+                "date": 1770182236154,
+                "duration": 155.89400000032037,
                 "success": true
             },
-            "hash": "c-c_3w"
+            "hash": "hDYkYw"
         },
         ".assetpack/mipmap/main{m}/cards/heart-card-3.png": {
             "isFolder": false,
@@ -3327,11 +3327,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107587508,
-                "duration": 86.57049999999981,
+                "date": 1770182236201,
+                "duration": 88.97350000031292,
                 "success": true
             },
-            "hash": "IcJk"
+            "hash": "8DhUXQ"
         },
         ".assetpack/mipmap/main{m}/cards/heart-card-4.png": {
             "isFolder": false,
@@ -3432,11 +3432,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107587526,
-                "duration": 87.57119999999986,
+                "date": 1770182236236,
+                "duration": 103.9281000001356,
                 "success": true
             },
-            "hash": "qLHr5Q"
+            "hash": "KYC0HQ"
         },
         ".assetpack/mipmap/main{m}/cards/heart-card-5.png": {
             "isFolder": false,
@@ -3537,11 +3537,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107587540,
-                "duration": 93.65160000000014,
+                "date": 1770182236248,
+                "duration": 115.44350000005215,
                 "success": true
             },
-            "hash": "mTzcnw"
+            "hash": "n3Y-Qg"
         },
         ".assetpack/mipmap/main{m}/cards/heart-card-6.png": {
             "isFolder": false,
@@ -3642,11 +3642,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107587562,
-                "duration": 540.404,
+                "date": 1770182236290,
+                "duration": 113.52749999985099,
                 "success": true
             },
-            "hash": "-3PHvQ"
+            "hash": "Z68j"
         },
         ".assetpack/mipmap/main{m}/cards/heart-card-7.png": {
             "isFolder": false,
@@ -3747,11 +3747,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107587580,
-                "duration": 534.3364000000001,
+                "date": 1770182236310,
+                "duration": 104.89979999978095,
                 "success": true
             },
-            "hash": "jieBkA"
+            "hash": "rH2vIQ"
         },
         ".assetpack/mipmap/main{m}/cards/heart-card-8.png": {
             "isFolder": false,
@@ -3852,11 +3852,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107587595,
-                "duration": 530.9226999999996,
+                "date": 1770182236340,
+                "duration": 93.89460000023246,
                 "success": true
             },
-            "hash": "RUNSgg"
+            "hash": "RP2EXg"
         },
         ".assetpack/mipmap/main{m}/cards/heart-card-9.png": {
             "isFolder": false,
@@ -3957,11 +3957,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107587613,
-                "duration": 533.4956999999999,
+                "date": 1770182236364,
+                "duration": 105.3960000006482,
                 "success": true
             },
-            "hash": "EV9fww"
+            "hash": "GbwUug"
         },
         ".assetpack/mipmap/main{m}/cards/heart-card-a.png": {
             "isFolder": false,
@@ -4062,11 +4062,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107587634,
-                "duration": 931.2910000000002,
+                "date": 1770182236384,
+                "duration": 249.22550000064075,
                 "success": true
             },
-            "hash": "824VUg"
+            "hash": "79KXKQ"
         },
         ".assetpack/mipmap/main{m}/cards/heart-card-j.png": {
             "isFolder": false,
@@ -4167,11 +4167,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107588102,
-                "duration": 170.69819999999982,
+                "date": 1770182236404,
+                "duration": 215.41069999989122,
                 "success": true
             },
-            "hash": "wCSomA"
+            "hash": "3Nmvsw"
         },
         ".assetpack/mipmap/main{m}/cards/heart-card-k.png": {
             "isFolder": false,
@@ -4272,11 +4272,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107588114,
-                "duration": 468.0138999999999,
+                "date": 1770182236415,
+                "duration": 294.8371999999508,
                 "success": true
             },
-            "hash": "LY2BWA"
+            "hash": "MMC5PA"
         },
         ".assetpack/mipmap/main{m}/cards/heart-card-q.png": {
             "isFolder": false,
@@ -4482,11 +4482,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107588147,
-                "duration": 430.1704,
+                "date": 1770182236434,
+                "duration": 223.37619999982417,
                 "success": true
             },
-            "hash": "ggaKBA"
+            "hash": "MgdG-A"
         },
         ".assetpack/mipmap/main{m}/cards/spade-card-10.png": {
             "isFolder": false,
@@ -4587,11 +4587,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107588273,
-                "duration": 349.8932999999997,
+                "date": 1770182236469,
+                "duration": 225.77450000029057,
                 "success": true
             },
-            "hash": "srO6Hw"
+            "hash": "Srm9BQ"
         },
         ".assetpack/mipmap/main{m}/cards/spade-card-2.png": {
             "isFolder": false,
@@ -4692,11 +4692,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107588557,
-                "duration": 82.24099999999999,
+                "date": 1770182236619,
+                "duration": 99.39510000031441,
                 "success": true
             },
-            "hash": "nw221w"
+            "hash": "heuLTQ"
         },
         ".assetpack/mipmap/main{m}/cards/spade-card-3.png": {
             "isFolder": false,
@@ -4797,11 +4797,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107588565,
-                "duration": 86.00579999999991,
+                "date": 1770182236633,
+                "duration": 284.8080000001937,
                 "success": true
             },
-            "hash": "FpirTw"
+            "hash": "nocH5A"
         },
         ".assetpack/mipmap/main{m}/cards/spade-card-4.png": {
             "isFolder": false,
@@ -4902,11 +4902,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107588577,
-                "duration": 90.4357,
+                "date": 1770182236657,
+                "duration": 282.5249999994412,
                 "success": true
             },
-            "hash": "_rupZw"
+            "hash": "LV145w"
         },
         ".assetpack/mipmap/main{m}/cards/spade-card-5.png": {
             "isFolder": false,
@@ -5007,11 +5007,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107588582,
-                "duration": 105.72530000000006,
+                "date": 1770182236695,
+                "duration": 276.6813000002876,
                 "success": true
             },
-            "hash": "SAfOJg"
+            "hash": "3tel1w"
         },
         ".assetpack/mipmap/main{m}/cards/spade-card-6.png": {
             "isFolder": false,
@@ -5112,11 +5112,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107588623,
-                "duration": 92.69310000000041,
+                "date": 1770182236710,
+                "duration": 282.17850000038743,
                 "success": true
             },
-            "hash": "pkwT"
+            "hash": "Y36mVg"
         },
         ".assetpack/mipmap/main{m}/cards/spade-card-7.png": {
             "isFolder": false,
@@ -5217,11 +5217,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107588639,
-                "duration": 90.78650000000016,
+                "date": 1770182236719,
+                "duration": 293.9188000001013,
                 "success": true
             },
-            "hash": "LEIOCA"
+            "hash": "QPMaGg"
         },
         ".assetpack/mipmap/main{m}/cards/spade-card-8.png": {
             "isFolder": false,
@@ -5322,11 +5322,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107588651,
-                "duration": 98.69749999999976,
+                "date": 1770182236918,
+                "duration": 111.24330000020564,
                 "success": true
             },
-            "hash": "VqwlaQ"
+            "hash": "axMGZA"
         },
         ".assetpack/mipmap/main{m}/cards/spade-card-9.png": {
             "isFolder": false,
@@ -5427,11 +5427,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107588668,
-                "duration": 102.79370000000017,
+                "date": 1770182236940,
+                "duration": 119.3406000006944,
                 "success": true
             },
-            "hash": "LCxzXg"
+            "hash": "9Bz5gQ"
         },
         ".assetpack/mipmap/main{m}/cards/spade-card-a.png": {
             "isFolder": false,
@@ -5532,11 +5532,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107588688,
-                "duration": 246.9703999999997,
+                "date": 1770182236972,
+                "duration": 298.39259999990463,
                 "success": true
             },
-            "hash": "x4guyw"
+            "hash": "V7-JJw"
         },
         ".assetpack/mipmap/main{m}/cards/spade-card-j.png": {
             "isFolder": false,
@@ -5637,11 +5637,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107588716,
-                "duration": 271.1929,
+                "date": 1770182236992,
+                "duration": 233.95799999963492,
                 "success": true
             },
-            "hash": "OGk1sw"
+            "hash": "WE9HIQ"
         },
         ".assetpack/mipmap/main{m}/cards/spade-card-k.png": {
             "isFolder": false,
@@ -5742,11 +5742,11 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107588730,
-                "duration": 436.8814000000002,
+                "date": 1770182237012,
+                "duration": 288.00109999999404,
                 "success": true
             },
-            "hash": "R_oK9Q"
+            "hash": "lq40Nw"
         },
         ".assetpack/mipmap/main{m}/cards/spade-card-q.png": {
             "isFolder": false,
@@ -7736,8 +7736,8 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770113228313,
-                "duration": 1.4883000003173947,
+                "date": 1770178957797,
+                "duration": 44.796099999919534,
                 "success": true
             }
         },
@@ -8161,6 +8161,111 @@
             },
             "transformData": {}
         },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/knight/Dialog.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/knight",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {},
+            "stats": {
+                "date": 1770178957797,
+                "duration": 931.5213999999687,
+                "success": true
+            },
+            "hash": "sSnMPg"
+        },
+        ".assetpack/mipmap/main{m}/knight/Dialog.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/knight/Dialog.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/knight/Dialog.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/knight/Dialog.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/knight/Dialog.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/knight/Dialog.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/knight/Dialog.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/knight/Dialog.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/knight/Dialog.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/knight/Dialog.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/mipmap/main{m}/knight/Dialog@0.5x.png": {
+            "isFolder": false,
+            "transformParent": "E:/PixiJS/PixiTest/raw-assets/main{m}/knight/Dialog.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/knight/Dialog@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/knight/Dialog@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/knight/Dialog@0.5x.png": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/knight/Dialog@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        ".assetpack/compress/main{m}/knight/Dialog@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/mipmap/main{m}/knight/Dialog@0.5x.png",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
+        "E:/PixiJS/PixiTest/public/assets/main/knight/Dialog@0.5x.webp": {
+            "isFolder": false,
+            "transformParent": ".assetpack/compress/main{m}/knight/Dialog@0.5x.webp",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true
+            },
+            "transformData": {}
+        },
         "E:/PixiJS/PixiTest/raw-assets/main{m}/logo-white.svg": {
             "isFolder": false,
             "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}",
@@ -8465,8 +8570,8 @@
             },
             "transformData": {},
             "stats": {
-                "date": 1770107591301,
-                "duration": 2705.3742,
+                "date": 1770180740106,
+                "duration": 2656.0342999994755,
                 "success": true
             }
         },
@@ -8808,6 +8913,17 @@
             },
             "transformData": {},
             "hash": "rsMcLQ"
+        },
+        "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}/Game Info/Tray-ProfitPart.png": {
+            "isFolder": false,
+            "parent": "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}/Game Info",
+            "metaData": {},
+            "inheritedMetaData": {
+                "m": true,
+                "tps": true
+            },
+            "transformData": {},
+            "hash": "Zmn9wg"
         },
         "E:/PixiJS/PixiTest/raw-assets/main{m}/ui{tps}/higher-icon.jpg": {
             "isFolder": false,

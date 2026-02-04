@@ -14,6 +14,7 @@ export enum AnimationState {
   Idle = "idle",
   Flip = "flip",
   StartIdle = "idle-start",
+  Face = "card-face"
 }
 
 export class Card extends Container {
@@ -82,6 +83,7 @@ export class Card extends Container {
 
         this.spineCard.state.setAnimation(0, AnimationState.Idle, true);
         this.addChild(this.spineCard);
+        console.log("Card Animations:", this.spineCard.skeleton.data.animations.map(a => a.name));
 
         // Re-apply visibility/transform settings
         this.spineCard.visible = !this.mesh.visible;
@@ -150,11 +152,15 @@ export class Card extends Container {
     // --- Glare Setup ---
     // Use GlareFilter on the mesh
     this.glareFilter = new GlareFilter();
+    this.glareFilter.padding = 100; // Extra padding for chopped edges
+    this.glareFilter.resolution = window.devicePixelRatio || 1; // High res
+    this.glareFilter.antialias = "on"; // Force AA on the filter's render texture
+
     this.glareFilter.progress = 0; // Start off-screen
     this.glareFilter.alpha = 0;
 
     // Apply filter to mesh
-    // this.mesh.filters = [this.glareFilter];
+    this.mesh.filters = [this.glareFilter];
 
     //make the card "hitbox" bigger
     this.setHoverPadding(15);

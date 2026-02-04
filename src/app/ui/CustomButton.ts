@@ -1,5 +1,5 @@
 import { ButtonOptions, FancyButton } from "@pixi/ui";
-import { BitmapText } from "pixi.js";
+import { BitmapText, Text, TextStyleOptions } from "pixi.js";
 
 export type CustomButtonOptions = {
     text?: string;
@@ -9,6 +9,7 @@ export type CustomButtonOptions = {
     fontFamily?: string;
     rotation?: number;
     textColor?: number;
+    style?: TextStyleOptions; // Support for rich text styling
 }
 
 export const buttonAnimation = {
@@ -33,7 +34,7 @@ export const buttonAnimation = {
 }
 
 export class CustomButton extends FancyButton {
-    protected customText: BitmapText;
+    protected customText: BitmapText | Text;
 
     public get CustomText() {
         return this.customText.text;
@@ -54,20 +55,36 @@ export class CustomButton extends FancyButton {
 
         super(options);
 
-        this.customText = new BitmapText({
-            text: opts?.text,
-            style: {
-                fontFamily: opts?.fontFamily ?? 'coccm-bitmap-3-normal.fnt',
-                fontSize: opts?.fontSize ?? 23,
-                align: 'center',
-                lineHeight: opts?.lineHeight,
-                letterSpacing: -2,
+        if (opts?.style) {
+            // Use standard Text for rich styling
+            this.customText = new Text({
+                text: opts.text ?? "",
+                style: opts.style,
+            });
+            // If Text, we assume color is handled in style (fill), but fallback to tint if provided?
+            // Usually tinting Text works, but it tints the whole texture (including stroke/shadow).
+            // Users usually want 'fill'. If opts.textColor is provided, maybe apply it?
+            // But opts.style probably contains fill.
+            if (opts.textColor !== undefined && !opts.style.fill) {
+                this.customText.style.fill = opts.textColor;
             }
-        });
+        } else {
+            // Legacy BitmapText
+            this.customText = new BitmapText({
+                text: opts?.text,
+                style: {
+                    fontFamily: opts?.fontFamily ?? 'coccm-bitmap-3-normal.fnt',
+                    fontSize: opts?.fontSize ?? 23,
+                    align: 'center',
+                    lineHeight: opts?.lineHeight,
+                    letterSpacing: -2,
+                }
+            });
+            this.customText.tint = opts?.textColor ?? 0x4a4a4a;
+        }
 
-        // Handle tint and anchor separately
+        // Handle anchor separately
         this.customText.anchor.set(0.5);
-        this.customText.tint = opts?.textColor ?? 0x4a4a4a;
 
         if (opts?.offsetY) {
             this.customText.y -= opts.offsetY;

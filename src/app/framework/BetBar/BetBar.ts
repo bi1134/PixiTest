@@ -62,11 +62,23 @@ export class BetBar extends Container {
         this.inputBox = new BetInput({
             bg: Sprite.from("Bet_volume.png"),
             placeholder: GameData.MIN_BET.toString(),
-            fontSize: 23,
-            fontFamily: "coccm-bitmap-3-normal",
-            align: "center",
-            textColor: 0xFFFFFF,
             textLimitRatio: 0.45,
+            style: {
+                fontSize: 25, // Matching buttons roughly
+                fontFamily: "SVN-Supercell Magic",
+                align: "center",
+                fill: "#ffffff",
+                dropShadow: {
+                    color: "#000000",
+                    blur: 1,
+                    distance: 3,
+                    angle: 90 * (Math.PI / 180),
+                },
+                stroke: {
+                    color: "#000000",
+                    width: 7,
+                },
+            }
         });
         this.addChild(this.inputBox);
 
@@ -75,9 +87,22 @@ export class BetBar extends Container {
 
         this.halfValueButton = new CustomButton({
             text: "1/2",
-            fontSize: 42,
-            fontFamily: "coccm-bitmap-3-normal",
-            textColor: 0xffffff
+            style: {
+                fontSize: 40,
+                fontFamily: "SVN-Supercell Magic",
+                align: "center",
+                fill: "#ffffff",
+                dropShadow: {
+                    color: "#000000",
+                    blur: 1,
+                    distance: 4,
+                    angle: 90 * (Math.PI / 180),
+                },
+                stroke: {
+                    color: "#000000",
+                    width: 7,
+                },
+            }
         }, {
             defaultView: "Button-2-1.png",
         });
@@ -85,9 +110,22 @@ export class BetBar extends Container {
 
         this.doubleValueButton = new CustomButton({
             text: "x2",
-            fontSize: 45,
-            fontFamily: "coccm-bitmap-3-normal",
-            textColor: 0xffffff,
+            style: {
+                fontSize: 45,
+                fontFamily: "SVN-Supercell Magic",
+                align: "center",
+                fill: "#ffffff",
+                dropShadow: {
+                    color: "#000000",
+                    blur: 1,
+                    distance: 4,
+                    angle: 90 * (Math.PI / 180),
+                },
+                stroke: {
+                    color: "#000000",
+                    width: 7,
+                },
+            }
         }, {
             defaultView: "Button-2-2.png",
         });
