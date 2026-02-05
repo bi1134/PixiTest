@@ -41,7 +41,7 @@ export class GameInformation extends Container {
                 padding: 80, // Prevent clipping
             }
         });
-        this.addChild(this.AdditionalInfoLabel);
+        //this.addChild(this.AdditionalInfoLabel);
 
         this.higherMultiplier = new PredictionContainer("higher");
         this.addChild(this.higherMultiplier);

@@ -89,9 +89,8 @@ export class BetBar extends Container {
         this.halfValueButton = new CustomButton({
             text: "1/2",
             offsetY: 0, // Compensate for padding
-            offsetX: -10,
             style: {
-                fontSize: 40,
+                fontSize: 50,
                 fontFamily: "SVN-Supercell Magic",
                 align: "center",
                 fill: "#ffffff",
@@ -115,9 +114,8 @@ export class BetBar extends Container {
         this.doubleValueButton = new CustomButton({
             text: "x2",
             offsetY: 0, // Compensate for padding
-            offsetX: -10,
             style: {
-                fontSize: 45,
+                fontSize: 55,
                 fontFamily: "SVN-Supercell Magic",
                 align: "center",
                 fill: "#ffffff",

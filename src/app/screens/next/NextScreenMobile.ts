@@ -384,7 +384,7 @@ export class NextScreenMobile extends Container {
       minimumFractionDigits: 0,
       maximumFractionDigits: 2
     });
-    this.layout.betButton.setCashOutValue(`Rp ${formattedInitial}`);
+    this.layout.betButton.setCashOutValue(`RP ${formattedInitial}`);
 
     this.layout.halfValueButton.interactive = false;
     this.layout.doubleValueButton.interactive = false;
