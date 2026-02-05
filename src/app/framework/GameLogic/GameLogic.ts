@@ -198,7 +198,7 @@ export class GameLogic extends Container {
             this.backCard.y + this.backCard.height / 2.65;
 
         this.upButton.y = - padding;
-        this.downButton.y = this.downButton.height + padding * 1.75;
+        this.downButton.y = this.downButton.height + padding;
 
         const btnX =
             0;
@@ -217,11 +217,11 @@ export class GameLogic extends Container {
         );
         LayoutHelper.setPositionY(
             this.highDes,
-            this.upButton.y + this.upButton.height - this.highDes.height / 0.5,
+            this.upButton.y + this.upButton.height - this.highDes.height / 0.65,
         );
         LayoutHelper.setPositionY(
             this.lowDes,
-            this.downButton.y + this.lowDes.height * 1.5,
+            this.downButton.y + this.lowDes.height * 1.25,
         );
 
         // Titles

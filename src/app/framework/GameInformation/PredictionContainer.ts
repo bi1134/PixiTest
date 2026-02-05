@@ -51,11 +51,11 @@ export class PredictionContainer extends Container {
             style: {
                 fontFamily: "coccm-bitmap-3-normal",
                 fontSize: 23,
-                align: "center",
+                align: "right",
                 fill: "#fbdb52"
             }
         });
-        this.multiplierText.anchor.set(0, 0.5); // Anchor Left Center
+        this.multiplierText.anchor.set(1, 0.5); // Anchor Right Center
         this.background.addChild(this.multiplierText);
 
         // Layout
@@ -71,7 +71,7 @@ export class PredictionContainer extends Container {
         this.logo.x = this.labelText.x + this.labelText.width / 2 + spacing * 0.75;
         this.logo.y = this.labelText.y;
 
-        this.multiplierText.x = this.background.x + this.background.width / 4 - this.multiplierText.width - spacing / 2;
+        this.multiplierText.x = this.background.x + this.background.width / 4 - spacing * 0.75;
         this.multiplierText.y = this.background.height / 8;
     }
 
