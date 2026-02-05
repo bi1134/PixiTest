@@ -289,8 +289,8 @@ export class NextScreenMobile extends Container {
       this.layout.currentCard.rank,
       this.layout.currentCard.suit,
       action,
-      0,
-      -19,
+      -20,
+      -5,
       1,
       0.35, // 30% of original card size
       this.multiplierManager.currentMultiplier, // Pass multiplier
@@ -359,7 +359,7 @@ export class NextScreenMobile extends Container {
       this.layout.currentCard.suit,
       GuessAction.Start,
       0,
-      -19,
+      -5,
       1,
       0.35, // 30% of original card size
       this.multiplierManager.currentMultiplier,

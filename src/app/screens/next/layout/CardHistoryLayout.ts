@@ -376,7 +376,7 @@ export class CardHistoryLayout extends Container {
     // --- Update mask to match background ---
     // We add a small left padding to the MASK to cleanly clip any overflowing items on the left
     // This resolves the "partial 6th card" issue by hiding it earlier.
-    const maskLeftPadding = -8;
+    const maskLeftPadding = 3;
     const maskRightExtension = 100; // Extend mask to the right
 
     this.cardsHistoryMask
