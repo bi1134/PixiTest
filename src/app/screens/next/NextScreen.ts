@@ -37,7 +37,9 @@ export class NextScreen extends Container {
     const { Assets } = await import("pixi.js");
     await Assets.load([
       "/spine-assets/hilo-character.skel",
-      "/spine-assets/hilo-character.atlas"
+      "/spine-assets/hilo-character.atlas",
+      "/spine-assets/cash-out.skel",
+      "/spine-assets/cash-out.atlas"
     ]);
 
     await engine().navigation.showScreen(NextScreenMobile);

@@ -46,34 +46,22 @@ export class ResultPopup extends Container {
     this.panel = new Container();
     this.safeArea.addChild(this.panel);
 
-    import("pixi.js").then(({ Assets }) => {
-      Assets.load([
-        "/spine-assets/cash-out.skel",
-        "/spine-assets/cash-out.atlas"
-      ]).then(() => {
-        // Once loaded, create the Spine instance
-        this.panelBase = Spine.from({
-          skeleton: "/spine-assets/cash-out.skel",
-          atlas: "/spine-assets/cash-out.atlas",
-        });
-
-        // Initialize animation based on current visibility
-        console.log("ResultPopup Animations:", this.panelBase.skeleton.data.animations.map(a => a.name));
-
-        if (this.visible) {
-          this.runAppearAnimation();
-        } else {
-          this.panelBase.state.setAnimation(0, CashOutAnimationState.Idle, true);
-        }
-
-        this.panel.addChildAt(this.panelBase, 0); // Background
-
-        // Trigger resize to position correctly once loaded
-        const { width, height } = engine().screen;
-        this.resize(width, height);
-
-      });
+    // Assets are preloaded in NextScreen.ts
+    this.panelBase = Spine.from({
+      skeleton: "/spine-assets/cash-out.skel",
+      atlas: "/spine-assets/cash-out.atlas",
     });
+
+    // Initialize animation
+    console.log("ResultPopup Animations:", this.panelBase.skeleton.data.animations.map(a => a.name));
+
+    if (this.visible) {
+      this.runAppearAnimation();
+    } else {
+      this.panelBase.state.setAnimation(0, CashOutAnimationState.Idle, true);
+    }
+
+    this.panel.addChildAt(this.panelBase, 0); // Background
 
 
     this.title = new BitmapLabel({
