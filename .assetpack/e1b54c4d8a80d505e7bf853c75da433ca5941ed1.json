@@ -6,32 +6,8 @@
             "inheritedMetaData": {},
             "transformData": {},
             "stats": {
-                "date": 1770196493236,
-                "duration": 9.925900000002002,
-                "success": true
-            }
-        },
-        "E:/PixiJS/PixiTest/raw-assets/main": {
-            "isFolder": true,
-            "parent": "E:/PixiJS/PixiTest/raw-assets",
-            "metaData": {},
-            "inheritedMetaData": {},
-            "transformData": {},
-            "stats": {
-                "date": 1770107586568,
-                "duration": 0.5724999999999909,
-                "success": true
-            }
-        },
-        "E:/PixiJS/PixiTest/raw-assets/main/spine": {
-            "isFolder": true,
-            "parent": "E:/PixiJS/PixiTest/raw-assets/main",
-            "metaData": {},
-            "inheritedMetaData": {},
-            "transformData": {},
-            "stats": {
-                "date": 1770107586568,
-                "duration": 0.5673999999999069,
+                "date": 1770304041662,
+                "duration": 0.4580999999998312,
                 "success": true
             }
         },

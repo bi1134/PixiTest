@@ -75,7 +75,7 @@ export class CardHistoryItem extends Container {
     this.multiplierTextLabel = new Label({
       text: labelText,
       style: {
-        fontSize: 35,
+        fontSize: 40,
         fontFamily: "SVN-Supercell Magic",
         align: "center",
         fill: "#ffffffff",
@@ -168,7 +168,7 @@ export class CardHistoryItem extends Container {
     // If "action sprite" was the arrow, keeping it centered on card is standard for "Result" overlays.
     this.multiplierTextLabel.position.set(
       this.multiplierBackground.x,
-      this.multiplierBackground.y + this.multiplierBackground.height / 2 - this.multiplierTextLabel.height / 2 // Near bottom
+      this.multiplierBackground.y + this.multiplierBackground.height / 2 - this.multiplierTextLabel.height / 2 + 3 // Near bottom
     );
     // If tray covers card, text should be visible.
   }

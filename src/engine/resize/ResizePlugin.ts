@@ -119,7 +119,7 @@ export class CreationResizePlugin {
         canvasHeight = clientHeight;
       }
 
-      const { width, height } = resize(
+      const { width, height, cssWidth, cssHeight } = resize(
         canvasWidth,
         canvasHeight,
         app.resizeOptions.minWidth,
@@ -127,8 +127,8 @@ export class CreationResizePlugin {
         app.resizeOptions.letterbox,
       );
 
-      app.renderer.canvas.style.width = `${canvasWidth}px`;
-      app.renderer.canvas.style.height = `${canvasHeight}px`;
+      app.renderer.canvas.style.width = `${cssWidth}px`;
+      app.renderer.canvas.style.height = `${cssHeight}px`;
       window.scrollTo(0, 0);
 
       app.renderer.resize(width, height);
@@ -143,8 +143,8 @@ export class CreationResizePlugin {
     this._resizeId = null;
     this._resizeTo = null;
     app.resizeOptions = {
-      minWidth: 768,
-      minHeight: 1024,
+      minWidth: 720,
+      minHeight: 1560,
       letterbox: true,
       ...options.resizeOptions,
     };

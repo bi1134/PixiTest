@@ -23,7 +23,8 @@ setEngine(engine);
 
   await engine.init({
     backgroundAlpha: 0,
-    resizeOptions: { minWidth: 200, minHeight: 200, letterbox: false },
+    background: "#1E1E1E",
+    resizeOptions: { minWidth: 720, minHeight: 1280, letterbox: true }
   });
 
   userSettings.init();

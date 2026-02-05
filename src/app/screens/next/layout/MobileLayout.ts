@@ -103,7 +103,7 @@ export class MobileLayout extends Container {
     // User said "game info - i will handle it later", so leaving current logic or safe default.
     // Preserving previous anchor for consistency unless explicitly broken.
     this.gameInfo.resize(width, height, padding, this.betBar.inputBox.y + this.betBar.y, this.betBar.inputBox.height);
-    this.gameInfo.y = this.background.height / 2 - this.gameInfo.height / 2.45;
+    this.gameInfo.y = this.background.height / 2 - this.gameInfo.height / 2.45 + 2;
 
   }
 }

@@ -187,7 +187,7 @@ export class BetBar extends Container {
         const betBtnMaxW = width * 0.5;
         // Reset scale so we don't double scale if this is called multiple times
         this.betButton.scale.set(1);
-        this.betButton.setSize(betBtnMaxW, this.betButton.defaultHeight * 0.5);
+        this.betButton.setSize(betBtnMaxW, this.betButton.defaultHeight * 0.46);
 
         LayoutHelper.scaleToWidth(this.keyboard, width);
         this.keyboard.y = height - this.keyboard.height / 1.15;
@@ -205,7 +205,7 @@ export class BetBar extends Container {
 
         this.betButton.x = centerX;
         // Align relative to the SAFE history position
-        this.betButton.y = safeHistoryY - this.betButton.height / 2 - this.gameHistory.height * 1.5;
+        this.betButton.y = safeHistoryY - this.betButton.height / 2 - this.gameHistory.height - padding * 2.75;
 
         LayoutHelper.scaleToHeight(this.speedButton, this.betButton.height, true);
         // Speed (Left of Bet)
@@ -221,12 +221,12 @@ export class BetBar extends Container {
         LayoutHelper.scaleToWidth(this.barMid, this.betButton.width * 0.75, true);
         this.barMid.anchor.set(0.5, 0.5);
         this.barMid.x = centerX;
-        this.barMid.y = this.betButton.y + this.betButton.height / 2; // Overlap?
+        this.barMid.y = this.betButton.y + this.betButton.height / 2.2; // Overlap?
 
         this.updateMoneyLayout(); // Centers money on BarMid
 
         // 4. Input Row (Above BarMid)
-        const inputHeight = this.betButton.height * 0.6;
+        const inputHeight = this.betButton.height * 0.655;
         const inputWidth = this.betButton.width;
 
         this.inputBox.resize(inputWidth, inputHeight);
@@ -234,7 +234,7 @@ export class BetBar extends Container {
         this.inputBox.pivot.set(this.inputBox.width / 2, this.inputBox.height / 2);
 
         this.inputBox.x = centerX;
-        this.inputBox.y = this.betButton.y - this.betButton.height + padding; // Slightly up?
+        this.inputBox.y = this.betButton.y - this.betButton.height + padding * 0.9; // Slightly up?
 
         // Half / Double
         LayoutHelper.scaleToHeight(this.halfValueButton, inputHeight, true);
@@ -271,7 +271,7 @@ export class BetBar extends Container {
         this.coinIcon.anchor.set(0, 0.5);
 
         const contentWidth = this.moneyLabel.x + this.moneyLabel.width;
-        const maxW = this.barMid.width * 0.8;
+        const maxW = this.barMid.width * 0.65;
         this.moneyContainer.scale.set(1);
         if (contentWidth > maxW) {
             this.moneyContainer.scale.set(maxW / contentWidth);

@@ -159,18 +159,18 @@ export class GameLogic extends Container {
         LayoutHelper.scaleToWidth(this.multiplierBoard, width * 0.8);
         this.multiplierBoard.x = width / 2;
         // Reset to strict top position + half height (anchor 0.5 assumed or desired centered)
-        this.multiplierBoard.y = this.multiplierBoard.height / 2 + padding / 5;
+        this.multiplierBoard.y = this.multiplierBoard.height / 2;
 
-        this.backCard.scale.set(0.8);
+        this.backCard.scale.set(0.85);
         this.cardPlaceHolder.scale.set(1.85);
-        this.currentCard.setBaseScale(0.8);
+        this.currentCard.setBaseScale(0.85);
 
         LayoutHelper.setPositionX(this.backCard, this.backCard.width / 10);
-        LayoutHelper.setPositionY(this.backCard, this.backCard.height / 10);
+        LayoutHelper.setPositionY(this.backCard, this.backCard.height / 13 - 2);
 
         // Position current card placeholder to the right of the deck (backCard)
         this.cardPlaceHolder.x = this.backCard.x - this.cardPlaceHolder.width / 8;
-        this.cardPlaceHolder.y = this.backCard.y - this.cardPlaceHolder.height / 8; // Align vertically with deck? Or centered?
+        this.cardPlaceHolder.y = this.backCard.y - this.cardPlaceHolder.height / 10.5 + 2;  // Align vertically with deck? Or centered?
 
         this.currentCard.x = this.cardPlaceHolder.x + this.cardPlaceHolder.width / 2;
         this.currentCard.y = this.cardPlaceHolder.y + this.cardPlaceHolder.height / 2;
@@ -185,7 +185,7 @@ export class GameLogic extends Container {
         // Let's assume natural size is desired.
         this.fancySkipButton.scale.set(1);
         this.fancySkipButton.x = this.cardsContainer.x + this.skipButtonText.width / 2;
-        this.fancySkipButton.y = this.backCard.y + this.backCard.height;
+        this.fancySkipButton.y = this.backCard.y + this.backCard.height - padding / 3;
 
         // Ensure skip button is always on top
         this.cardsContainer.addChild(this.fancySkipButton);
@@ -197,8 +197,8 @@ export class GameLogic extends Container {
         const btnY =
             this.backCard.y + this.backCard.height / 2.65;
 
-        this.upButton.y = - padding;
-        this.downButton.y = this.downButton.height + padding;
+        this.upButton.y = - padding * 1.2 - 3;
+        this.downButton.y = this.downButton.height + padding * 1.2 + 2;
 
         const btnX =
             0;

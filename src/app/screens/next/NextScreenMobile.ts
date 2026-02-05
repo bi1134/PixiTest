@@ -15,8 +15,7 @@ export class NextScreenMobile extends Container {
   private multiplierManager: MultiplierManager;
   // private currentState: GameState = GameState.NonBetting; // Moved to GameData
 
-  // New container for safe area content
-  private safeArea!: Container;
+
 
   private firstLoad: boolean = true;
 
@@ -50,6 +49,7 @@ export class NextScreenMobile extends Container {
       if (this.betButtonIsCashOut()) {
         this.CashOut();
       } else {
+        this.ValidateInput(); // Ensure valid input before betting
         const currentBet = parseFloat(this.layout.inputBox.value);
         const maxMoney = parseFloat(GameData.instance.totalMoney.toFixed(2));
 
@@ -238,25 +238,25 @@ export class NextScreenMobile extends Container {
       // Win Logic
       this.multiplierManager.applyWin(prevRank, action); // Apply win using PREVIOUS rank and CHOSEN action
 
+      // --- Trigger Combo Dialog ---
+      const prompt = this.multiplierManager.getComboPrompt(nextRank, this.multiplierManager.currentMultiplier);
+      // prompt.action is "hot".
+      // Text: "{number} more {High/Low} to get {Prediction}x"
+
+      const actionText = prompt.actionLabel;
+      // 1. Info: "2 more High to receive"
+      const infoText = `${prompt.remaining} more ${actionText} to get`;
+      // 2. Prediction: "15.5x"
+      const predictionText = `x${prompt.predictedTotal}`;
+      // 3. Current: "Current: 1.2x"
+      const currentText = `x${this.multiplierManager.currentMultiplier}`;
+
+      this.layout.gameInfo.knightCharacter.playState('win'); // Keep win anim
+      this.layout.gameInfo.knightCharacter.say(infoText, 'combo', predictionText, currentText);
+
       this.enableButton(this.layout.betButton);
-      // Update Cash Out Button with Value
-      const currentMultiplier = this.multiplierManager.currentMultiplier;
-      const currentBet = parseFloat(this.layout.inputBox.value);
-      const validBet = isNaN(currentBet) ? GameData.MIN_BET : currentBet;
-      const totalPayout = validBet * currentMultiplier;
-
-      const formattedPayout = totalPayout.toLocaleString('de-DE', {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 2
-      });
-
-      this.layout.betButton.setCashOutValue(`Rp ${formattedPayout}`);
-
-      this.layout.gameInfo.knightCharacter.playState('win');
-      this.layout.gameInfo.knightCharacter.say('Good Job!');
 
     } else if (result === GuessResult.Lose) {
-      // Loss Logic
       // Loss Logic
       const rawVal = parseFloat(this.layout.inputBox.value);
       const lostAmount = isNaN(rawVal) ? GameData.MIN_BET : rawVal;
@@ -468,38 +468,12 @@ export class NextScreenMobile extends Container {
   public reset() { }
 
 
+
   public resize(width: number, height: number) {
-    if (!this.safeArea) {
-      this.safeArea = new Container();
-      this.addChild(this.safeArea);
-      // Move layout into safeArea
-      this.safeArea.addChild(this.layout);
-    }
-
-    // Fixed Safe Area Dimensions
-    const SAFE_WIDTH = 720;
-    const SAFE_HEIGHT = 1280;
-
-    // Calculate scale to fit (Contain)
-    const scale = Math.min(width / SAFE_WIDTH, height / SAFE_HEIGHT);
-
-    // Apply scale
-    this.safeArea.scale.set(scale);
-
-    // Center Safe Area
-    this.safeArea.x = (width - SAFE_WIDTH * scale) / 2;
-    this.safeArea.y = (height - SAFE_HEIGHT * scale) / 2;
-
-    // --- End Shadow ---
-
-    // Resize Internal Components to Fixed Reference Resolution
-    const padding = SAFE_WIDTH * 0.02; // 2% of fixed width
-
-    // Calculate how much space is above/below the safe area (in logical pixels)
-    // safeArea is centered, so top gap == bottom gap.
-    const verticalMargin = this.safeArea.y / scale;
-
-    this.layout.resize(SAFE_WIDTH, SAFE_HEIGHT, padding, verticalMargin);
+    // Pass through resize directly to layout
+    // The engine (ResizePlugin) now handles letterboxing and scaling.
+    // We just need to fit our layout into the provided width/height.
+    this.layout.resize(width, height, width * 0.02, 0);
   }
 
   public async show(): Promise<void> {

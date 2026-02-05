@@ -5,45 +5,52 @@ export class MultiplierManager {
     private _currentMultiplier: number = 1.0; // Default start
     private _baseMultiplier: number = 1.0;
 
+    private _comboCount: number = 0;
+    private _comboDirection: 'High' | 'Low' | null = null;
+    private readonly COMBO_TARGET = 3;
+
     constructor() {
         this.reset();
     }
 
-    public reset() {
-        this._currentMultiplier = this._baseMultiplier;
-    }
-
+    public get comboCount() { return this._comboCount; }
     public get currentMultiplier(): number {
-        // Keep 2 decimal places for display, but logic might want more precision internally?
-        // User said "currentMultiplier *= actualMultiplier".
-        // It's better to keep high precision internally and only round for display if needed.
-        // But the previous getter rounded to 2.
-        // Let's return fixed 2 for display consistency, but beware of drift if we used this for calculation.
-        // We use _currentMultiplier for calc, so it's fine.
         return parseFloat(this._currentMultiplier.toFixed(2));
     }
 
-    /**
-     * Calculates the fair multiplier based on win probability.
-     * fairMultiplier = 1 / probabilityOfWinning
-     * actualMultiplier = fairMultiplier * 0.98 (2% house edge)
-     * The multiplier must never decrease after a win.
-     */
+    public reset() {
+        this._currentMultiplier = this._baseMultiplier;
+        this._comboCount = 0;
+        this._comboDirection = null;
+    }
+
+    private isHighGroup(action: GuessAction): boolean {
+        return action === GuessAction.Higher ||
+            action === GuessAction.HigherOrEqual ||
+            action === GuessAction.Equal;
+    }
+
+    private isLowGroup(action: GuessAction): boolean {
+        return action === GuessAction.Lower ||
+            action === GuessAction.LowerOrEqual ||
+            action === GuessAction.Equal;
+    }
+
+    private getActionDirection(action: GuessAction): 'High' | 'Low' | 'Neutral' {
+        if (action === GuessAction.Equal) return 'Neutral';
+        if (this.isHighGroup(action)) return 'High';
+        if (this.isLowGroup(action)) return 'Low';
+        return 'Neutral';
+    }
+
     public calculateMultiplier(rank: string, action: GuessAction): number {
         const winProbPercent = NextGameLogic.getWinProbability(rank, action);
-
-        // Handle edge cases where probability is 0 (should shouldn't happen in valid moves) or 100
-        if (winProbPercent <= 0) return 0; // Loss certain, or invalid
+        if (winProbPercent <= 0) return 0; // Loss certain
 
         const probability = winProbPercent / 100;
         const fairMultiplier = 1 / probability;
-
-        // Apply house edge
         let actualMultiplier = fairMultiplier * 0.98;
 
-        // "The multiplier must never decrease after a win."
-        // If probability is 100% (1.0), fair is 1.0, actual is 0.98.
-        // We must ensure actualMultiplier >= 1.0
         if (actualMultiplier < 1.0) {
             actualMultiplier = 1.0;
         }
@@ -51,15 +58,73 @@ export class MultiplierManager {
         return actualMultiplier;
     }
 
-    // Getting the NEXT total multiplier (prediction)
     public getNextMultiplier(rank: string, action: GuessAction): number {
         const factor = this.calculateMultiplier(rank, action);
-        // Returns what the multiplier WOULD be
         return parseFloat((this._currentMultiplier * factor).toFixed(2));
     }
 
     public applyWin(rank: string, action: GuessAction) {
         const factor = this.calculateMultiplier(rank, action);
-        this._currentMultiplier *= factor;
+
+        // Combo Logic
+        const actionDir = this.getActionDirection(action);
+
+        if (this._comboDirection === null) {
+            // Start Streak
+            if (actionDir !== 'Neutral') {
+                this._comboDirection = actionDir;
+                this._comboCount = 1;
+            } else {
+                this._comboCount = 1;
+                // Direction remains null until explicit High/Low
+            }
+        } else {
+            // Existing Streak
+            let matches = false;
+            // Equal counts for both if we are already in a streak
+            if (this._comboDirection === 'High' && this.isHighGroup(action)) matches = true;
+            else if (this._comboDirection === 'Low' && this.isLowGroup(action)) matches = true;
+
+            if (matches) {
+                this._comboCount++;
+            } else {
+                // Reset and start new?
+                this._comboCount = 1;
+                this._comboDirection = actionDir !== 'Neutral' ? actionDir : null;
+            }
+        }
+
+        // Apply Bonus if target reached
+        let bonus = 1.0;
+        if (this._comboCount >= this.COMBO_TARGET) {
+            bonus = 2.0;
+        }
+
+        this._currentMultiplier *= (factor * bonus);
+    }
+
+    /**
+     * Returns data for the Combo Text prompt.
+     * "2 more High to get 15.5x"
+     */
+    public getComboPrompt(rank: string, currentMultiplier: number): { actionLabel: string, remaining: number, predictedTotal: number } {
+
+        const targetDir = this._comboDirection || 'High';
+
+        let remaining = this.COMBO_TARGET - this._comboCount;
+
+        if (remaining <= 0) remaining = 3;
+
+        // Calculate hypothetical multiplier
+        const avgFactor = 2.0;
+        const bonus = 2.0;
+
+        const predictedTotal = currentMultiplier * Math.pow(avgFactor, remaining) * bonus;
+
+        return {
+            actionLabel: targetDir,
+            remaining: remaining,
+            predictedTotal: parseFloat(predictedTotal.toFixed(2))
+        };
     }
 }

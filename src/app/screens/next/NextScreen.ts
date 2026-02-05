@@ -21,15 +21,6 @@ export class NextScreen extends Container {
    */
   private async detectAndRedirect(): Promise<void> {
     // Always treat as "mobile" app logic-wise (responsive single view)
-    // But allow desktop capabilities (min dimensions)
-    engine().resizeOptions = {
-      minWidth: 200,
-      minHeight: 200,
-      letterbox: false, // We handle letterboxing/centering manually in NextScreenMobile
-    };
-
-    // Force an immediate resize to apply the new options
-    engine().resize();
 
     console.log(`[NextScreen] Loading Mobile View (Unified)...`);
 
