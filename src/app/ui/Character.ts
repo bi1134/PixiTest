@@ -51,7 +51,7 @@ export class Character extends Container {
         // NineSlice Chat Bubble
         // Normal Dialog Bubble (NineSliceSprite now)
         this.dialogBubble = new NineSliceSprite({
-            texture: Texture.from("Dialog.png"),
+            texture: Texture.from("Dialog-0.png"),
             leftWidth: 45,
             topHeight: 45,
             rightWidth: 45,
@@ -154,18 +154,26 @@ export class Character extends Container {
             return;
         }
 
-        const normalTexture = Texture.from("Dialog.png");
+        const refTexture = Texture.from("Dialog.png");
+        const normalTexture = Texture.from("Dialog-0.png");
         const comboTexture = Texture.from("Dialog_1.png");
 
         if (type === 'combo') {
             this.dialogBubble.texture = comboTexture;
 
-            // Match size of normal dialog and flip
-            // Assuming we want the visual width to match normal width
-            const scaleX = (normalTexture.width / comboTexture.width) * -1 / 3.55;
-            const scaleY = (normalTexture.height / comboTexture.height);
+            // Match size of normal (Ref) dialog and flip
+            // Using width/height prevents 9-slice stretching
+            // refTexture.width/height gives the original dimensions of Dialog.png
 
-            this.dialogBubble.scale.set(scaleX, scaleY);
+            // Adjust these multipliers if you want it larger/smaller
+            const targetW = refTexture.width;
+            const targetH = refTexture.height;
+
+            this.dialogBubble.width = targetW;
+            this.dialogBubble.height = targetH;
+
+            // Just flip, don't scale size
+            this.dialogBubble.scale.set(-1, 1);
 
             // Show Combo Labels, Hide Normal Text
             this.comboInfoLabel.visible = true;
@@ -204,7 +212,7 @@ export class Character extends Container {
 
         } else {
             this.dialogBubble.texture = normalTexture;
-            this.dialogBubble.scale.set(1, 1);
+            this.dialogBubble.scale.set(-1, 1);
 
             // Show Normal Text, Hide Combo Labels
             this.comboInfoLabel.visible = false;
@@ -219,37 +227,25 @@ export class Character extends Container {
         this.dialogContainer.visible = true;
 
         if (type !== 'combo') {
-            // Reset scale before measurement
+            // Measure text
             this.dialogText.scale.set(1);
 
-            // Use bubble size to constrain text
-            // Ensure we have valid dimensions (fallback if texture not ready)
-            const bubbleW = this.dialogBubble.width > 2 ? this.dialogBubble.width : 250;
-            const bubbleH = this.dialogBubble.height > 2 ? this.dialogBubble.height : 150;
+            // Reset text settings that might have been tweaked
+            this.dialogText.scale.set(1);
+            this.dialogText.style.wordWrapWidth = 300; // A reasonable default max width
+            this.dialogText.text = mainText;
 
-            // Set wrapping to fit within bubble width with padding
-            const paddingX = 40;
-            const maxTextW = bubbleW - paddingX;
-            this.dialogText.style.wordWrapWidth = maxTextW;
+            // Fixed size matching combo logic (User request)
+            const targetW = refTexture.width;
+            const targetH = refTexture.height;
 
-            // Scale down if text exceeds bounds (height or width)
-            const bounds = this.dialogText.getLocalBounds();
-            const maxTextH = bubbleH * 0.65; // ~65% of height to avoid tail/edges
+            this.dialogBubble.width = targetW;
+            this.dialogBubble.height = targetH;
 
-            let scale = 1;
-            if (bounds.width > maxTextW) {
-                scale = maxTextW / bounds.width;
-            }
-            if (bounds.height > maxTextH) {
-                const hScale = maxTextH / bounds.height;
-                if (hScale < scale) scale = hScale;
-            }
-            this.dialogText.scale.set(scale);
+            // Ensure flipped
+            this.dialogBubble.scale.set(-1, 1);
 
-            // Center text in bubble visual center
-            // Bubble anchor (0.5, 1) -> (0,0) is bottom-center
-            // Visual center is roughly mid-height above tail
-            this.dialogText.position.set(0, -bubbleH / 2);
+            this.dialogText.position.set(0, -targetH / 2); // slightly up for visual balance
         }
 
         // Animate In
