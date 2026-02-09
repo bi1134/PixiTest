@@ -47,7 +47,7 @@ export class PredictionContainer extends Container {
 
         // 4. Multiplier Text
         this.multiplierText = new BitmapText({
-            text: "01.25x",
+            text: "0x",
             style: {
                 fontFamily: "coccm-bitmap-3-normal",
                 fontSize: 23,

@@ -6,22 +6,27 @@ export function getToken(): { useMock: boolean; token: string } {
     new URLSearchParams(window.location.search),
   );
   let temp: boolean;
-  // console.log(urlParams);
 
-  if (urlParams?.useMock == "true") {
+  // Check URL param for explicit mock control
+  if (urlParams?.useMock === "true") {
     temp = true;
+  } else if (urlParams?.useMock === "false") {
+    // Explicit real API mode
+    temp = false;
+  } else if (urlParams?.token) {
+    // Has token = use real API
+    temp = false;
   } else {
-    // Default to true for dev/mocking if no token is present or strictly if useMock is not explicitly false?
-    // User requested fake data, so let's default to true if useMock is not present.
-    // However, if token IS present, maybe we want real API?
-    // For now, force true if useMock param is missing, or maybe checks if token is missing.
-    // Given the user is stuck on 401, they likely lack a token.
+    // No token, no explicit setting = default to mock for local dev
     temp = true;
-    TOKEN = urlParams?.token;
   }
 
+  TOKEN = urlParams?.token || "";
   useMock = temp;
-  return { useMock: temp, token: urlParams?.token };
+
+  console.log(`[API] Mode: ${temp ? 'MOCK' : 'REAL API'}, Token: ${TOKEN ? 'present' : 'missing'}`);
+
+  return { useMock: temp, token: TOKEN };
 }
 
 export function getBaseUrl(): string {

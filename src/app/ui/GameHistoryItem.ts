@@ -19,8 +19,15 @@ export class GameHistoryItem extends Container {
       defaultView: bgTexture,
       anchor: 0.5,
     });
+
+    // Format multiplier with proper number formatting
+    const formattedMultiplier = data.multiplier.toLocaleString('de-DE', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+    });
+
     this.textLabel = new BitmapLabel({
-      text: `x${data.multiplier}`,
+      text: `x${formattedMultiplier}`,
       style: { fill: "#e9e9e9ff", fontSize: 20, fontFamily: "coccm-bitmap-3-normal", letterSpacing: -2 },
     });
 

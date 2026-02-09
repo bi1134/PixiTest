@@ -120,7 +120,14 @@ export class ApiClient implements IApiClient {
   }
 
   public post<T>(url: string, body: unknown): Promise<T> {
-    return this.request<T>("POST", url, body);
+    // Inject token into body for all POST requests as required by API spec
+    let finalBody = body;
+    if (this.token && typeof body === 'object' && body !== null) {
+      finalBody = { token: this.token, ...body };
+    } else if (this.token && (body === null || body === undefined || Object.keys(body as object).length === 0)) {
+      finalBody = { token: this.token };
+    }
+    return this.request<T>("POST", url, finalBody);
   }
 
   public put<T>(url: string, body: unknown): Promise<T> {

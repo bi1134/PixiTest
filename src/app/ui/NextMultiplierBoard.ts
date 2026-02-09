@@ -62,9 +62,9 @@ export class NextMultiplierBoard extends Container {
         this.topLabel.zIndex = 2;
         //this.addChild(this.topLabel);
 
-        // Bottom Label "1.5x"
+        // Bottom Label - starts at 0 before any wins
         this.bottomLabel = new BitmapText({
-            text: "1.5x",
+            text: "0",
             style: {
                 fontFamily: "coccm-bitmap-3-normal",
                 fontSize: 35, // Larger
@@ -86,7 +86,7 @@ export class NextMultiplierBoard extends Container {
     public updateValues(multiplier: number, currentBet: number) {
         const totalWin = multiplier * currentBet;
 
-        let displayString = `${multiplier}x`;
+        let displayString = `RP ${totalWin}`;
         if (totalWin > 0) {
             const formatted = totalWin.toLocaleString('de-DE', {
                 minimumFractionDigits: 0,
@@ -97,7 +97,7 @@ export class NextMultiplierBoard extends Container {
             // User asked "like in BetButton", which is just Money usually.
             // But this is "NextMultiplierBoard".
             // Let's explicitly format it as Money.
-            displayString = `Rp ${formatted}`; // Capitalize RP? BetButton uses "RP". NextScreen "Rp".
+            displayString = `RP ${formatted}`; // Capitalize RP? BetButton uses "RP". NextScreen "Rp".
         }
 
         this.bottomLabel.text = displayString;

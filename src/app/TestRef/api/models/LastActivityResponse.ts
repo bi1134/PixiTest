@@ -1,12 +1,12 @@
 export interface LastActivity {
   pick: number;
-  rank: number;
-  suit: number;
-  history_cards: string[];
-  chance_up: number;
-  chance_down: number;
+  field: number[];
+  bomb_field: number[];
   amount: number;
   multiplier: number;
+  next_multiplier: number[];
+  prize_list: number[];
+  bomb_count: number;
   total_win: number;
   is_settle: boolean;
   end_round: boolean;
@@ -28,22 +28,21 @@ export interface LastActivityApiResponse {
 export const mockLastActivityResponse: LastActivityApiResponse = {
   data: {
     username: "vinh_player",
-    balance: 12020234,
+    balance: 12020234.23,
     currency: "IDR",
     last_activity: {
       pick: 2,
-      rank: 10,
-      suit: 3,
-      history_cards: ["n-1-5-0.00", "l-3-10-1.06"],
-      chance_up: 30.77,
-      chance_down: 76.92,
-      amount: 1000, // Match GameData.MIN_BET
+      field: [0, 3],
+      bomb_field: [1, 3, 5, 23, 15],
+      amount: 100,
       multiplier: 1.5,
-      total_win: 1500,
+      next_multiplier: [1.23],
+      prize_list: [1.25, 2.5, 5, 10, 25, 50, 100, 250, 500, 1000],
+      bomb_count: 1,
+      total_win: 150,
       is_settle: true,
       end_round: true,
     },
-    last_bet: 1000, // Match GameData.MIN_BET
+    last_bet: 100,
   },
 };
-

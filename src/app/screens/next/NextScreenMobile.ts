@@ -7,6 +7,8 @@ import { UI } from "../../ui/Manager/UIManager";
 import { NextGameLogic } from "./logic/NextGameLogic";
 import { GameData } from "../../data/GameData";
 import { MultiplierManager } from "./logic/MultiplierManager";
+import { GameService } from "../../api/services/GameService";
+import { CardSuit } from "../../ui/Card";
 
 export class NextScreenMobile extends Container {
   public static assetBundles = ["main"];
@@ -35,17 +37,54 @@ export class NextScreenMobile extends Container {
     this.EnterBettingState();
 
     this.resize(width, height);
-    // Sync initial UI
-    this.layout.updateMoney(`${GameData.instance.totalMoney.toFixed(2)} `);
 
+    // Sync initial UI and load player data from API
+    this.initializeFromApi();
   }
+
+  /**
+   * Initialize game state from API (lastActivity)
+   */
+  private async initializeFromApi() {
+    try {
+      const response = await GameService.lastActivity();
+      const data = response.data;
+
+      if (data) {
+        // Initialize player data
+        GameData.initFromApi(data.username, data.balance, data.currency);
+        this.layout.updateMoney(`${data.balance.toFixed(2)} `);
+
+        // Check if there's an active game session to resume
+        if (data.last_activity && !data.last_activity.end_round) {
+          console.log("Resuming active game session...");
+          // Could restore card, multiplier etc here if needed
+          const rankStr = this.numericToRank(data.last_activity.rank);
+          const suitStr = this.numericToSuit(data.last_activity.suit);
+          this.layout.currentCard.SetValue(rankStr, suitStr);
+          this.multiplierManager.setMultiplier(data.last_activity.multiplier);
+          this.EnterNonBettingState();
+        }
+
+        // Set last bet as default input value
+        if (data.last_bet) {
+          this.layout.inputBox.value = data.last_bet.toString();
+        }
+      }
+    } catch (error) {
+      console.error("Failed to load player data from API:", error);
+      // Fall back to default values
+      this.layout.updateMoney(`${GameData.instance.totalMoney.toFixed(2)} `);
+    }
+  }
+
 
   private setupEvents() {
 
     this.layout.upButton.onPress.connect(() => this.HigherButton());
     this.layout.downButton.onPress.connect(() => this.LowerButton());
     this.layout.fancySkipButton.onPress.connect(() => this.SkipButton());
-    this.layout.betButton.onPress.connect(() => {
+    this.layout.betButton.onPress.connect(async () => {
       if (this.betButtonIsCashOut()) {
         this.CashOut();
       } else {
@@ -58,11 +97,28 @@ export class NextScreenMobile extends Container {
           return;
         }
 
-        // Deduct money immediately (Scenario A)
-        GameData.instance.totalMoney -= currentBet;
-        this.layout.updateMoney(`${GameData.instance.totalMoney.toFixed(2)} `);
+        // Call API to start bet
+        try {
+          const response = await GameService.bet(currentBet, "start");
+          const data = response.data;
 
-        this.EnterNonBettingState();
+          // Update balance from API response
+          GameData.instance.totalMoney = data.balance;
+          this.layout.updateMoney(`${data.balance.toFixed(2)} `);
+
+          // Set initial card from API response
+          const rankStr = this.numericToRank(data.rank);
+          const suitStr = this.numericToSuit(data.suit);
+          this.layout.currentCard.SetValue(rankStr, suitStr);
+
+          // Update multiplier and odds from API
+          this.multiplierManager.setMultiplier(data.multiplier);
+
+          this.EnterNonBettingState();
+        } catch (error) {
+          console.error("Bet API error:", error);
+          // Error popup is handled by ApiClient
+        }
       }
     });
 
@@ -74,23 +130,33 @@ export class NextScreenMobile extends Container {
     return !this.layout.betButton.isBetting;
   }
 
-  private HigherButton() {
+  private async HigherButton() {
     const rank = this.layout.currentCard.rank;
     const action = NextGameLogic.getHighAction(rank);
-    this.EvaluateGuess(action);
+    // Convert GuessAction enum to API action string
+    const actionStr = this.guessActionToApiString(action);
+    await this.callPickApi(actionStr, action);
   }
 
-  private LowerButton() {
+  private async LowerButton() {
     const rank = this.layout.currentCard.rank;
     const action = NextGameLogic.getLowAction(rank);
-    this.EvaluateGuess(action);
+    // Convert GuessAction enum to API action string
+    const actionStr = this.guessActionToApiString(action);
+    await this.callPickApi(actionStr, action);
   }
 
-  private SkipButton() {
-    this.EvaluateGuess(GuessAction.Skip);
-    this.layout.gameInfo.knightCharacter.playState('skip');
-    this.layout.gameInfo.knightCharacter.say("YOU CAN DO IT!");
-    this.vibratePhone(100);
+  private async SkipButton() {
+    try {
+      const currentRankNumeric = this.rankToNumeric(this.layout.currentCard.rank);
+      const response = await GameService.skip(currentRankNumeric);
+      this.handlePickResponse(response.data, GuessAction.Skip);
+      this.layout.gameInfo.knightCharacter.playState('skip');
+      this.layout.gameInfo.knightCharacter.say("YOU CAN DO IT!");
+      this.vibratePhone(100);
+    } catch (error) {
+      console.error("Skip API error:", error);
+    }
   }
 
   private HalfButton() {
@@ -153,8 +219,8 @@ export class NextScreenMobile extends Container {
         });
       };
 
-      this.layout.highDes.text = `Rp ${formatPayout(highPayout)} `;
-      this.layout.lowDes.text = `Rp ${formatPayout(lowPayout)} `;
+      this.layout.highDes.text = `RP ${formatPayout(highPayout)} `;
+      this.layout.lowDes.text = `RP ${formatPayout(lowPayout)} `;
 
       // Update Prediction Multipliers on the Board
       this.layout.gameInfo.updatePredictions(highNextMult, lowNextMult);
@@ -201,10 +267,12 @@ export class NextScreenMobile extends Container {
     this.layout.titleLow.text = `${(lowProb * 100).toFixed(1)}% `;
 
     // Update Next Multiplier Board (Prediction)
-    // Show current multiplier accurately
+    // During betting state, show 0 since no winnings yet
+    // During non-betting state, show current multiplier * bet
     const currentBet = parseFloat(this.layout.inputBox.value);
     const validBet = isNaN(currentBet) ? GameData.MIN_BET : currentBet;
-    this.layout.multiplierBoard.updateValues(this.multiplierManager.currentMultiplier, validBet);
+    const boardBet = GameData.instance.currentState === GameState.Betting ? 0 : validBet;
+    this.layout.multiplierBoard.updateValues(this.multiplierManager.currentMultiplier, boardBet);
 
   }
 
@@ -245,14 +313,14 @@ export class NextScreenMobile extends Container {
 
       const actionText = prompt.actionLabel;
       // 1. Info: "2 more High to receive"
-      const infoText = `${prompt.remaining} more ${actionText} to get`;
-      // 2. Prediction: "15.5x"
-      const predictionText = `x${prompt.predictedTotal}`;
+      const infoText = `${prompt.remaining} more ${actionText} to receive`;
+      // 2. Bonus: "+1x" (fixed combo bonus)
+      const bonusText = `+${prompt.comboBonus}x`;
       // 3. Current: "Current: 1.2x"
       const currentText = `x${this.multiplierManager.currentMultiplier}`;
 
       this.layout.gameInfo.knightCharacter.playState('win'); // Keep win anim
-      this.layout.gameInfo.knightCharacter.say(infoText, 'combo', predictionText, currentText);
+      this.layout.gameInfo.knightCharacter.say(infoText, 'combo', bonusText, currentText);
 
       this.enableButton(this.layout.betButton);
 
@@ -424,24 +492,41 @@ export class NextScreenMobile extends Container {
 
   //#endregion
 
-  private CashOut() {
-    const multiplier = this.multiplierManager.currentMultiplier;
-    const rawVal = parseFloat(this.layout.inputBox.value);
-    const base = isNaN(rawVal) ? GameData.MIN_BET : rawVal;
+  private async CashOut() {
+    try {
+      const response = await GameService.cashout();
+      const data = response.data;
 
-    UI.showResult(multiplier, base);
+      // Use MultiplierManager's tracked multiplier (includes combo bonuses)
+      // NOT data.multiplier (which comes from mock that doesn't track combo)
+      const multiplier = this.multiplierManager.currentMultiplier;
+      const rawVal = parseFloat(this.layout.inputBox.value);
+      const base = isNaN(rawVal) ? GameData.MIN_BET : rawVal;
 
-    // Show reveal animation (Mesh + Shadow) using existing lose animation logic
-    this.layout.currentCard.playLoseAnimation();
+      console.log(`[CashOut] Using MultiplierManager multiplier: ${multiplier}x (API returned: ${data.multiplier}x)`);
 
-    const betAmount = isNaN(rawVal) ? GameData.MIN_BET : rawVal;
-    GameData.instance.addRoundResult(multiplier, true, betAmount);
-    this.layout.gameHistory.addResult(multiplier, true);
+      UI.showResult(multiplier, base);
 
-    // Update Money and Recenter
-    this.layout.updateMoney(`${GameData.instance.totalMoney.toFixed(2)} `);
+      // Show reveal animation
+      this.layout.currentCard.playLoseAnimation();
 
-    this.EnterBettingState();
+      // Record result locally
+      GameData.instance.addRoundResult(multiplier, true, base);
+      this.layout.gameHistory.addResult(multiplier, true);
+
+      // Update money display - calculate payout using correct multiplier
+      const payout = base * multiplier;
+      GameData.instance.totalMoney += payout;
+      this.layout.updateMoney(`${GameData.instance.totalMoney.toFixed(2)} `);
+
+      // Reset combo/multiplier on cashout
+      this.multiplierManager.reset();
+
+      this.EnterBettingState();
+    } catch (error) {
+      console.error("Cashout API error:", error);
+      // Error popup is handled by ApiClient
+    }
   }
 
   private ValidateInput() {
@@ -502,5 +587,173 @@ export class NextScreenMobile extends Container {
     if (navigator && navigator.vibrate) {
       navigator.vibrate(power);
     }
+  }
+
+  // --- API Helper Methods ---
+
+  /**
+   * Convert numeric rank (1-13) from API to string rank (A, 2-10, J, Q, K)
+   */
+  private numericToRank(num: number): string {
+    const ranks = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+    if (num >= 1 && num <= 13) {
+      return ranks[num - 1];
+    }
+    return "A"; // Default fallback
+  }
+
+  /**
+   * Convert numeric suit (1-4) from API to string suit
+   * 1 = Diamonds (♦), 2 = Clubs (♣), 3 = Hearts (♥), 4 = Spades (♠)
+   */
+  private numericToSuit(num: number): CardSuit {
+    const suits: CardSuit[] = ["diamond", "club", "heart", "spade"];
+    if (num >= 1 && num <= 4) {
+      return suits[num - 1];
+    }
+    return "spade"; // Default fallback
+  }
+
+  /**
+   * Convert GuessAction enum to API action string
+   */
+  private guessActionToApiString(action: GuessAction): string {
+    switch (action) {
+      case GuessAction.Higher:
+        return "higher";
+      case GuessAction.Lower:
+        return "lower";
+      case GuessAction.Equal:
+        return "equal";
+      case GuessAction.HigherOrEqual:
+        return "higher_equal";
+      case GuessAction.LowerOrEqual:
+        return "lower_equal";
+      case GuessAction.Skip:
+        return "skip";
+      default:
+        return "higher";
+    }
+  }
+
+  /**
+   * Call pick API with action (higher/lower) and handle response
+   */
+  private async callPickApi(action: string, guessAction: GuessAction) {
+    try {
+      const currentRankNumeric = this.rankToNumeric(this.layout.currentCard.rank);
+      const response = await GameService.pick(action, currentRankNumeric);
+      this.handlePickResponse(response.data, guessAction);
+    } catch (error) {
+      console.error(`Pick API error (${action}):`, error);
+    }
+  }
+
+  /**
+   * Convert string rank to numeric (A=1, 2=2, ..., K=13)
+   */
+  private rankToNumeric(rank: string): number {
+    const ranks = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+    const index = ranks.indexOf(rank);
+    return index >= 0 ? index + 1 : 1; // A=1, 2=2, ..., K=13
+  }
+
+  /**
+   * Handle API response for pick/skip actions
+   */
+  private handlePickResponse(data: any, action: GuessAction) {
+    const prevRank = this.layout.currentCard.rank;
+
+    // Update card from API response
+    const newRank = this.numericToRank(data.rank);
+    const newSuit = this.numericToSuit(data.suit);
+
+    // Visual Transition: Fly off old card
+    this.layout.animateFlyOff(prevRank, this.layout.currentCard.suit);
+    this.layout.animateDeal();
+
+    // Update card visual
+    this.layout.currentCard.SetValue(newRank, newSuit);
+
+    // Check game state
+    if (data.end_round) {
+      // Game ended - player lost
+      // Reset multiplier from API (for sync on real API)
+      this.multiplierManager.setMultiplier(1.0);
+
+      const rawVal = parseFloat(this.layout.inputBox.value);
+      const lostAmount = isNaN(rawVal) ? GameData.MIN_BET : rawVal;
+      GameData.instance.addRoundResult(0, false, lostAmount);
+      this.layout.gameHistory.addResult(0, false);
+
+      this.layout.gameInfo.knightCharacter.playState('lose');
+      this.layout.gameInfo.knightCharacter.say('YOU LOSE, BET AGAIN!');
+
+      this.layout.currentCard.playLoseAnimation();
+      this.layout.updateMoney(`${GameData.instance.totalMoney.toFixed(2)} `);
+
+      // Reset combo on loss
+      this.multiplierManager.reset();
+
+      this.vibratePhone(200);
+      this.EnterBettingState();
+    } else if (action === GuessAction.Skip) {
+      // Skip - don't reset multiplier, just reset combo counter
+      this.multiplierManager.resetCounter();
+      this.layout.gameInfo.knightCharacter.playState('skip');
+      this.layout.gameInfo.knightCharacter.say("SKIPPED!");
+    } else if (data.multiplier > 0) {
+      // Win - let applyWin calculate the multiplier (preserves combo tracking)
+      // DON'T call setMultiplier here - it would overwrite combo progress!
+      this.multiplierManager.applyWin(prevRank, action);
+
+      const prompt = this.multiplierManager.getComboPrompt(newRank, this.multiplierManager.currentMultiplier);
+      const actionText = prompt.actionLabel;
+      const infoText = `${prompt.remaining} more ${actionText} to receive`;
+      const bonusText = `+${prompt.comboBonus}x`;
+      const currentText = `x${this.multiplierManager.currentMultiplier}`;
+
+      this.layout.gameInfo.knightCharacter.playState('win');
+      this.layout.gameInfo.knightCharacter.say(infoText, 'combo', bonusText, currentText);
+
+      this.enableButton(this.layout.betButton);
+
+      // Update cash out value using MultiplierManager's value
+      const rawVal = parseFloat(this.layout.inputBox.value);
+      const validBet = isNaN(rawVal) ? GameData.MIN_BET : rawVal;
+      const payout = validBet * this.multiplierManager.currentMultiplier;
+      const formattedPayout = payout.toLocaleString('de-DE', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      });
+      this.layout.betButton.setCashOutValue(`RP ${formattedPayout}`);
+    }
+
+    // Update card history - pass 0 for loss, currentMultiplier for win
+    const historyMultiplier = data.end_round ? 0 : this.multiplierManager.currentMultiplier;
+    this.layout.cardHistoryLayout.addCardToHistory(
+      newRank,
+      newSuit,
+      action,
+      -20,
+      -5,
+      1,
+      0.35,
+      historyMultiplier,
+      !data.end_round
+    );
+    GameData.instance.addCardHistory(
+      newRank,
+      newSuit,
+      action,
+      this.multiplierManager.currentMultiplier
+    );
+
+    // Update multiplier board
+    const currentBet = parseFloat(this.layout.inputBox.value);
+    const validBet = isNaN(currentBet) ? GameData.MIN_BET : currentBet;
+    this.layout.multiplierBoard.updateValues(this.multiplierManager.currentMultiplier, validBet);
+
+    this.updateButtonLabels();
   }
 }
