@@ -8,7 +8,7 @@ import { BoardNumber } from "./BoardNumber";
 import { CustomInputField } from "./CustomInputField";
 import { CustomKeyboardUnit, displayUnitMap } from "./CustomKeyboardUnit.enum";
 import { NumberType } from "./CustomNumber";
-import { engine } from "../../getEngine";
+import { SoundManager } from "../../audio/SoundManager";
 
 
 
@@ -53,7 +53,7 @@ export class CustomKeyboard extends Container {
             height: 890
         });
         this.closeBtn = new FancyButton({ defaultView: 'closed-btn.png', animations: buttonAnimation });
-        this.closeBtn.onPress.connect(() => { engine().audio.sfx.play('main/sounds/menu_click_06.ogg'); this.onCloseKeyboard?.(); });
+        this.closeBtn.onPress.connect(() => { SoundManager.playKeyboardClick(); this.onCloseKeyboard?.(); });
         this.closeBtn.position.set(
             this.bg.width - this.closeBtn.width - 10,
             10
@@ -131,7 +131,7 @@ export class CustomKeyboard extends Container {
     }
 
     private handleKeyPressed(value: number) {
-        engine().audio.sfx.play('main/sounds/menu_click_06.ogg');
+        SoundManager.playKeyboardClick();
 
         const { max } = this.getUnitLimits(this.currentUnit);
 
@@ -159,7 +159,7 @@ export class CustomKeyboard extends Container {
 
 
     private handleReset() {
-        engine().audio.sfx.play('main/sounds/menu_click_06.ogg');
+        SoundManager.playKeyboardClick();
 
         // Reset to 0 - min bet is enforced on confirm
         this.currentVal = 0;
@@ -174,7 +174,7 @@ export class CustomKeyboard extends Container {
     }
 
     private confirmPressed() {
-        engine().audio.sfx.play('main/sounds/menu_click_06.ogg');
+        SoundManager.playKeyboardClick();
 
         let finalVal = this.currentVal;
 

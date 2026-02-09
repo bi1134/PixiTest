@@ -32,12 +32,16 @@ export class PausePopup extends Container {
     this.panel = new Container();
     this.addChild(this.panel);
 
-    this.panelBase = new RoundedBox({ height: 350 }); // Increase height for message
+    this.panelBase = new RoundedBox({
+      height: 350,
+      color: 0x2c2c2c, // Dark grey/black panel
+      shadowColor: 0x000000,
+    });
     this.panel.addChild(this.panelBase);
 
     this.title = new Label({
       text: title,
-      style: { fill: 0xec1561, fontSize: 50 },
+      style: { fill: 0xff4081, fontSize: 50 }, // Pink title
     });
     this.title.y = -100;
     this.panel.addChild(this.title);
@@ -45,7 +49,7 @@ export class PausePopup extends Container {
     this.messageLabel = new Label({
       text: message,
       style: {
-        fill: 0xffffff,
+        fill: 0xffffff, // White text on dark panel
         fontSize: 24,
         wordWrap: true,
         wordWrapWidth: 350,

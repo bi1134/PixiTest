@@ -1,6 +1,6 @@
 import { FancyButton } from "@pixi/ui";
 
-import { engine } from "../getEngine";
+import { SoundManager } from "../audio/SoundManager";
 
 import { BitmapLabel } from "./BitmapLabel";
 
@@ -62,10 +62,10 @@ export class Button extends FancyButton {
   }
 
   private handleHover() {
-    engine().audio.sfx.play("main/sounds/sfx-hover.wav");
+    SoundManager.playButtonHover();
   }
 
   private handleDown() {
-    engine().audio.sfx.play("main/sounds/sfx-press.wav");
+    SoundManager.playButtonPress();
   }
 }

@@ -81,15 +81,14 @@ export class ApiClient implements IApiClient {
         body: body ? JSON.stringify(body) : undefined,
       });
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Network error";
-      GetErrorMessage.showApiErrorPopup({ code: 0, message });
+      // Shorten network error message
+      GetErrorMessage.showApiErrorPopup({ code: 0, message: "Network error. Check connection." });
       throw error;
     }
 
     if (!response.ok) {
-      // ... (existing error handling)
       const errorText = await response.text();
-      let errorMessage = errorText;
+      let errorMessage = "Request failed";
 
       try {
         const errorJson = JSON.parse(errorText);
@@ -101,6 +100,12 @@ export class ApiClient implements IApiClient {
           errorMessage = errorJson.message;
         }
       } catch {
+        // Keep short default message
+      }
+
+      // Truncate long messages
+      if (errorMessage.length > 50) {
+        errorMessage = errorMessage.substring(0, 47) + "...";
       }
 
       GetErrorMessage.showApiErrorPopup({

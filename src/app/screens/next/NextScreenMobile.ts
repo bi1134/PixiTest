@@ -2,13 +2,14 @@ import { Container, Texture } from "pixi.js";
 import { engine } from "../../getEngine";
 import { MobileLayout } from "./layout/MobileLayout"; // Updated import
 import { BetButton } from "../../ui/BetButton";
-import { GameState, GuessAction, GuessResult } from "./types/GameTypes";
+import { GameState, GuessAction } from "./types/GameTypes";
 import { UI } from "../../ui/Manager/UIManager";
 import { NextGameLogic } from "./logic/NextGameLogic";
 import { GameData } from "../../data/GameData";
 import { MultiplierManager } from "./logic/MultiplierManager";
 import { GameService } from "../../api/services/GameService";
 import { CardSuit } from "../../ui/Card";
+import { SoundManager } from "../../audio/SoundManager";
 
 export class NextScreenMobile extends Container {
   public static assetBundles = ["main"];
@@ -276,104 +277,7 @@ export class NextScreenMobile extends Container {
 
   }
 
-  //#region guessing logic
-  private EvaluateGuess(action: GuessAction) {
-    const prevRank = this.layout.currentCard.rank;
-    const prevNumeric = this.layout.currentCard.GetNumericValue();
 
-    // --- Generate the next card ---
-    const nextCardData = NextGameLogic.generateNextCard();
-    const nextRank = nextCardData.rank;
-    const nextSuit = nextCardData.suit;
-    const nextNumeric = nextCardData.numeric;
-
-    // --- Evaluate the guess ---
-    const result = NextGameLogic.evaluateGuess(
-      prevNumeric,
-      nextNumeric,
-      action,
-    );
-
-    // Visual Transition: Fly off old card
-    this.layout.animateFlyOff(prevRank, this.layout.currentCard.suit);
-    this.layout.animateDeal();
-
-    // Update card visual (Flips to new value)
-    this.layout.currentCard.SetValue(nextRank, nextSuit);
-
-    // Handle Result
-    if (result === GuessResult.Win) {
-      // Win Logic
-      this.multiplierManager.applyWin(prevRank, action); // Apply win using PREVIOUS rank and CHOSEN action
-
-      // --- Trigger Combo Dialog ---
-      const prompt = this.multiplierManager.getComboPrompt(nextRank, this.multiplierManager.currentMultiplier);
-      // prompt.action is "hot".
-      // Text: "{number} more {High/Low} to get {Prediction}x"
-
-      const actionText = prompt.actionLabel;
-      // 1. Info: "2 more High to receive"
-      const infoText = `${prompt.remaining} more ${actionText} to receive`;
-      // 2. Bonus: "+1x" (fixed combo bonus)
-      const bonusText = `+${prompt.comboBonus}x`;
-      // 3. Current: "Current: 1.2x"
-      const currentText = `x${this.multiplierManager.currentMultiplier}`;
-
-      this.layout.gameInfo.knightCharacter.playState('win'); // Keep win anim
-      this.layout.gameInfo.knightCharacter.say(infoText, 'combo', bonusText, currentText);
-
-      this.enableButton(this.layout.betButton);
-
-    } else if (result === GuessResult.Lose) {
-      // Loss Logic
-      const rawVal = parseFloat(this.layout.inputBox.value);
-      const lostAmount = isNaN(rawVal) ? GameData.MIN_BET : rawVal;
-      GameData.instance.addRoundResult(0, false, lostAmount);
-      this.layout.gameHistory.addResult(0, false);
-
-      this.layout.gameInfo.knightCharacter.playState('lose');
-      this.layout.gameInfo.knightCharacter.say('YOU LOSE, BET AGAIN!');
-
-      // Play Card Shake/Reveal
-      this.layout.currentCard.playLoseAnimation();
-
-      // Update Money and Recenter
-      this.layout.updateMoney(`${GameData.instance.totalMoney.toFixed(2)} `);
-
-      this.vibratePhone(200);
-      this.EnterBettingState();
-    }
-    // Skip does nothing extra beyond setting card (already done)
-
-    // Update Multiplier Board
-    // Update Multiplier Board
-    const currentBet = parseFloat(this.layout.inputBox.value);
-    const validBet = isNaN(currentBet) ? GameData.MIN_BET : currentBet;
-    this.layout.multiplierBoard.updateValues(this.multiplierManager.currentMultiplier, validBet);
-
-    // --- Add the NEW current card (after pressing button) to history ---
-    // We pass the CURRENT multiplier (state after guess)
-    this.layout.cardHistoryLayout.addCardToHistory(
-      this.layout.currentCard.rank,
-      this.layout.currentCard.suit,
-      action,
-      -20,
-      -5,
-      1,
-      0.35, // 30% of original card size
-      this.multiplierManager.currentMultiplier, // Pass multiplier
-      result !== GuessResult.Lose // isWin
-    );
-    GameData.instance.addCardHistory(
-      this.layout.currentCard.rank,
-      this.layout.currentCard.suit,
-      action,
-      this.multiplierManager.currentMultiplier
-    );
-    this.updateButtonLabels();
-
-    this.updateButtonLabels();
-  }
 
   private EnterNonBettingState() {
     GameData.instance.currentState = GameState.NonBetting;
@@ -562,7 +466,7 @@ export class NextScreenMobile extends Container {
   }
 
   public async show(): Promise<void> {
-    engine().audio.bgm.play("main/sounds/bgm-main.mp3", { volume: 0.5 });
+    SoundManager.playBGM(0.5);
   }
 
   private disableButton(button: any) {
@@ -687,7 +591,7 @@ export class NextScreenMobile extends Container {
       this.layout.gameHistory.addResult(0, false);
 
       this.layout.gameInfo.knightCharacter.playState('lose');
-      this.layout.gameInfo.knightCharacter.say('YOU LOSE, BET AGAIN!');
+      this.layout.gameInfo.knightCharacter.say('YOU LOSE!');
 
       this.layout.currentCard.playLoseAnimation();
       this.layout.updateMoney(`${GameData.instance.totalMoney.toFixed(2)} `);
