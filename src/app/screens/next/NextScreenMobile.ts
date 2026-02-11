@@ -427,6 +427,10 @@ export class NextScreenMobile extends Container {
       this.multiplierManager.reset();
 
       this.EnterBettingState();
+
+      // Clear history bar and reset predictions to 0x after entering betting state
+      this.layout.cardHistoryLayout.clearHistory();
+      this.layout.gameInfo.updatePredictions(0, 0);
     } catch (error) {
       console.error("Cashout API error:", error);
       // Error popup is handled by ApiClient
@@ -601,6 +605,9 @@ export class NextScreenMobile extends Container {
 
       this.vibratePhone(200);
       this.EnterBettingState();
+
+      // Force predictions to 0x on loss
+      this.layout.gameInfo.updatePredictions(0, 0);
     } else if (action === GuessAction.Skip) {
       // Skip - don't reset multiplier, just reset combo counter
       this.multiplierManager.resetCounter();
@@ -658,6 +665,10 @@ export class NextScreenMobile extends Container {
     const validBet = isNaN(currentBet) ? GameData.MIN_BET : currentBet;
     this.layout.multiplierBoard.updateValues(this.multiplierManager.currentMultiplier, validBet);
 
-    this.updateButtonLabels();
+    // Only update button labels if the round is continuing (Win/Skip)
+    // If we lost, EnterBettingState handled it, and we don't want to show predictions for the next card immediately.
+    if (!data.end_round) {
+      this.updateButtonLabels();
+    }
   }
 }

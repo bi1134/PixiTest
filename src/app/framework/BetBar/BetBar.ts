@@ -64,7 +64,7 @@ export class BetBar extends Container {
             placeholder: GameData.MIN_BET.toString(),
             textLimitRatio: 0.45,
             style: {
-                fontSize: 25, // Matching buttons roughly
+                fontSize: 24, // Matching buttons roughly
                 fontFamily: "SVN-Supercell Magic",
                 align: "center",
                 fill: "#ffffff",
@@ -266,12 +266,13 @@ export class BetBar extends Container {
         if (!this.moneyContainer) return;
 
         this.coinIcon.x = 0;
+        this.coinIcon.scale.set(0.75);
         this.moneyLabel.x = this.coinIcon.width + this.coinIcon.width / 2;
         this.moneyLabel.y = this.coinIcon.y;
         this.coinIcon.anchor.set(0, 0.5);
 
         const contentWidth = this.moneyLabel.x + this.moneyLabel.width;
-        const maxW = this.barMid.width * 0.65;
+        const maxW = this.barMid.width * 0.75;
         this.moneyContainer.scale.set(1);
         if (contentWidth > maxW) {
             this.moneyContainer.scale.set(maxW / contentWidth);
@@ -280,6 +281,6 @@ export class BetBar extends Container {
         // Position MoneyContainer centered on BarMid
         // Since they are now siblings, we use barMid's position
         this.moneyContainer.x = this.barMid.x - this.moneyContainer.width / 2;
-        this.moneyContainer.y = this.barMid.y + (this.barMid.height / 5);
+        this.moneyContainer.y = this.barMid.y + (this.barMid.height / 4);
     }
 }

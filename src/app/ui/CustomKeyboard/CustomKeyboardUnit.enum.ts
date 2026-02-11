@@ -6,7 +6,7 @@ export enum CustomKeyboardUnit {
 }
 
 export const displayUnitMap: Record<CustomKeyboardUnit, string> = {
-    [CustomKeyboardUnit.CURRENCY]: "Rp ",
+    [CustomKeyboardUnit.CURRENCY]: "RP ",
     [CustomKeyboardUnit.NUMBER_OF_GAMES]: "",
     [CustomKeyboardUnit.STOP_ON_LOSS]: "%",
     [CustomKeyboardUnit.STOP_ON_WIN]: "%",

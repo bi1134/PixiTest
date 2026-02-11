@@ -199,8 +199,6 @@ export class GameService {
       this.mockMultiplier *= (1.0 + Math.random() * 0.5); // Random 1.0x - 1.5x increase
     }
 
-    console.log(`[Mock] Previous: ${previousRank}, New: ${newRank}, Action: ${action}, Win: ${isWin}`);
-
     return {
       data: {
         pick: 1,

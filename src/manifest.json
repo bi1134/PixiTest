@@ -1497,6 +1497,68 @@
         },
         {
           "alias": [
+            "main/spine/UI_Info.atlas",
+            "UI_Info.atlas"
+          ],
+          "src": [
+            "main/spine/UI_Info@0.5x.webp.atlas",
+            "main/spine/UI_Info@0.5x.png.atlas",
+            "main/spine/UI_Info.webp.atlas",
+            "main/spine/UI_Info.png.atlas"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/spine/UI_Info.skel",
+            "UI_Info.skel"
+          ],
+          "src": [
+            "main/spine/UI_Info.skel"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/spine/Card.atlas",
+            "Card.atlas"
+          ],
+          "src": [
+            "main/spine/Card@0.5x.webp.atlas",
+            "main/spine/Card@0.5x.png.atlas",
+            "main/spine/Card.webp.atlas",
+            "main/spine/Card.png.atlas"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/spine/Card.skel",
+            "Card.skel"
+          ],
+          "src": [
+            "main/spine/Card.skel"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
             "main/ui",
             "ui"
           ],

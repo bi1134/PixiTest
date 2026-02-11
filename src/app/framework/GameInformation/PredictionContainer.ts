@@ -76,8 +76,12 @@ export class PredictionContainer extends Container {
     }
 
     public setMultiplier(value: number) {
-        // Format: 00.00x
-        this.multiplierText.text = `${value.toFixed(2)}x`;
+        if (value === 0) {
+            this.multiplierText.text = "0x";
+        } else {
+            // Format: 00.00x
+            this.multiplierText.text = `${value.toFixed(2)}x`;
+        }
     }
 
     public get Type() { return this._type; }

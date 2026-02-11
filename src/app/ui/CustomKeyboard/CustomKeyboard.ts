@@ -59,7 +59,7 @@ export class CustomKeyboard extends Container {
             10
         );
 
-        this.inputAmount = new CustomInputField(`Rp `);
+        this.inputAmount = new CustomInputField(`RP `);
 
         this.resetButton = new FancyButton({ defaultView: 'input_reset_btn.png', animations: buttonAnimation, anchor: 0.5 });
         this.resetButton.onPress.connect(this.handleReset.bind(this));

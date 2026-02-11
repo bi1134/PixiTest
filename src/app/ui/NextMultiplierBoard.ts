@@ -23,29 +23,22 @@ export class NextMultiplierBoard extends Container {
         this.bg.zIndex = 0;
         this.addChild(this.bg);
 
-        import("pixi.js").then(({ Assets }) => {
-            Assets.load([
-                "/spine-assets/UI_Info.skel",
-                "/spine-assets/UI_Info.atlas"
-            ]).then(() => {
-                // Once loaded, create the Spine instance
-                this.infoSpine = Spine.from({
-                    skeleton: "/spine-assets/UI_Info.skel",
-                    atlas: "/spine-assets/UI_Info.atlas",
-                });
-
-                // Log available animations for debugging
-                console.log("UI Info Animations:", this.infoSpine.skeleton.data.animations.map(a => a.name));
-
-                this.infoSpine.state.setAnimation(0, UIInfoAnimationState.Idle, true);
-                this.infoSpine.zIndex = 1;
-                this.addChild(this.infoSpine);
-
-                // Position
-                this.infoSpine.x = 0; // Relative to this container
-                this.infoSpine.y = 0;
-            });
+        // Initialize Spine synchronously (Assets are preloaded in NextScreen.ts)
+        this.infoSpine = Spine.from({
+            skeleton: "/spine-assets/UI_Info.skel",
+            atlas: "/spine-assets/UI_Info.atlas",
         });
+
+        // Log available animations for debugging
+        console.log("UI Info Animations:", this.infoSpine.skeleton.data.animations.map(a => a.name));
+
+        this.infoSpine.state.setAnimation(0, UIInfoAnimationState.Idle, true);
+        this.infoSpine.zIndex = 1;
+        this.addChild(this.infoSpine);
+
+        // Position
+        this.infoSpine.x = 0; // Relative to this container
+        this.infoSpine.y = 0;
 
         // Top Label "Next Win"
         this.topLabel = new BitmapText({

@@ -105,7 +105,7 @@ export class HisotryPopupItem extends Container {
     );
 
     this.profitText = new BitmapText({
-      text: "Rp 3,800",
+      text: "RP 3,800",
       anchor: { x: 1, y: 0.5 }, // Right align
       style: {
         fontSize: this.FONT_SIZE,
@@ -305,7 +305,7 @@ export class HisotryPopupItem extends Container {
     const profitNumber =
       response.multiplier === 0 ? response.amount : response.total_win;
 
-    this.profitText.text = `${sign}Rp ${formatNumber(profitNumber)}`;
+    this.profitText.text = `${sign}RP ${formatNumber(profitNumber)}`;
 
     // Check status to fill color
     if (response.multiplier !== 0) this.profitText.style.fill = "#5FFF44";

@@ -59,51 +59,7 @@ export class Card extends Container {
 
   constructor() {
     super();
-    // DEBUG LOGGING
-    console.warn("Card.ts: Constructor called");
-    try {
-      // @ts-ignore
-      console.log("Card Spine details:", this.spineCard ? "exists" : "waiting");
-    } catch (e) { }
 
-    // Initialize Spine asynchronously to bypass AssetPack/Manifest requirement
-    this.spineCard = null as any; // Initialize as null
-
-    // Load the raw assets directly from public/spine-assets (absolute path to ignore basePath)
-    import("pixi.js").then(({ Assets }) => {
-      Assets.load([
-        "/spine-assets/Card.skel",
-        "/spine-assets/Card.atlas"
-      ]).then(() => {
-        // Once loaded, create the Spine instance
-        this.spineCard = Spine.from({
-          skeleton: "/spine-assets/Card.skel",
-          atlas: "/spine-assets/Card.atlas",
-        });
-
-        this.spineCard.state.setAnimation(0, AnimationState.Idle, true);
-        this.addChild(this.spineCard);
-        console.log("Card Animations:", this.spineCard.skeleton.data.animations.map(a => a.name));
-
-        // Re-apply visibility/transform settings
-        this.spineCard.visible = !this.mesh.visible;
-        this.spineCard.scale.set(1);
-        this.spineCard.x = 0;
-        this.spineCard.y = 0;
-
-        // Trigger texture update to set initial skin
-        this.UpdateTexture();
-
-        // DEBUG: Inspect loaded spine data
-        console.log("Spine Card Debug: Loaded!");
-        console.log("Skin:", this.spineCard.skeleton.skin?.name);
-        const slot = this.spineCard.skeleton.slots[0];
-        const attachment = slot?.getAttachment();
-        console.log("Slot 0 Attachment:", attachment?.name);
-      }).catch(err => {
-        console.error("Failed to load Spine assets:", err);
-      });
-    });
 
     // DEBUG: Transparency & Resolution check (delayed)
     setTimeout(() => {
@@ -176,6 +132,46 @@ export class Card extends Container {
 
     // initial texture update (to match default A spade)
     this.UpdateTexture();
+
+    // Initialize Spine synchronously (Assets are preloaded in NextScreen.ts)
+    // Create the Spine instance
+    console.log("[Card] Initializing Spine Card...");
+
+    // DEBUG: Check if assets are actually in cache
+    import("pixi.js").then(({ Assets }) => {
+      const skelLoaded = Assets.cache.has("/spine-assets/Card.skel");
+      const atlasLoaded = Assets.cache.has("/spine-assets/Card.atlas");
+      console.log(`[Card] Asset Cache Check - Skel: ${skelLoaded}, Atlas: ${atlasLoaded}`);
+
+      if (!skelLoaded || !atlasLoaded) {
+        console.error("[Card] CRITICAL: Spine assets NOT found in cache! Preloading failed or race condition?");
+      }
+    });
+
+    this.spineCard = Spine.from({
+      skeleton: "/spine-assets/Card.skel",
+      atlas: "/spine-assets/Card.atlas",
+    });
+
+    this.spineCard.state.setAnimation(0, AnimationState.Idle, true);
+    this.addChild(this.spineCard);
+    console.log("Card Animations:", this.spineCard.skeleton.data.animations.map(a => a.name));
+
+    // Re-apply visibility/transform settings
+    this.spineCard.visible = !this.mesh.visible;
+    this.spineCard.scale.set(1);
+    this.spineCard.x = 0;
+    this.spineCard.y = 0;
+
+    // Trigger texture update to set initial skin
+    this.UpdateTexture();
+
+    // DEBUG: Inspect loaded spine data
+    console.log("Spine Card Debug: Loaded!");
+    console.log("Skin:", this.spineCard.skeleton.skin?.name);
+    const slot = this.spineCard.skeleton.slots[0];
+    const attachment = slot?.getAttachment();
+    console.log("Slot 0 Attachment:", attachment?.name);
 
     // --- Interactivity ---
     this.eventMode = "static";

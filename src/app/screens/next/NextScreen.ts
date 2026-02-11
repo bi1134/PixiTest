@@ -30,7 +30,11 @@ export class NextScreen extends Container {
       "/spine-assets/hilo-character.skel",
       "/spine-assets/hilo-character.atlas",
       "/spine-assets/cash-out.skel",
-      "/spine-assets/cash-out.atlas"
+      "/spine-assets/cash-out.atlas",
+      "/spine-assets/Card.skel",
+      "/spine-assets/Card.atlas",
+      "/spine-assets/UI_Info.skel",
+      "/spine-assets/UI_Info.atlas"
     ]);
 
     await engine().navigation.showScreen(NextScreenMobile);
