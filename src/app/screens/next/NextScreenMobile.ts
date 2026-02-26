@@ -526,17 +526,18 @@ export class NextScreenMobile extends Container {
    * Convert GuessAction enum to API action string
    */
   private guessActionToApiString(action: GuessAction): string {
+    // Backend only accepts 3 action strings and handles all edge cases internally:
+    // "higher" → backend treats as >= (higher or equal); for K, treated as equal
+    // "lower"  → backend treats as <= (lower or equal); for A, treated as equal
+    // "skip"   → skip the card
     switch (action) {
       case GuessAction.Higher:
+      case GuessAction.HigherOrEqual:
+      case GuessAction.Equal:       // K high btn — backend resolves to equal internally
         return "higher";
       case GuessAction.Lower:
-        return "lower";
-      case GuessAction.Equal:
-        return "equal";
-      case GuessAction.HigherOrEqual:
-        return "higher_equal";
       case GuessAction.LowerOrEqual:
-        return "lower_equal";
+        return "lower";
       case GuessAction.Skip:
         return "skip";
       default:
