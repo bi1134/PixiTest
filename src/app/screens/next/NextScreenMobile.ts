@@ -93,7 +93,7 @@ export class NextScreenMobile extends Container {
         const currentBet = parseFloat(this.layout.inputBox.value);
         const maxMoney = parseFloat(GameData.instance.totalMoney.toFixed(2));
 
-        if (currentBet > maxMoney) {
+        if (currentBet <= 0 || currentBet > maxMoney) {
           this.vibratePhone(100);
           return;
         }
@@ -102,6 +102,12 @@ export class NextScreenMobile extends Container {
         try {
           const response = await GameService.bet(currentBet, "start");
           const data = response.data;
+
+          // Guard: API returns data: null on errors (e.g. InsufficientBalance)
+          if (!data) {
+            console.error("Bet API returned null data — likely an API error.");
+            return;
+          }
 
           // Update balance from API response
           GameData.instance.totalMoney = data.balance;
