@@ -59,23 +59,106 @@ export class NextScreenMobile extends Container {
         // Check if there's an active game session to resume
         if (data.last_activity && !data.last_activity.end_round) {
           console.log("Resuming active game session...");
-          // Could restore card, multiplier etc here if needed
-          const rankStr = this.numericToRank(data.last_activity.rank);
-          const suitStr = this.numericToSuit(data.last_activity.suit);
-          this.layout.currentCard.SetValue(rankStr, suitStr);
-          this.multiplierManager.setMultiplier(data.last_activity.multiplier);
-          this.EnterNonBettingState(true); // keepCard=true: don't overwrite resume card
-        }
+          const activity = data.last_activity;
 
-        // Set last bet as default input value
-        if (data.last_bet) {
-          this.layout.inputBox.value = data.last_bet.toString();
+          // Restore card
+          const rankStr = this.numericToRank(activity.rank);
+          const suitStr = this.numericToSuit(activity.suit);
+          this.layout.currentCard.SetValue(rankStr, suitStr);
+
+          // Restore multiplier
+          this.multiplierManager.setMultiplier(activity.multiplier);
+
+          // Restore bet amount from last active bet
+          if (activity.amount > 0) {
+            this.layout.inputBox.value = activity.amount.toString();
+          } else if (data.last_bet) {
+            this.layout.inputBox.value = data.last_bet.toString();
+          }
+
+          // Enter non-betting state (keepCard=true)
+          // NOTE: EnterNonBettingState clears history but does NOT add the initial card
+          // when keepCard=true, so we can safely add all history cards below with no GSAP conflict.
+          this.EnterNonBettingState(true);
+
+          // Restore card history bar from history_cards array
+          // Format: "n-4-11-0.00" → action-suit-rank-multiplier
+          // EnterNonBettingState already cleared history, so no clearHistory() needed here.
+          if (activity.history_cards && activity.history_cards.length > 0) {
+            for (const cardStr of activity.history_cards) {
+              const parts = cardStr.split("-");
+              if (parts.length >= 4) {
+                const actionCode = parts[0]; // n, s, h, l
+                const suitNum = parseInt(parts[1]);
+                const rankNum = parseInt(parts[2]);
+                const mult = parseFloat(parts[3]);
+
+                const hRank = this.numericToRank(rankNum);
+                const hSuit = this.numericToSuit(suitNum);
+                const hAction = this.historyCodeToGuessAction(actionCode);
+                const isWin = actionCode !== 'l'; // 'l' = lower = lost
+
+                const isStartCard = hAction === GuessAction.Start;
+                const leftPad = isStartCard ? 0 : -20;
+
+                this.layout.cardHistoryLayout.addCardToHistory(
+                  hRank, hSuit, hAction, leftPad, -5, 1, 0.35, mult, isWin, false
+                );
+
+                GameData.instance.addCardHistory(
+                  hRank, hSuit, hAction, mult
+                );
+              }
+            }
+          }
+
+          // Enable cashout if there are winnings to collect
+          if (activity.multiplier > 0) {
+            this.enableButton(this.layout.betButton);
+            const base = activity.amount > 0 ? activity.amount : (data.last_bet ?? 0);
+            const payout = base * activity.multiplier;
+            const formatted = payout.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+            this.layout.betButton.setCashOutValue(`RP ${formatted}`);
+          }
+
+          // Character dialog: show current multiplier in combo style if winning
+          if (activity.multiplier > 0) {
+            const resumePrompt = this.multiplierManager.getComboPrompt(
+              this.numericToRank(activity.rank),
+              activity.multiplier
+            );
+            const infoText = `${resumePrompt.remaining} more ${resumePrompt.actionLabel} to receive`;
+            const bonusText = `+${resumePrompt.comboBonus}x`;
+            const currentText = `x${activity.multiplier.toFixed(2)}`;
+            this.layout.gameInfo.knightCharacter.say(infoText, 'combo', bonusText, currentText);
+          } else {
+            this.layout.gameInfo.knightCharacter.say('PLAY ON!');
+          }
+        } else {
+          // No active session — just set last bet as default input
+          if (data.last_bet) {
+            this.layout.inputBox.value = data.last_bet.toString();
+          }
+          // Character greets normally
+          this.layout.gameInfo.knightCharacter.say("Press Bet \n to Start");
         }
       }
     } catch (error) {
       console.error("Failed to load player data from API:", error);
-      // Fall back to default values
       this.layout.updateMoney(`${GameData.instance.totalMoney.toFixed(2)} `);
+    }
+  }
+
+  /**
+   * Convert history_cards action code to GuessAction
+   * n = new/start, s = skip, h = higher, l = lower
+   */
+  private historyCodeToGuessAction(code: string): GuessAction {
+    switch (code) {
+      case 'h': return GuessAction.Higher;
+      case 'l': return GuessAction.Lower;
+      case 's': return GuessAction.Skip;
+      default: return GuessAction.Start;
     }
   }
 
@@ -120,10 +203,35 @@ export class NextScreenMobile extends Container {
           const suitStr = this.numericToSuit(data.suit);
           this.layout.currentCard.SetValue(rankStr, suitStr);
 
-          // Update multiplier and odds from API
-          this.multiplierManager.setMultiplier(data.multiplier);
+          // API bet returns multiplier 0. We start at 1.0 internally.
+          this.multiplierManager.setMultiplier(1.0);
 
           this.EnterNonBettingState(true); // keepCard=true: don't overwrite the real API card
+
+          // Always add the initial dealt card to history (even with keepCard)
+          this.layout.cardHistoryLayout.addCardToHistory(
+            this.layout.currentCard.rank,
+            this.layout.currentCard.suit,
+            GuessAction.Start,
+            0, -5, 1, 0.35,
+            this.multiplierManager.currentMultiplier,
+            true,
+            false // no slide animation for the very first card if it's already centered
+          );
+
+          // Initial dialog for 1.0x (or whatever the starting multiplier is)
+          const prompt = this.multiplierManager.getComboPrompt(
+            this.layout.currentCard.rank,
+            this.multiplierManager.currentMultiplier
+          );
+          this.layout.gameInfo.knightCharacter.playState('win');
+          this.layout.gameInfo.knightCharacter.say(
+            `${prompt.remaining} more ${prompt.actionLabel} to receive`,
+            'combo',
+            `+${prompt.comboBonus}x`,
+            `x${this.multiplierManager.currentMultiplier.toFixed(2)}`
+          );
+
         } catch (error) {
           console.error("Bet API error:", error);
           // Error popup is handled by ApiClient
@@ -247,33 +355,42 @@ export class NextScreenMobile extends Container {
       this.layout.lowIcon.texture = Texture.from("Icon-Arrow-low.png");
     }
 
-    // Calculate Percentages
+    // Use probabilities directly from API if we have them, otherwise fallback to local logic
     let highProb = 0;
     let lowProb = 0;
+
+    // Check if we just got these from a recent API response (handlePickResponse or bet)
+    // For now we calculate locally on hover to match the UI, but the API also returns 
+    // chance_up and chance_down which should be used to calculate the real payout multiplier
     const total = 13;
 
     if (rank === "A") {
-      // High Button -> Strict Higher (> A)
       highProb = (total - 1) / total;
-      // Low Button -> Equal (== A)
       lowProb = 1 / total;
     } else if (rank === "K") {
-      // High Button -> Equal (== K)
       highProb = 1 / total;
-      // Low Button -> Strict Lower (< K)
       lowProb = (total - 1) / total;
     } else {
-      // High Button -> Higher or Equal (>= Rank)
-      // Ranks >= current: (total - rankIndex)
       highProb = (total - rankIndex) / total;
-
-      // Low Button -> Lower or Equal (<= Rank)
-      // Ranks <= current: (rankIndex + 1)
       lowProb = (rankIndex + 1) / total;
     }
 
     this.layout.titleHigh.text = `${(highProb * 100).toFixed(1)}% `;
     this.layout.titleLow.text = `${(lowProb * 100).toFixed(1)}% `;
+
+    // For predicting the next payout, we use the local probability to calculate the real 
+    // multiplier that the server will use (1 / prob * 0.98), then multiply by current multiplier
+    const calcNextMult = (prob: number) => {
+      if (prob <= 0) return 0;
+      let m = (1 / prob) * 0.98;
+      if (m < 1.0) m = 1.0;
+      return parseFloat((this.multiplierManager.currentMultiplier * m).toFixed(2));
+    };
+
+    const highNextMult = calcNextMult(highProb);
+    const lowNextMult = calcNextMult(lowProb);
+
+    this.layout.gameInfo.updatePredictions(highNextMult, lowNextMult);
 
     // Update Next Multiplier Board (Prediction)
     // During betting state, show 0 since no winnings yet
@@ -325,7 +442,10 @@ export class NextScreenMobile extends Container {
     );
 
     // Only randomize if not keeping the card from API (bet/resume response)
-    this.multiplierManager.reset();
+    // When keepCard=true (resume), multiplier was already set before calling this — don't reset it
+    if (!keepCard) {
+      this.multiplierManager.reset();
+    }
     // Default multiplier 1.0, current bet from input
     const currentBet = parseFloat(this.layout.inputBox.value);
     const validBet = isNaN(currentBet) ? GameData.MIN_BET : currentBet;
@@ -337,23 +457,28 @@ export class NextScreenMobile extends Container {
     }
     this.updateButtonLabels();
 
-    this.layout.cardHistoryLayout.addCardToHistory(
-      this.layout.currentCard.rank,
-      this.layout.currentCard.suit,
-      GuessAction.Start,
-      0,
-      -5,
-      1,
-      0.35, // 30% of original card size
-      this.multiplierManager.currentMultiplier,
-      true // isWin
-    );
-    GameData.instance.addCardHistory(
-      this.layout.currentCard.rank,
-      this.layout.currentCard.suit,
-      GuessAction.Start,
-      this.multiplierManager.currentMultiplier
-    );
+    // Only add the starting card to history when NOT resuming.
+    // On resume, initializeFromApi will rebuild the full history from the API
+    // without a clearHistory() that would destroy these GSAP-animated items.
+    if (!keepCard) {
+      this.layout.cardHistoryLayout.addCardToHistory(
+        this.layout.currentCard.rank,
+        this.layout.currentCard.suit,
+        GuessAction.Start,
+        0,
+        -5,
+        1,
+        0.35,
+        this.multiplierManager.currentMultiplier,
+        true
+      );
+      GameData.instance.addCardHistory(
+        this.layout.currentCard.rank,
+        this.layout.currentCard.suit,
+        GuessAction.Start,
+        this.multiplierManager.currentMultiplier
+      );
+    }
 
     //input and buttons
     this.layout.inputBox.interactive = false;
@@ -397,8 +522,8 @@ export class NextScreenMobile extends Container {
 
     this.layout.fancySkipButton.interactive = false;
 
-    this.updateButtonLabels();
-
+    // Note: do NOT say anything here — the caller (CashOut / loss handler)
+    // is responsible for making the character speak before entering betting state.
     this.updateButtonLabels();
   }
 
@@ -430,19 +555,22 @@ export class NextScreenMobile extends Container {
       GameData.instance.addRoundResult(multiplier, true, base);
       this.layout.gameHistory.addResult(multiplier, true);
 
-      // Update balance from API response (source of truth)
-      GameData.instance.totalMoney = cashoutData.balance ?? GameData.instance.totalMoney;
-      this.layout.updateMoney(`${GameData.instance.totalMoney.toFixed(2)} `);
-
-      // Reset combo/multiplier on cashout
-      this.multiplierManager.reset();
-
-      // Finalize round with backend
+      // Try to get updated balance from result API (authoritative end of round)
       try {
-        await GameService.result();
+        const resultRes = await GameService.result();
+        if (resultRes?.data?.balance !== undefined) {
+          GameData.instance.totalMoney = resultRes.data.balance;
+          this.layout.updateMoney(`${resultRes.data.balance.toFixed(2)} `);
+        }
       } catch (resultError) {
         console.warn("Result API error (non-critical):", resultError);
+        // Fallback to cashout data if result fails
+        GameData.instance.totalMoney = cashoutData.balance ?? GameData.instance.totalMoney;
+        this.layout.updateMoney(`${GameData.instance.totalMoney.toFixed(2)} `);
       }
+
+      // Character: prompt next round
+      this.layout.gameInfo.knightCharacter.say("Press Bet \n to Start");
 
       this.EnterBettingState();
 
@@ -630,35 +758,56 @@ export class NextScreenMobile extends Container {
         console.warn("Result API error on loss (non-critical):", resultError);
       }
 
-      this.EnterBettingState();
+      // After result API, sync balance if possible via lastActivity (non-blocking)
+      GameService.lastActivity().then(res => {
+        if (res?.data?.balance !== undefined) {
+          GameData.instance.totalMoney = res.data.balance;
+          this.layout.updateMoney(`${res.data.balance.toFixed(2)} `);
+        }
+      }).catch(() => { }); // Non-critical
 
-      // Force predictions to 0x on loss
-      this.layout.gameInfo.updatePredictions(0, 0);
+      // Enter betting state WITHOUT overriding the YOU LOSE dialog
+      // EnterBettingState will say 'Press Bet' but we want YOU LOSE to show briefly first
+      setTimeout(() => {
+        this.EnterBettingState();
+        // Force predictions to 0x on loss
+        this.layout.gameInfo.updatePredictions(0, 0);
+      }, 1500);
+
     } else if (action === GuessAction.Skip) {
       // Skip - don't reset multiplier, just reset combo counter
       this.multiplierManager.resetCounter();
       this.layout.gameInfo.knightCharacter.playState('skip');
       this.layout.gameInfo.knightCharacter.say("SKIPPED!");
-    } else if (data.multiplier > 0) {
-      // Win - let applyWin calculate the multiplier (preserves combo tracking)
-      // DON'T call setMultiplier here - it would overwrite combo progress!
+    } else {
+      // Win — detect by end_round=false and non-skip action
+
+      // Override local multiplier strictly with API multiplier
+      const newMultiplier = data.multiplier || this.multiplierManager.currentMultiplier;
+      this.multiplierManager.setMultiplier(newMultiplier);
+
+      // Let MultiplierManager process the logic for combo UI
+      // (This will increment the combo counter visually)
       this.multiplierManager.applyWin(prevRank, action);
 
-      const prompt = this.multiplierManager.getComboPrompt(newRank, this.multiplierManager.currentMultiplier);
+      // We explicitly override the tracked value to ensure it matches the server exactly
+      this.multiplierManager.setMultiplier(newMultiplier);
+
+      const prompt = this.multiplierManager.getComboPrompt(newRank, newMultiplier);
       const actionText = prompt.actionLabel;
       const infoText = `${prompt.remaining} more ${actionText} to receive`;
       const bonusText = `+${prompt.comboBonus}x`;
-      const currentText = `x${this.multiplierManager.currentMultiplier}`;
+      const currentText = `x${newMultiplier.toFixed(2)}`;
 
       this.layout.gameInfo.knightCharacter.playState('win');
       this.layout.gameInfo.knightCharacter.say(infoText, 'combo', bonusText, currentText);
 
       this.enableButton(this.layout.betButton);
 
-      // Update cash out value using MultiplierManager's value
+      // Update cash out value using the explicit API multiplier
       const rawVal = parseFloat(this.layout.inputBox.value);
       const validBet = isNaN(rawVal) ? GameData.MIN_BET : rawVal;
-      const payout = validBet * this.multiplierManager.currentMultiplier;
+      const payout = validBet * newMultiplier;
       const formattedPayout = payout.toLocaleString('de-DE', {
         minimumFractionDigits: 0,
         maximumFractionDigits: 2
@@ -666,8 +815,24 @@ export class NextScreenMobile extends Container {
       this.layout.betButton.setCashOutValue(`RP ${formattedPayout}`);
     }
 
-    // Update card history - pass 0 for loss, currentMultiplier for win
+    // Update card history
     const historyMultiplier = data.end_round ? 0 : this.multiplierManager.currentMultiplier;
+
+    // Use exact server odds if available for predicting the next state
+    if (data.chance_up !== undefined && data.chance_down !== undefined) {
+      if (!data.end_round) {
+        // Calculate payout factors dynamically from server chances
+        const calcNextMult = (chance: number) => {
+          if (chance <= 0) return 0;
+          let m = (1 / (chance / 100)) * 0.98;
+          if (m < 1.0) m = 1.0;
+          return parseFloat((this.multiplierManager.currentMultiplier * m).toFixed(2));
+        };
+        const highNextMult = calcNextMult(data.chance_up);
+        const lowNextMult = calcNextMult(data.chance_down);
+        this.layout.gameInfo.updatePredictions(highNextMult, lowNextMult);
+      }
+    }
     this.layout.cardHistoryLayout.addCardToHistory(
       newRank,
       newSuit,

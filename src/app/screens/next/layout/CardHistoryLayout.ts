@@ -140,7 +140,8 @@ export class CardHistoryLayout extends Container {
     _scrollMutiplier: number = 5,
     itemScale?: number,
     multiplier?: number,
-    isWin?: boolean
+    isWin?: boolean,
+    animateSlide: boolean = true
   ) {
     // 1. Create New Item
     const item = new CardHistoryItem(value, suit, action, multiplier, isWin);
@@ -241,14 +242,16 @@ export class CardHistoryLayout extends Container {
     item.trackAnimation(animScale as any);
 
     // "Fake Position" Slide In
-    let slideOffset = 0;
-    if (this.options.type === 'vertical') {
-      // Slide in from bottom
-      slideOffset = itemHeight + 20;
-      item.animateEntry(slideOffset, 0.3);
-    } else {
-      slideOffset = itemWidth * 2;
-      item.animateEntry(slideOffset, 0.3);
+    if (animateSlide) {
+      let slideOffset = 0;
+      if (this.options.type === 'vertical') {
+        // Slide in from bottom
+        slideOffset = itemHeight + 20;
+        item.animateEntry(slideOffset, 0.3);
+      } else {
+        slideOffset = itemWidth * 2;
+        item.animateEntry(slideOffset, 0.3);
+      }
     }
 
     // 5. Build Scroll / Overflow logic ("Push Back" / "Push Up")
