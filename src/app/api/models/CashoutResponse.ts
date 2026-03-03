@@ -1,4 +1,7 @@
 export interface CashoutResponseData {
+  username?: string;
+  balance: number;
+  currency?: string;
   pick: number;
   rank: number;
   suit: number;
@@ -18,6 +21,7 @@ export interface CashoutApiResponse {
 
 export const mockCashoutResponse: CashoutApiResponse = {
   data: {
+    balance: 0,
     pick: 1,
     rank: 10,
     suit: 3,

@@ -90,10 +90,12 @@ export class NextScreenMobile extends Container {
         this.CashOut();
       } else {
         this.ValidateInput(); // Ensure valid input before betting
-        const currentBet = parseFloat(this.layout.inputBox.value);
+        // NaN (empty input) defaults to 0 — allow free play with 0 bet
+        const rawBet = parseFloat(this.layout.inputBox.value);
+        const currentBet = isNaN(rawBet) ? 0 : rawBet;
         const maxMoney = parseFloat(GameData.instance.totalMoney.toFixed(2));
 
-        if (currentBet <= 0 || currentBet > maxMoney) {
+        if (currentBet < 0 || currentBet > maxMoney) {
           this.vibratePhone(100);
           return;
         }
@@ -404,16 +406,20 @@ export class NextScreenMobile extends Container {
 
   private async CashOut() {
     try {
-      const response = await GameService.cashout();
-      const data = response.data;
+      const cashoutResponse = await GameService.cashout();
+      const cashoutData = cashoutResponse.data;
+
+      if (!cashoutData) {
+        console.error("Cashout API returned null data.");
+        return;
+      }
 
       // Use MultiplierManager's tracked multiplier (includes combo bonuses)
-      // NOT data.multiplier (which comes from mock that doesn't track combo)
       const multiplier = this.multiplierManager.currentMultiplier;
       const rawVal = parseFloat(this.layout.inputBox.value);
-      const base = isNaN(rawVal) ? GameData.MIN_BET : rawVal;
+      const base = isNaN(rawVal) ? 0 : rawVal;
 
-      console.log(`[CashOut] Using MultiplierManager multiplier: ${multiplier}x (API returned: ${data.multiplier}x)`);
+      console.log(`[CashOut] multiplier: ${multiplier}x, base: ${base}`);
 
       UI.showResult(multiplier, base);
 
@@ -424,13 +430,19 @@ export class NextScreenMobile extends Container {
       GameData.instance.addRoundResult(multiplier, true, base);
       this.layout.gameHistory.addResult(multiplier, true);
 
-      // Update money display - calculate payout using correct multiplier
-      const payout = base * multiplier;
-      GameData.instance.totalMoney += payout;
+      // Update balance from API response (source of truth)
+      GameData.instance.totalMoney = cashoutData.balance ?? GameData.instance.totalMoney;
       this.layout.updateMoney(`${GameData.instance.totalMoney.toFixed(2)} `);
 
       // Reset combo/multiplier on cashout
       this.multiplierManager.reset();
+
+      // Finalize round with backend
+      try {
+        await GameService.result();
+      } catch (resultError) {
+        console.warn("Result API error (non-critical):", resultError);
+      }
 
       this.EnterBettingState();
 
@@ -576,7 +588,7 @@ export class NextScreenMobile extends Container {
   /**
    * Handle API response for pick/skip actions
    */
-  private handlePickResponse(data: any, action: GuessAction) {
+  private async handlePickResponse(data: any, action: GuessAction) {
     const prevRank = this.layout.currentCard.rank;
 
     // Update card from API response
@@ -593,11 +605,10 @@ export class NextScreenMobile extends Container {
     // Check game state
     if (data.end_round) {
       // Game ended - player lost
-      // Reset multiplier from API (for sync on real API)
       this.multiplierManager.setMultiplier(1.0);
 
       const rawVal = parseFloat(this.layout.inputBox.value);
-      const lostAmount = isNaN(rawVal) ? GameData.MIN_BET : rawVal;
+      const lostAmount = isNaN(rawVal) ? 0 : rawVal;
       GameData.instance.addRoundResult(0, false, lostAmount);
       this.layout.gameHistory.addResult(0, false);
 
@@ -611,6 +622,14 @@ export class NextScreenMobile extends Container {
       this.multiplierManager.reset();
 
       this.vibratePhone(200);
+
+      // Finalize round with backend on loss
+      try {
+        await GameService.result();
+      } catch (resultError) {
+        console.warn("Result API error on loss (non-critical):", resultError);
+      }
+
       this.EnterBettingState();
 
       // Force predictions to 0x on loss
