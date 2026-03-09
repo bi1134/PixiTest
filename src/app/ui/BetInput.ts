@@ -5,8 +5,8 @@ import { BitmapLabel } from "../ui/BitmapLabel";
 export class BetInput extends Container {
     public bg: Sprite;
     public displayText: BitmapLabel | Text;
-
     public onPress: Signal<(e?: any) => void> = new Signal();
+    public onChange: Signal<(value: string) => void> = new Signal();
 
     private _value: string = "";
 
@@ -16,6 +16,7 @@ export class BetInput extends Container {
     public set value(v: string) {
         this._value = v;
         this.updateText();
+        this.onChange.emit(v);
     }
 
     public set interactive(v: boolean) {

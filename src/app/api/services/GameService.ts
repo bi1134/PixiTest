@@ -124,8 +124,8 @@ export class GameService {
     return res.data as ResultApiResponse;
   }
 
-  public static async history(): Promise<HistoryApiResponse> {
-    const res = await ApiClient.post(ApiRoute.HISTORY, {});
+  public static async history(page: number = 1): Promise<HistoryApiResponse> {
+    const res = await ApiClient.post(ApiRoute.HISTORY, { page });
     if (res.useMock) {
       return mockHistoryResponse;
     }

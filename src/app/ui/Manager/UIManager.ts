@@ -25,8 +25,12 @@ export class UIManager {
   }
 
   /** Show the history popup */
-  public showHistory() {
-    engine().navigation.presentPopup(PopupHistoryUI);
+  public showHistory(txId?: string) {
+    engine().navigation.presentPopup(PopupHistoryUI, (popup) => {
+      if (txId) {
+        (popup as PopupHistoryUI).setTargetTxId(txId);
+      }
+    });
   }
 
   /** Show the game rule popup */

@@ -1,4 +1,6 @@
 export interface PickResponseData {
+  bet_id?: string;
+  txId?: string;
   pick: number;
   rank?: number;
   suit?: number;

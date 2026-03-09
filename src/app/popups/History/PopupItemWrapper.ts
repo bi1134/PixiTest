@@ -22,6 +22,7 @@ export class PopupItemWrapper extends Container {
   private totalPages = 1;
   private isLoading = false;
   private currentDayOffset = 0;
+  private targetTxId?: string;
 
   private listWidth = 600;
 
@@ -82,10 +83,11 @@ export class PopupItemWrapper extends Container {
     return null;
   }
 
-  public async initItems(dayOffset?: number) {
+  public async initItems(dayOffset?: number, targetTxId?: string) {
     this.removeItemsChildren();
     this.currentPage = 1;
     this.currentDayOffset = dayOffset ?? 0;
+    this.targetTxId = targetTxId;
 
     // Reset scroll position to top
     this.itemsContainer.y = 0;
@@ -100,13 +102,19 @@ export class PopupItemWrapper extends Container {
 
     try {
       // Fetch History from GameService
-      const response: HistoryApiResponse = await GameService.history();
+      const response: HistoryApiResponse = await GameService.history(page);
 
       const historyList = response.data;
 
+      // Handle cases where API returns empty data or mock doesn't respect pagination
+      if (!historyList || historyList.length === 0) {
+        this.totalPages = this.currentPage; // Force stop pagination
+        return;
+      }
+
       // Update pagination info
-      this.currentPage = response.current_page;
-      this.totalPages = response.total_page;
+      this.currentPage = response.current_page || page;
+      this.totalPages = response.total_page || this.currentPage;
 
       // Only trigger callback on first load
       if (page === 1) {
@@ -125,14 +133,15 @@ export class PopupItemWrapper extends Container {
         const historyPopupItem = new HisotryPopupItem(this.listWidth);
         const data = historyList[i];
 
-        // Map API response to Component Data Format
-        // Note: Component expects string date, API provides number timestamp
+        const tsSource = data.timestamp || data.datetime || Date.now();
         const componentData = {
-          bet_id: data.bet_id,
-          amount: data.amount,
-          timestamp: new Date(data.timestamp).toISOString(),
-          multiplier: data.multiplier,
-          total_win: data.total_win,
+          ...data,
+          bet_id: data.bet_id || data.txId || "Unknown",
+          amount: data.debitAmount || data.amount || data.game_info?.minigames?.amount || 0,
+          timestamp: new Date(tsSource).toISOString(),
+          multiplier: data.game_info?.minigames?.multiplier || data.multiplier || 0,
+          total_win: data.creditAmount || data.total_win || data.game_info?.minigames?.total_win || 0,
+          status: data.status,
         };
 
         historyPopupItem.setHistoryDetailData(componentData as any);
@@ -144,6 +153,26 @@ export class PopupItemWrapper extends Container {
         };
 
         this.itemsContainer.addChild(historyPopupItem);
+      }
+
+      // Check if we need to auto-expand a specific item
+      if (this.targetTxId) {
+        for (const child of this.itemsContainer.children) {
+          if (child instanceof HisotryPopupItem && child.betIdText === this.targetTxId) {
+            child.expand(); // We will add expand() to HisotryPopupItem shortly
+
+            // Scroll to the item so it's visible at the top (with a little padding)
+            const maxScroll = Math.max(0, this.getTotalContentHeight() - this.maskHistory.height);
+            let targetY = child.y - 10;
+            // Clamp scroll to avoid scrolling past the bottom buffer
+            if (targetY > maxScroll) targetY = maxScroll;
+            if (targetY < 0) targetY = 0;
+
+            this.itemsContainer.y = -targetY;
+            this.targetTxId = undefined;
+            break;
+          }
+        }
       }
 
       // Calculate scroll bounds

@@ -1,0 +1,9 @@
+button-fx@0.5x.png
+size:128,128
+filter:Linear,Linear
+pma:true
+scale:0.375
+fx-glow
+bounds:1,1,55,55
+light-1
+bounds:1,57,81,64

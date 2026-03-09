@@ -1,4 +1,6 @@
 export interface CashoutResponseData {
+  bet_id?: string;
+  txId?: string;
   username?: string;
   balance: number;
   currency?: string;

@@ -1,4 +1,5 @@
 import { FancyButton } from "@pixi/ui";
+import { Spine } from "@esotericsoftware/spine-pixi-v8";
 import { Container, Sprite } from "pixi.js";
 import { gsap } from "gsap";
 import { BitmapLabel } from "../../ui/BitmapLabel";
@@ -31,8 +32,14 @@ export class GameLogic extends Container {
     public cardHistoryLayout: CardHistoryLayout;
     public multiplierBoard: NextMultiplierBoard;
 
+    public higherGlow: Spine;
+    public lowerGlow: Spine;
+
     constructor() {
         super();
+
+
+
 
         this.multiplierBoard = new NextMultiplierBoard();
         this.addChild(this.multiplierBoard);
@@ -56,7 +63,17 @@ export class GameLogic extends Container {
         this.upButton = new FancyButton({ defaultView: "Button-high.png" });
         this.downButton = new FancyButton({ defaultView: "Button-low.png" });
 
-        this.buttonsContainer.addChild(this.upButton, this.downButton);
+        // --- button glows ---
+        this.higherGlow = Spine.from({ skeleton: "/spine-assets/button-fx.skel", atlas: "/spine-assets/button-fx.atlas" });
+        this.higherGlow.state.setAnimation(0, "high-button", true);
+        this.higherGlow.alpha = 0;
+
+        this.lowerGlow = Spine.from({ skeleton: "/spine-assets/button-fx.skel", atlas: "/spine-assets/button-fx.atlas" });
+        this.lowerGlow.state.setAnimation(0, "low-button", true);
+        this.lowerGlow.alpha = 0;
+
+        // Add glows behind the buttons
+        this.buttonsContainer.addChild(this.higherGlow, this.lowerGlow, this.upButton, this.downButton);
 
         // --- labels and descriptions ---
         this.titleHigh = new BitmapLabel({
@@ -206,6 +223,13 @@ export class GameLogic extends Container {
         this.upButton.x = btnX;
         this.downButton.x = btnX;
 
+        // Button Glows Overlays
+        this.higherGlow.x = this.upButton.x + this.upButton.width / 2;
+        this.higherGlow.y = this.upButton.y + this.upButton.height / 2;
+
+        this.lowerGlow.x = this.downButton.x + this.downButton.width / 2;
+        this.lowerGlow.y = this.downButton.y + this.downButton.height / 2;
+
         // Higher lower text position
         LayoutHelper.setPositionX(
             this.highDes,
@@ -277,10 +301,28 @@ export class GameLogic extends Container {
         this.cardHistoryLayout.resize(this.multiplierBoard.width, historyHeight);
         this.cardHistoryLayout.x = this.multiplierBoard.x - this.multiplierBoard.width / 2;
 
-        const cardAreaBottom = this.buttonsContainer.y + this.buttonsContainer.height;
-        this.cardHistoryLayout.y = cardAreaBottom + padding;
+        // Spine bounds often grossly inflate their container's height. Use the bottom-most UI label to measure visually.
+        const cardAreaBottom = this.buttonsContainer.y + this.lowDes.y + this.lowDes.height;
+        this.cardHistoryLayout.y = cardAreaBottom + padding * 10;
 
         this.cardHistoryLayout.pushBackPadding = -25;
 
+    }
+
+    /**
+     * Updates the opacity of the button glows based on the current combo direction and progress length.
+     */
+    public updateButtonGlows(comboDirection: 'High' | 'Low' | null, comboStreak: number) {
+        let targetHighAlpha = 0;
+        let targetLowAlpha = 0;
+
+        if (comboDirection === 'High') {
+            targetHighAlpha = comboStreak === 0 ? 0 : Math.min(1.0, comboStreak * 0.2);
+        } else if (comboDirection === 'Low') {
+            targetLowAlpha = comboStreak === 0 ? 0 : Math.min(1.0, comboStreak * 0.2);
+        }
+
+        gsap.to(this.higherGlow, { alpha: targetHighAlpha, duration: 0.3 });
+        gsap.to(this.lowerGlow, { alpha: targetLowAlpha, duration: 0.3 });
     }
 }

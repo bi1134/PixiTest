@@ -1435,6 +1435,37 @@
         },
         {
           "alias": [
+            "main/spine/button-fx.atlas",
+            "button-fx.atlas"
+          ],
+          "src": [
+            "main/spine/button-fx@0.5x.webp.atlas",
+            "main/spine/button-fx@0.5x.png.atlas",
+            "main/spine/button-fx.webp.atlas",
+            "main/spine/button-fx.png.atlas"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
+            "main/spine/button-fx.skel",
+            "button-fx.skel"
+          ],
+          "src": [
+            "main/spine/button-fx.skel"
+          ],
+          "data": {
+            "tags": {
+              "m": true
+            }
+          }
+        },
+        {
+          "alias": [
             "main/spine/Card.atlas",
             "Card.atlas"
           ],

@@ -18,6 +18,7 @@ export class PopupHistoryUI extends Container {
   private topHistoryUI: TopHistoryUI;
 
   private popupItemsWrapper: PopupItemWrapper;
+  private targetTxId?: string;
 
   // Loading text
   private loadingText: BitmapText;
@@ -178,6 +179,10 @@ export class PopupHistoryUI extends Container {
     this.popupItemsWrapper.initItems(dayOffset);
   }
 
+  public setTargetTxId(txId: string) {
+    this.targetTxId = txId;
+  }
+
   /** Resize the popup, fired whenever window size changes */
   public resize(width: number, height: number) {
     this.dimmer.width = width;
@@ -200,7 +205,10 @@ export class PopupHistoryUI extends Container {
 
     this.visible = true;
     this.updateLoadingTextVisible(true);
-    this.popupItemsWrapper.initItems();
+
+    const passedTxId = this.targetTxId;
+    this.targetTxId = undefined;
+    this.popupItemsWrapper.initItems(undefined, passedTxId);
 
     this.dimmer.alpha = 0;
     this.panel.scale.set(targetScale * 0.5); // Start at half the target size

@@ -7,15 +7,23 @@ import { GuessAction } from "../../screens/next/types/GameTypes";
 
 // --- Constants ---
 const CARD_SCALE = 0.3; // Reduced scale as requested
-const CARD_GAP = -10;    // Adjusted gap
+const CARD_GAP = 15;    // Adjusted gap
 
 // --- Mock / Stub Types ---
 interface HistoryResponseData {
   bet_id: string;
   amount: number;
-  timestamp: string;
+  timestamp: string; // ISO string format
   multiplier: number;
   total_win: number;
+  status: string;
+  debitAmount?: number;
+  creditAmount?: number;
+  game_info?: any;
+  history_cards: {
+    card: string;
+    guess: 'l' | 'h';
+  }[];
 }
 
 interface HistoryDetailApiResponse {
@@ -24,6 +32,7 @@ interface HistoryDetailApiResponse {
 
 // --- Helper ---
 function formatNumber(num: number): string {
+  if (num === null || num === undefined || isNaN(num)) return "0";
   return num.toLocaleString('en-US');
 }
 
@@ -208,7 +217,7 @@ export class HisotryPopupItem extends Container {
     this.board = new ScrollBox({
       type: 'horizontal',
       width: this.itemWidth - this.OFFSET * 2,
-      height: 150, // Approx height for cards
+      height: 170, // Approx height for cards
       elementsMargin: CARD_GAP,
       padding: 20,
       background: 0x000000,
@@ -282,7 +291,7 @@ export class HisotryPopupItem extends Container {
     this.betId.text = response.bet_id;
 
     // Bet amount
-    const betAmount = response.amount;
+    const betAmount = response.debitAmount || response.amount || response.game_info?.minigames?.amount || 0;
     this.betAmount.text = `Taruhan: ${formatNumber(betAmount)}`;
 
     // Date time
@@ -302,9 +311,10 @@ export class HisotryPopupItem extends Container {
 
     // Profit text
     const sign = response.multiplier === 0 ? "-" : "";
-    const profitNumber =
-      response.multiplier === 0 ? response.amount : response.total_win;
+    const profitNumber = response.multiplier === 0 ? betAmount :
+      (response.creditAmount || response.total_win || response.game_info?.minigames?.total_win || 0);
 
+    console.log("Profit Number", profitNumber);
     this.profitText.text = `${sign}RP ${formatNumber(profitNumber)}`;
 
     // Check status to fill color
@@ -312,7 +322,7 @@ export class HisotryPopupItem extends Container {
     else this.profitText.style.fill = "#FFDE45";
 
     // Multiplier
-    const muliplier = response.multiplier;
+    const muliplier = response.game_info?.minigames?.multiplier || response.multiplier || 0;
     this.multiplier.text = `Mult.${formatNumber(muliplier)}x`;
   }
 
@@ -329,7 +339,8 @@ export class HisotryPopupItem extends Container {
     // Format: status-suit-rank-multiplier
 
     if (info.history_cards && Array.isArray(info.history_cards)) {
-      info.history_cards.forEach((cardStr: string) => {
+      let currentX = 0;
+      info.history_cards.forEach((cardStr: string, index: number) => {
         const parts = cardStr.split('-');
         if (parts.length >= 4) {
           const statusKey = parts[0]; // n, s, h, l
@@ -349,6 +360,11 @@ export class HisotryPopupItem extends Container {
           else if (statusKey === 's') guessAction = GuessAction.Skip;
           else if (statusKey === 'n') guessAction = GuessAction.Start;
 
+          // Determine if this specific card was the losing card
+          // A card is red ONLY if the overall round was a loss AND it's the very last card
+          const isLosingCard = (response.data[0].status === "lose" && index === info.history_cards.length - 1);
+          const isWin = !isLosingCard;
+
           // Map numeric suit to string suit string for CardHistoryItem/Texture
           let suitStr = "spade";
           switch (suit) {
@@ -362,12 +378,16 @@ export class HisotryPopupItem extends Container {
             rankChar,
             suitStr,
             guessAction,
-            mult
+            mult,
+            isWin
           );
 
           cardItem.scale.set(CARD_SCALE);
+          cardItem.x = currentX;
 
-          this.board.addItem(cardItem);
+          this.board.addChild(cardItem);
+
+          currentX += cardItem.widthScaled + CARD_GAP;
         }
       });
     }
@@ -381,6 +401,16 @@ export class HisotryPopupItem extends Container {
       this.innerWrapper.visible = false;
       this.bg.visible = false;
     }
+  }
+
+  public expand() {
+    if (this.expandSwitcher.active === 0) {
+      this.expandSwitcher.switch(1);
+    }
+  }
+
+  public get betIdText(): string {
+    return this.betId.text;
   }
 
   private onExpandSwitcherChange(state: number | boolean) {

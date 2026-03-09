@@ -49,12 +49,11 @@ export class GameHistoryContainer extends Container {
     }
   }
 
-  public addResult(multiplier: number, isWin: boolean) {
+  public addResult(multiplier: number, isWin: boolean, txId?: string): GameHistoryItem {
     const item = new GameHistoryItem({
       multiplier,
       isWin,
-      timestamp: Date.now(),
-      amount: 0, // placeholder as this view might not need amount
+      txId,
     });
 
     const padding = 10;
@@ -111,5 +110,7 @@ export class GameHistoryContainer extends Container {
       duration: 0.3,
       ease: "back.out",
     });
+
+    return item;
   }
 }

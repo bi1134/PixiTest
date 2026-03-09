@@ -1,9 +1,15 @@
 export interface HistoryResponseData {
-    bet_id: string;
-    amount: number;
-    total_win: number;
-    multiplier: number;
-    timestamp: number;
+    bet_id?: string;
+    txId?: string; // real API
+    amount?: number;
+    debitAmount?: number; // real API
+    total_win?: number;
+    creditAmount?: number; // real API
+    multiplier?: number;
+    timestamp?: number | string;
+    datetime?: string; // real API
+    status: string;
+    game_info?: any; // real API
 }
 
 export interface HistoryApiResponse {
@@ -20,56 +26,64 @@ export const mockHistoryResponse: HistoryApiResponse = {
             amount: 100,
             total_win: 50000,
             multiplier: 500.23,
-            timestamp: 1762225668100
+            timestamp: 1762225668100,
+            status: "process"
         },
         {
             bet_id: "69096e23892661919f097b60",
             amount: 100,
             total_win: 1000,
             multiplier: 10,
-            timestamp: 1762225707605
+            timestamp: 1762225707605,
+            status: "process"
         },
         {
             bet_id: "69096e14892661919f097b5b",
             amount: 100,
             total_win: 0,
             multiplier: 0,
-            timestamp: 1762225684918
+            timestamp: 1762225684918,
+            status: "lose"
         },
         {
             bet_id: "69096e0d892661919f097b57",
             amount: 100,
             total_win: 200,
             multiplier: 20,
-            timestamp: 1762225679004
+            timestamp: 1762225679004,
+            status: "process"
         },
         {
             bet_id: "69096e0b892661919f097b53",
             amount: 100,
             total_win: 5000,
             multiplier: 5000,
-            timestamp: 1762225676415
+            timestamp: 1762225676415,
+            status: "process"
         },
         {
             bet_id: "69096e08892661919f097b4f",
             amount: 100,
             total_win: 40,
             multiplier: 40,
-            timestamp: 1762225673817
+            timestamp: 1762225673817,
+            status: "process"
         },
         {
             bet_id: "69087b9d892661919f097b20",
             amount: 100,
             total_win: 917,
             multiplier: 9.17,
-            timestamp: 1762163620923
+            timestamp: 1762163620923,
+            status: "process"
         },
         {
             bet_id: "69087a97892661919f097b13",
             amount: 100,
             total_win: 199,
             multiplier: 1.99,
-            timestamp: 1762163359429
+            timestamp: 1762163484218,
+            status: "process"
         },
     ],
     current_page: 1,

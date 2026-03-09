@@ -1,0 +1,9 @@
+button-fx.webp
+size:256,256
+filter:Linear,Linear
+pma:true
+scale:0.75
+fx-glow
+bounds:2,2,111,111
+light-1
+bounds:2,115,163,128

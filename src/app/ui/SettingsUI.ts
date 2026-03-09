@@ -96,7 +96,7 @@ export class SettingsUI extends Container {
     this.resize(this.width, this.height);
   }
 
-  public resize(width: number, height: number) {
+  public resize(_width: number, _height: number) {
     const padding = 10;
 
     LayoutHelper.centerX(this.bgSetting, this.settingsSwitcher.width, 0, false);
@@ -124,19 +124,19 @@ export class SettingsUI extends Container {
   }
 
   public updateUI(isBetting: boolean) {
-    if (isBetting) {
+    if (!isBetting) {
+      // In-game: Disable history button and make it grayscale
       const color = new ColorMatrixFilter();
       color.grayscale(0.35, false);
 
-      this.questionMark.filters = [color];
       this.historyIcon.filters = [color];
-      this.questionMark.interactiveChildren = false;
       this.historyIcon.interactiveChildren = false;
+      this.historyIcon.alpha = 1;
     } else {
-      this.questionMark.filters = [];
+      // Betting time: Re-enable
       this.historyIcon.filters = [];
-      this.questionMark.interactiveChildren = true;
       this.historyIcon.interactiveChildren = true;
+      this.historyIcon.alpha = 1;
     }
   }
 

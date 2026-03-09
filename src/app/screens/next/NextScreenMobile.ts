@@ -1,4 +1,4 @@
-import { Container, Texture } from "pixi.js";
+import { Container, Texture, ColorMatrixFilter } from "pixi.js";
 import { engine } from "../../getEngine";
 import { MobileLayout } from "./layout/MobileLayout"; // Updated import
 import { BetButton } from "../../ui/BetButton";
@@ -21,6 +21,7 @@ export class NextScreenMobile extends Container {
 
 
   private firstLoad: boolean = true;
+  private isProcessingAction: boolean = false;
 
   constructor() {
     super();
@@ -50,6 +51,22 @@ export class NextScreenMobile extends Container {
     try {
       const response = await GameService.lastActivity();
       const data = response.data;
+
+      // Also fire off a request to grab the latest 10 games for the history ribbon
+      GameService.history(1).then(historyRes => {
+        if (historyRes?.data?.length) {
+          // Take top 10 most recent games, and reverse them to feed into the history layout oldest -> newest format
+          const recentGames = historyRes.data.slice(0, 10).reverse();
+          for (const game of recentGames) {
+            const mult = game.game_info?.minigames?.multiplier || game.multiplier || 0;
+            const isWin = mult > 0;
+            const txId = game.bet_id || game.txId || undefined;
+            this.layout.gameHistory.addResult(mult, isWin, txId);
+          }
+        }
+      }).catch(err => {
+        console.warn("Could not load initial history ribbon:", err);
+      });
 
       if (data) {
         // Initialize player data
@@ -169,22 +186,24 @@ export class NextScreenMobile extends Container {
     this.layout.downButton.onPress.connect(() => this.LowerButton());
     this.layout.fancySkipButton.onPress.connect(() => this.SkipButton());
     this.layout.betButton.onPress.connect(async () => {
-      if (this.betButtonIsCashOut()) {
-        this.CashOut();
-      } else {
-        this.ValidateInput(); // Ensure valid input before betting
-        // NaN (empty input) defaults to 0 — allow free play with 0 bet
-        const rawBet = parseFloat(this.layout.inputBox.value);
-        const currentBet = isNaN(rawBet) ? 0 : rawBet;
-        const maxMoney = parseFloat(GameData.instance.totalMoney.toFixed(2));
+      if (this.isProcessingAction) return;
+      this.isProcessingAction = true;
+      try {
+        if (this.betButtonIsCashOut()) {
+          await this.CashOut();
+        } else {
+          this.ValidateInput(); // Ensure valid input before betting
+          // NaN (empty input) defaults to 0 — allow free play with 0 bet
+          const rawBet = parseFloat(this.layout.inputBox.value);
+          const currentBet = isNaN(rawBet) ? 0 : rawBet;
+          const maxMoney = parseFloat(GameData.instance.totalMoney.toFixed(2));
 
-        if (currentBet < 0 || currentBet > maxMoney) {
-          this.vibratePhone(100);
-          return;
-        }
+          if (currentBet < 0 || currentBet > maxMoney) {
+            this.vibratePhone(100);
+            return;
+          }
 
-        // Call API to start bet
-        try {
+          // Call API to start bet
           const response = await GameService.bet(currentBet, "start");
           const data = response.data;
 
@@ -232,15 +251,18 @@ export class NextScreenMobile extends Container {
             `x${this.multiplierManager.currentMultiplier.toFixed(2)}`
           );
 
-        } catch (error) {
-          console.error("Bet API error:", error);
-          // Error popup is handled by ApiClient
         }
+      } catch (error) {
+        console.error("Bet API error:", error);
+        // Error popup is handled by ApiClient
+      } finally {
+        this.isProcessingAction = false;
       }
     });
 
     this.layout.halfValueButton.onPress.connect(() => this.HalfButton());
     this.layout.doubleValueButton.onPress.connect(() => this.DoubleButton());
+    this.layout.inputBox.onChange.connect(() => this.updateButtonStates());
   }
 
   private betButtonIsCashOut(): boolean {
@@ -248,31 +270,47 @@ export class NextScreenMobile extends Container {
   }
 
   private async HigherButton() {
-    const rank = this.layout.currentCard.rank;
-    const action = NextGameLogic.getHighAction(rank);
-    // Convert GuessAction enum to API action string
-    const actionStr = this.guessActionToApiString(action);
-    await this.callPickApi(actionStr, action);
+    if (this.isProcessingAction) return;
+    this.isProcessingAction = true;
+    try {
+      const rank = this.layout.currentCard.rank;
+      const action = NextGameLogic.getHighAction(rank);
+      // Convert GuessAction enum to API action string
+      const actionStr = this.guessActionToApiString(action, rank);
+      await this.callPickApi(actionStr, action);
+    } finally {
+      this.isProcessingAction = false;
+    }
   }
 
   private async LowerButton() {
-    const rank = this.layout.currentCard.rank;
-    const action = NextGameLogic.getLowAction(rank);
-    // Convert GuessAction enum to API action string
-    const actionStr = this.guessActionToApiString(action);
-    await this.callPickApi(actionStr, action);
+    if (this.isProcessingAction) return;
+    this.isProcessingAction = true;
+    try {
+      const rank = this.layout.currentCard.rank;
+      const action = NextGameLogic.getLowAction(rank);
+      // Convert GuessAction enum to API action string
+      const actionStr = this.guessActionToApiString(action, rank);
+      await this.callPickApi(actionStr, action);
+    } finally {
+      this.isProcessingAction = false;
+    }
   }
 
   private async SkipButton() {
+    if (this.isProcessingAction) return;
+    this.isProcessingAction = true;
     try {
       const currentRankNumeric = this.rankToNumeric(this.layout.currentCard.rank);
       const response = await GameService.skip(currentRankNumeric);
-      this.handlePickResponse(response.data, GuessAction.Skip);
+      await this.handlePickResponse(response.data, GuessAction.Skip);
       this.layout.gameInfo.knightCharacter.playState('skip');
       this.layout.gameInfo.knightCharacter.say("YOU CAN DO IT!");
       this.vibratePhone(100);
     } catch (error) {
       console.error("Skip API error:", error);
+    } finally {
+      this.isProcessingAction = false;
     }
   }
 
@@ -284,6 +322,7 @@ export class NextScreenMobile extends Container {
       const half = currentValue / 2;
       this.layout.inputBox.value = parseFloat(half.toFixed(2)).toString();
     }
+    this.updateButtonStates();
   }
 
   private DoubleButton() {
@@ -297,6 +336,7 @@ export class NextScreenMobile extends Container {
     }
 
     this.layout.inputBox.value = parseFloat(currentValue.toFixed(2)).toString();
+    this.updateButtonStates();
   }
 
   // Helper to update UI labels based on current card
@@ -482,6 +522,8 @@ export class NextScreenMobile extends Container {
 
     //input and buttons
     this.layout.inputBox.interactive = false;
+    this.layout.betBar.settingsUI.updateUI(false);
+    this.layout.gameHistory.interactiveChildren = false;
     this.layout.betButton.setBettingState(false); // Non-Betting -> 1-0, Cash Out
 
     // Set initial cash out value (Start Bet)
@@ -495,6 +537,13 @@ export class NextScreenMobile extends Container {
 
     this.layout.halfValueButton.interactive = false;
     this.layout.doubleValueButton.interactive = false;
+
+    // Grayscale during bet round
+    const grayscaleFilter = new ColorMatrixFilter();
+    grayscaleFilter.grayscale(0.35, false);
+    this.layout.halfValueButton.filters = [grayscaleFilter];
+    this.layout.doubleValueButton.filters = [grayscaleFilter];
+
     this.disableButton(this.layout.betButton); // Cashout disabled until player wins a pick (higher/lower)
 
     this.enableButton(this.layout.upButton);
@@ -502,6 +551,7 @@ export class NextScreenMobile extends Container {
     this.layout.fancySkipButton.interactive = true;
 
     this.firstLoad = false; // Game has started, switching to Payout mode permanently
+    this.layout.gameLogic.updateButtonGlows(this.multiplierManager.comboDirection, this.multiplierManager.comboStreak);
   }
 
   private EnterBettingState() {
@@ -512,8 +562,14 @@ export class NextScreenMobile extends Container {
 
     // Enable input again for new round
     this.layout.inputBox.interactive = true;
+    this.layout.betBar.settingsUI.updateUI(true);
+    this.layout.gameHistory.interactiveChildren = true;
+
     this.layout.betButton.setBettingState(true); // Betting -> 1-1, Bet
     this.enableButton(this.layout.betButton);
+
+    this.updateButtonStates(); // Re-enable half/double based on balance 
+
     this.layout.halfValueButton.interactive = true;
     this.layout.doubleValueButton.interactive = true;
 
@@ -525,6 +581,7 @@ export class NextScreenMobile extends Container {
     // Note: do NOT say anything here — the caller (CashOut / loss handler)
     // is responsible for making the character speak before entering betting state.
     this.updateButtonLabels();
+    this.layout.gameLogic.updateButtonGlows(this.multiplierManager.comboDirection, this.multiplierManager.comboStreak);
   }
 
   //#endregion
@@ -553,7 +610,12 @@ export class NextScreenMobile extends Container {
 
       // Record result locally
       GameData.instance.addRoundResult(multiplier, true, base);
-      this.layout.gameHistory.addResult(multiplier, true);
+      const historyItem = this.layout.gameHistory.addResult(multiplier, true);
+
+      // Silently fetch the real transaction ID from history
+      GameService.history(1).then(res => {
+        if (res.data && res.data[0]) historyItem.txId = res.data[0].bet_id || res.data[0].txId;
+      }).catch(e => console.warn("Failed to retroactive load history ID:", e));
 
       // Try to get updated balance from result API (authoritative end of round)
       try {
@@ -600,6 +662,8 @@ export class NextScreenMobile extends Container {
 
     // Format: Remove unnecessary decimals (e.g. 3.00 -> 3) but keep up to 2 decimals
     this.layout.inputBox.value = parseFloat(val.toFixed(2)).toString();
+
+    this.updateButtonStates();
   }
 
   public prepare() { }
@@ -637,6 +701,32 @@ export class NextScreenMobile extends Container {
     }
   }
 
+  private updateButtonStates() {
+    const val = parseFloat(this.layout.inputBox.value);
+    const money = GameData.instance.totalMoney;
+
+    const grayscaleFilter = new ColorMatrixFilter();
+    grayscaleFilter.grayscale(0.35, false);
+
+    // 1/2 Button Logic
+    if (isNaN(val) || val <= GameData.MIN_BET) {
+      this.layout.halfValueButton.interactive = false;
+      this.layout.halfValueButton.filters = [grayscaleFilter];
+    } else {
+      this.layout.halfValueButton.interactive = true;
+      this.layout.halfValueButton.filters = [];
+    }
+
+    // x2 Button Logic
+    if (isNaN(val) || val >= money) {
+      this.layout.doubleValueButton.interactive = false;
+      this.layout.doubleValueButton.filters = [grayscaleFilter];
+    } else {
+      this.layout.doubleValueButton.interactive = true;
+      this.layout.doubleValueButton.filters = [];
+    }
+  }
+
   private vibratePhone(power: number = 100) {
     if (navigator && navigator.vibrate) {
       navigator.vibrate(power);
@@ -671,7 +761,7 @@ export class NextScreenMobile extends Container {
   /**
    * Convert GuessAction enum to API action string
    */
-  private guessActionToApiString(action: GuessAction): string {
+  private guessActionToApiString(action: GuessAction, rank: string): string {
     // Backend only accepts 3 action strings and handles all edge cases internally:
     // "higher" → backend treats as >= (higher or equal); for K, treated as equal
     // "lower"  → backend treats as <= (lower or equal); for A, treated as equal
@@ -679,8 +769,9 @@ export class NextScreenMobile extends Container {
     switch (action) {
       case GuessAction.Higher:
       case GuessAction.HigherOrEqual:
-      case GuessAction.Equal:       // K high btn — backend resolves to equal internally
         return "higher";
+      case GuessAction.Equal:
+        return rank === "A" ? "lower" : "higher";
       case GuessAction.Lower:
       case GuessAction.LowerOrEqual:
         return "lower";
@@ -698,7 +789,7 @@ export class NextScreenMobile extends Container {
     try {
       const currentRankNumeric = this.rankToNumeric(this.layout.currentCard.rank);
       const response = await GameService.pick(action, currentRankNumeric);
-      this.handlePickResponse(response.data, guessAction);
+      await this.handlePickResponse(response.data, guessAction);
     } catch (error) {
       console.error(`Pick API error (${action}):`, error);
     }
@@ -738,7 +829,12 @@ export class NextScreenMobile extends Container {
       const rawVal = parseFloat(this.layout.inputBox.value);
       const lostAmount = isNaN(rawVal) ? 0 : rawVal;
       GameData.instance.addRoundResult(0, false, lostAmount);
-      this.layout.gameHistory.addResult(0, false);
+      const historyItem = this.layout.gameHistory.addResult(0, false);
+
+      // Silently fetch the real transaction ID from history
+      GameService.history(1).then(res => {
+        if (res.data && res.data[0]) historyItem.txId = res.data[0].bet_id || res.data[0].txId;
+      }).catch(e => console.warn("Failed to retroactive load history ID:", e));
 
       this.layout.gameInfo.knightCharacter.playState('lose');
       this.layout.gameInfo.knightCharacter.say('YOU LOSE!');
@@ -751,23 +847,20 @@ export class NextScreenMobile extends Container {
 
       this.vibratePhone(200);
 
-      // Finalize round with backend on loss and sync balance
-      try {
-        const resultRes = await GameService.result();
+      // Enter betting state immediately as requested (no artificial delay and no waiting for API)
+      this.EnterBettingState();
+      // Force predictions to 0x on loss
+      this.layout.gameInfo.updatePredictions(0, 0);
+
+      // Finalize round with backend on loss and sync balance (run async in background so we don't freeze UI)
+      GameService.result().then(resultRes => {
         if (resultRes?.data?.balance !== undefined) {
           GameData.instance.totalMoney = resultRes.data.balance;
           this.layout.updateMoney(`${resultRes.data.balance.toFixed(2)} `);
         }
-      } catch (resultError) {
+      }).catch(resultError => {
         console.warn("Result API error on loss (non-critical):", resultError);
-      }
-      // Enter betting state WITHOUT overriding the YOU LOSE dialog
-      // EnterBettingState will say 'Press Bet' but we want YOU LOSE to show briefly first
-      setTimeout(() => {
-        this.EnterBettingState();
-        // Force predictions to 0x on loss
-        this.layout.gameInfo.updatePredictions(0, 0);
-      }, 1500);
+      });
 
     } else if (action === GuessAction.Skip) {
       // Skip - don't reset multiplier, just reset combo counter
@@ -855,6 +948,7 @@ export class NextScreenMobile extends Container {
     // If we lost, EnterBettingState handled it, and we don't want to show predictions for the next card immediately.
     if (!data.end_round) {
       this.updateButtonLabels();
+      this.layout.gameLogic.updateButtonGlows(this.multiplierManager.comboDirection, this.multiplierManager.comboStreak);
     }
   }
 }

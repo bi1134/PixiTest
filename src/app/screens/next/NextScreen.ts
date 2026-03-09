@@ -34,7 +34,9 @@ export class NextScreen extends Container {
       "/spine-assets/Card.skel",
       "/spine-assets/Card.atlas",
       "/spine-assets/UI_Info.skel",
-      "/spine-assets/UI_Info.atlas"
+      "/spine-assets/UI_Info.atlas",
+      "/spine-assets/button-fx.skel",
+      "/spine-assets/button-fx.atlas",
     ]);
 
     await engine().navigation.showScreen(NextScreenMobile);

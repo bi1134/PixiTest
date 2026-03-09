@@ -1,15 +1,24 @@
 import { Container } from "pixi.js";
 import { FancyButton } from "@pixi/ui";
 import { BitmapLabel } from "./BitmapLabel";
-import { GameRoundResult } from "../data/GameData";
+import { UI } from "./Manager/UIManager";
+
+export type GameHistoryItemData = {
+  multiplier: number;
+  isWin: boolean;
+  txId?: string;
+};
 
 export class GameHistoryItem extends Container {
   private button: FancyButton;
   private textLabel: BitmapLabel;
   public targetX: number = 0; // For animation reference
+  public txId?: string;
 
-  constructor(data: GameRoundResult) {
+  constructor(data: GameHistoryItemData) {
     super();
+
+    this.txId = data.txId;
 
     // 1. Create the button (visual background)
     const bgTexture =
@@ -34,6 +43,14 @@ export class GameHistoryItem extends Container {
     // Default dimensions, will be resized immediately by container
     this.button.width = 100;
     this.button.height = 40;
+
+    this.button.onPress.connect(() => {
+      if (this.txId) {
+        UI.showHistory(this.txId);
+      } else {
+        UI.showHistory();
+      }
+    });
 
     this.addChild(this.button);
     this.addChild(this.textLabel);

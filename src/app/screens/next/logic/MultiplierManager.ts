@@ -6,6 +6,7 @@ export class MultiplierManager {
     private _baseMultiplier: number = 1.0;
 
     private _comboCount: number = 0;
+    private _comboStreak: number = 0; // Tracks unbroken streak without resetting for tiers
     private _comboDirection: 'High' | 'Low' | null = null;
     private _comboTier: number = 0; // Escalating tier (0, 1, 2, ...)
     private _currentComboBonus: number = 0; // Bonus for current tier
@@ -27,6 +28,8 @@ export class MultiplierManager {
     }
 
     public get comboCount() { return this._comboCount; }
+    public get comboStreak() { return this._comboStreak; }
+    public get comboDirection() { return this._comboDirection; }
     public get comboBonus() { return this._currentComboBonus; }
     public get comboTier() { return this._comboTier; }
     public get currentMultiplier(): number {
@@ -39,6 +42,7 @@ export class MultiplierManager {
     public reset() {
         this._currentMultiplier = this._baseMultiplier;
         this._comboCount = 0;
+        this._comboStreak = 0;
         this._comboDirection = null;
         this._comboTier = 0;
         this._currentComboBonus = this.getBonusForTier(0);
@@ -49,6 +53,7 @@ export class MultiplierManager {
      */
     public resetCounter() {
         this._comboCount = 0;
+        this._comboStreak = 0;
         this._comboDirection = null;
     }
 
@@ -124,6 +129,7 @@ export class MultiplierManager {
             if (actionDir !== 'Neutral') {
                 this._comboDirection = actionDir;
                 this._comboCount = 1;
+                this._comboStreak = 1;
                 // Set bonus for this combo at current tier
                 if (this._currentComboBonus === 0) {
                     this._currentComboBonus = this.getBonusForTier(this._comboTier);
@@ -139,9 +145,11 @@ export class MultiplierManager {
 
             if (matches) {
                 this._comboCount++;
+                this._comboStreak++;
             } else {
                 // Direction change - reset counter, keep tier
                 this._comboCount = 1;
+                this._comboStreak = 1;
                 this._comboDirection = actionDir !== 'Neutral' ? actionDir : null;
                 // Recalculate bonus for new direction at same tier
                 this._currentComboBonus = this.getBonusForTier(this._comboTier);

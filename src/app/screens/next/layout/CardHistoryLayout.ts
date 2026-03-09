@@ -414,6 +414,7 @@ export class CardHistoryLayout extends Container {
       }
 
       this.list.y = finalY + this.listYOffset;
+    } else {
       // Horizontal Logic
       // 1. Center Y
       // Use first child height for more stable centering if available, else list.height
