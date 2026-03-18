@@ -1,4 +1,5 @@
-import { Container, Texture, ColorMatrixFilter } from "pixi.js";
+import { Container, Texture, Filter, ColorMatrixFilter } from "pixi.js";
+import { gsap } from "gsap";
 import { engine } from "../../getEngine";
 import { MobileLayout } from "./layout/MobileLayout"; // Updated import
 import { BetButton } from "../../ui/BetButton";
@@ -10,6 +11,7 @@ import { MultiplierManager } from "./logic/MultiplierManager";
 import { GameService } from "../../api/services/GameService";
 import { CardSuit } from "../../ui/Card";
 import { SoundManager } from "../../audio/SoundManager";
+import { SelectiveRedFilter } from "../../utils/SelectiveRedFilter";
 
 export class NextScreenMobile extends Container {
   public static assetBundles = ["main"];
@@ -22,6 +24,7 @@ export class NextScreenMobile extends Container {
 
   private firstLoad: boolean = true;
   private isProcessingAction: boolean = false;
+  private lossGrayscaleFilter: Filter;
 
   // --- Dummy Proxy Card Injection State ---
   private dummyInjectionActive: boolean = false;
@@ -37,6 +40,9 @@ export class NextScreenMobile extends Container {
 
     this.layout = new MobileLayout(width, height);
     this.addChild(this.layout);
+
+    // Custom WebGL Filter setup for loss impact screen flash (Selective Red)
+    this.lossGrayscaleFilter = SelectiveRedFilter.create();
 
     // --- Setup Event Listeners ---
     this.setupEvents();
@@ -946,6 +952,24 @@ export class NextScreenMobile extends Container {
       // Reset combo on loss
       this.multiplierManager.reset();
 
+      // --- Trigger Full-Screen Selective Color (Red) Fade Effect ---
+      this.filters = [this.lossGrayscaleFilter];
+      
+      const lossProxy = { val: 1 }; // 1 = full selective grayscale, 0 = normal color
+
+      gsap.to(lossProxy, {
+        val: 0,
+        duration: 1.5,
+        ease: "power2.inOut",
+        onUpdate: () => {
+          // Update the custom shader uniform
+          this.lossGrayscaleFilter.resources.filterUniforms.uniforms.uAlpha = lossProxy.val;
+        },
+        onComplete: () => {
+          this.filters = []; // remove filter when fully normal
+        }
+      });
+
       this.vibratePhone(200);
 
       // Enter betting state immediately as requested (no artificial delay and no waiting for API)
@@ -997,7 +1021,7 @@ export class NextScreenMobile extends Container {
       const rawVal = parseFloat(this.layout.inputBox.value);
       const validBet = isNaN(rawVal) ? GameData.MIN_BET : rawVal;
       const payout = validBet * newMultiplier;
-      const formattedPayout = payout.toLocaleString('de-DE', {
+      const formattedPayout = payout.toLocaleString('en-US', {
         minimumFractionDigits: 0,
         maximumFractionDigits: 2
       });
@@ -1040,13 +1064,8 @@ export class NextScreenMobile extends Container {
       this.multiplierManager.currentMultiplier
     );
 
-    // Update multiplier board
-    const currentBet = parseFloat(this.layout.inputBox.value);
-    const validBet = isNaN(currentBet) ? GameData.MIN_BET : currentBet;
-    this.layout.multiplierBoard.updateValues(this.multiplierManager.currentMultiplier, validBet);
-
-    // Only update button labels if the round is continuing (Win/Skip)
-    // If we lost, EnterBettingState handled it, and we don't want to show predictions for the next card immediately.
+    // Only update button labels and board if the round is continuing (Win/Skip)
+    // If we lost, EnterBettingState handled resetting the board to 0.
     if (!data.end_round) {
       this.updateButtonLabels();
       this.layout.gameLogic.updateButtonGlows(this.multiplierManager.comboDirection, this.multiplierManager.comboStreak);

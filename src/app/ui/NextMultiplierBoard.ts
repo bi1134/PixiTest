@@ -1,5 +1,7 @@
 import { Container, Sprite, BitmapText } from "pixi.js";
 import { Spine } from "@esotericsoftware/spine-pixi-v8";
+import { gsap } from "gsap";
+import { NumberAnimator } from "../utils/NumberAnimator";
 
 export enum UIInfoAnimationState {
     Idle = "idle",
@@ -11,6 +13,8 @@ export class NextMultiplierBoard extends Container {
     private topLabel: BitmapText;
     private bottomLabel: BitmapText;
     private infoSpine?: Spine;
+    private currentTotalWin: number = 0;
+    private currentTween: gsap.core.Tween | null = null;
 
     constructor() {
         super();
@@ -80,21 +84,26 @@ export class NextMultiplierBoard extends Container {
     public updateValues(multiplier: number, currentBet: number) {
         const totalWin = multiplier * currentBet;
 
-        let displayString = `RP ${totalWin}`;
-        if (totalWin > 0) {
-            const formatted = totalWin.toLocaleString('de-DE', {
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 2
-            });
-            // Display: "Rp 1,000"
-            // If we want multiplier too: "Rp 1,000 (1.5x)"
-            // User asked "like in BetButton", which is just Money usually.
-            // But this is "NextMultiplierBoard".
-            // Let's explicitly format it as Money.
-            displayString = `RP ${formatted}`; // Capitalize RP? BetButton uses "RP". NextScreen "Rp".
+        if (this.currentTween) {
+            this.currentTween.kill();
+            this.currentTween = null;
         }
 
-        this.bottomLabel.text = displayString;
+        if (totalWin > 0) {
+            this.currentTween = NumberAnimator.animate(
+                this.bottomLabel as any,
+                this.currentTotalWin,
+                totalWin,
+                0.5, // Quick 0.5s roll up
+                "RP ",
+                "",
+                2
+            );
+        } else {
+            this.bottomLabel.text = "RP 0";
+        }
+        
+        this.currentTotalWin = totalWin;
 
         if (this.infoSpine) {
             this.infoSpine.state.setAnimation(0, UIInfoAnimationState.action, false);

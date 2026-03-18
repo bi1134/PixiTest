@@ -6,6 +6,7 @@ import { BitmapLabel } from "../ui/BitmapLabel";
 import { FancyButton } from "@pixi/ui";
 import { Spine } from "@esotericsoftware/spine-pixi-v8";
 import { LayoutHelper } from "../utils/LayoutHelper";
+import { NumberAnimator } from "../utils/NumberAnimator";
 
 export enum CashOutAnimationState {
   Idle = "idle",
@@ -116,12 +117,13 @@ export class ResultPopup extends Container {
 
   public setResult(multiplier: number, baseAmount: number) {
     const total = baseAmount * multiplier;
-    this.title.text = `${multiplier.toFixed(2)}x`;
+    
+    // Animate the multiplier text (e.g. from 0x to 1.50x)
+    NumberAnimator.animate(this.title, 0, multiplier, 1.5, "", "x", 2);
 
-    // Check if total is effectively an integer (or close enough) to decide decimals?
-    // User requested same format as main money but with currency symbol: "rp 2000" or "$2000"
-    // Using id-ID to match MobileLayout logic, adding 'currency' style
-    this.resultLabel.text = `RP ${total.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`;
+    // Animate the money total (e.g. from RP 0 to RP 1,500.00)
+    // The animator automatically handles the en-US formatting (commas/dots)
+    NumberAnimator.animate(this.resultLabel as any, 0, total, 1.5, "RP ", "", 2);
   }
 
   /** Resize the popup, fired whenever window size changes */
